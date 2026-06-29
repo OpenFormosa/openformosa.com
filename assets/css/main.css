@@ -148,8 +148,8 @@ picture {
   align-items: center;
   gap: .65rem;
   font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 900;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .brand-mark {
@@ -171,7 +171,7 @@ picture {
   border: 1px solid transparent;
   border-radius: 4px;
   color: var(--muted);
-  font-size: .92rem;
+  font-size: 16px;
   font-weight: 750;
   padding: .55rem .7rem;
 }
@@ -239,8 +239,8 @@ picture {
   margin: 0 0 1rem;
   border-left: 8px solid var(--green);
   color: var(--paper-ink);
-  font-size: .78rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   padding-left: .65rem;
   text-transform: uppercase;
 }
@@ -250,8 +250,8 @@ picture {
 .post-hero h1 {
   margin: .1rem 0 1.25rem;
   font-family: var(--serif);
-  font-size: 5.25rem;
-  font-weight: 900;
+  font-size: 84px;
+  font-weight: 700;
   line-height: .92;
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -260,10 +260,12 @@ picture {
 }
 
 .hero h1 {
-  font-size: clamp(3.65rem, 5.8vw, 4.7rem);
+  font-size: clamp(58px, 5.8vw, 75px);
+  line-height: 1.04;
 }
 
-.hero h1 span {
+.hero h1 span,
+.page-hero h1 span {
   display: block;
   max-width: 100%;
 }
@@ -272,14 +274,7 @@ picture {
   max-width: 760px;
   margin: 0;
   color: var(--muted);
-  font-size: 1.28rem;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .65rem;
-  margin-top: 2rem;
+  font-size: 20px;
 }
 
 .btn {
@@ -291,7 +286,7 @@ picture {
   border-radius: 4px;
   background: var(--surface);
   color: var(--paper-ink);
-  font-weight: 900;
+  font-weight: 700;
   padding: .8rem 1rem;
 }
 
@@ -316,59 +311,81 @@ picture {
 }
 
 .hero-card {
-  position: relative;
+  display: grid;
+  place-items: center;
   width: 100%;
   min-width: 0;
-  border: 2px solid var(--line-strong);
-  border-radius: 4px;
-  background: var(--panel);
-  padding: 1rem;
-}
-
-.hero-card::before {
-  content: "";
-  display: block;
-  height: 34px;
-  margin: -1rem -1rem 1rem;
-  border-bottom: 2px solid var(--line-strong);
-  background:
-    linear-gradient(90deg, var(--red) 0 28%, var(--green) 28% 62%, var(--blue) 62% 100%);
+  padding: 0;
 }
 
 .hero-logo {
   display: block;
   width: 100%;
-  max-height: 390px;
+  max-height: 430px;
   margin: auto;
   object-fit: contain;
 }
 
-.metric-row {
+.hero-choices {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: .5rem;
-  margin-top: 1rem;
+  gap: .75rem;
+  margin-top: 2rem;
 }
 
-.metric {
+.hero-choice {
   min-width: 0;
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .85rem;
   border: 2px solid var(--line-strong);
   border-radius: 4px;
   background: var(--surface);
-  padding: .8rem;
+  color: var(--paper-ink);
+  padding: 1rem;
 }
 
-.metric strong {
+.hero-choice:nth-child(1) {
+  border-top-width: 10px;
+  border-top-color: var(--green);
+}
+
+.hero-choice:nth-child(2) {
+  border-top-width: 10px;
+  border-top-color: var(--blue);
+}
+
+.hero-choice:nth-child(3) {
+  border-top-width: 10px;
+  border-top-color: var(--red);
+}
+
+.hero-choice:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.hero-choice strong {
   display: block;
   font-family: var(--serif);
-  font-size: 1.1rem;
-  letter-spacing: -.03em;
+  font-size: 23px;
+  line-height: 1.05;
 }
 
-.metric span {
+.hero-choice span {
   color: var(--muted);
-  font-size: .82rem;
+  font-size: 16px;
   overflow-wrap: anywhere;
+}
+
+.hero-choice em {
+  margin-top: auto;
+  border-bottom: 2px solid currentColor;
+  font-style: normal;
+  font-weight: 700;
 }
 
 .section {
@@ -386,15 +403,21 @@ picture {
 
 .section-head h2 {
   margin: 0;
+  max-width: 28ch;
   font-family: var(--serif);
-  font-size: 3.6rem;
+  font-size: 58px;
   line-height: 1;
+}
+
+.section-head h2:only-child {
+  grid-column: 1 / -1;
+  max-width: none;
 }
 
 .section-head p {
   margin: 0;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 .model-grid {
@@ -443,8 +466,8 @@ picture {
   border-radius: 3px;
   background: var(--surface);
   color: var(--paper-ink);
-  font-size: .72rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   padding: .28rem .45rem;
 }
 
@@ -453,7 +476,7 @@ picture {
 .feature-card h3 {
   margin: 1rem 0 .6rem;
   font-family: var(--serif);
-  font-size: 1.85rem;
+  font-size: 30px;
   line-height: 1.05;
 }
 
@@ -504,7 +527,7 @@ picture {
 .directory-card h3 {
   margin: 1.1rem 0 .65rem;
   font-family: var(--serif);
-  font-size: 1.65rem;
+  font-size: 26px;
   line-height: 1.08;
 }
 
@@ -557,9 +580,14 @@ picture {
 .callout h2 {
   margin: 0 0 1rem;
   font-family: var(--serif);
-  font-size: 4rem;
+  font-size: 64px;
   line-height: 1;
   overflow-wrap: anywhere;
+}
+
+.open-trust .callout h2 {
+  font-size: clamp(34px, 3.2vw, 44px);
+  line-height: 1.08;
 }
 
 .callout p {
@@ -600,7 +628,7 @@ picture {
   border: 2px solid var(--line-strong);
   background: var(--green);
   color: var(--accent-ink);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .release-panel {
@@ -621,7 +649,7 @@ picture {
 .release-panel h2 {
   margin: 0 0 1rem;
   font-family: var(--serif);
-  font-size: 3.5rem;
+  font-size: 56px;
   line-height: 1;
 }
 
@@ -651,7 +679,7 @@ picture {
 
 .release-list strong {
   font-family: var(--serif);
-  font-size: 1.35rem;
+  font-size: 22px;
   line-height: 1.08;
 }
 
@@ -681,14 +709,14 @@ picture {
 
 .post-card .meta {
   color: var(--muted);
-  font-size: .84rem;
+  font-size: 16px;
   margin-bottom: .8rem;
 }
 
 .post-card h3 {
   margin: 0 0 .8rem;
   font-family: var(--serif);
-  font-size: 1.55rem;
+  font-size: 25px;
   line-height: 1.08;
 }
 
@@ -703,11 +731,11 @@ picture {
 }
 
 .page-hero h1 {
-  font-size: 4.8rem;
+  font-size: 77px;
 }
 
 .post-hero h1 {
-  font-size: 4.6rem;
+  font-size: 74px;
 }
 
 .soft-panel {
@@ -729,13 +757,13 @@ picture {
 .prose h2 {
   margin-top: 2.2rem;
   font-family: var(--serif);
-  font-size: 2rem;
+  font-size: 32px;
   line-height: 1.08;
 }
 
 .prose h3 {
   margin-top: 1.8rem;
-  font-size: 1.35rem;
+  font-size: 22px;
 }
 
 .prose a {
@@ -769,7 +797,7 @@ picture {
   color: inherit;
   padding: 0;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  font-size: .95rem;
+  font-size: 16px;
   line-height: 1.65;
   white-space: pre;
 }
@@ -822,7 +850,7 @@ picture {
   right: .55rem;
   z-index: 1;
   font-family: var(--font);
-  font-size: .72rem;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: .02em;
@@ -860,7 +888,7 @@ picture {
   align-items: baseline;
   margin-top: 1.1rem;
   color: var(--muted);
-  font-size: .9rem;
+  font-size: 16px;
   letter-spacing: .01em;
 }
 
@@ -922,7 +950,7 @@ picture {
 }
 
 .post-abstract p {
-  font-size: 1.05rem;
+  font-size: 17px;
   line-height: 1.85;
 }
 
@@ -952,7 +980,7 @@ picture {
   padding-top: .85rem;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: .85rem;
+  font-size: 16px;
   line-height: 1.65;
 }
 
@@ -968,7 +996,7 @@ picture {
   border-collapse: collapse;
   border-radius: 4px;
   overflow: hidden;
-  font-size: .9rem;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -1062,7 +1090,7 @@ html[data-lang="en"] .post-lang-en {
 .blog-empty h2 {
   margin: 0 0 .8rem;
   font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(32px, 4vw, 45px);
   line-height: 1.1;
 }
 
@@ -1086,8 +1114,8 @@ html[data-lang="en"] .post-lang-en {
 .timeline-card time {
   color: var(--green);
   font-family: var(--serif);
-  font-size: 1.3rem;
-  font-weight: 900;
+  font-size: 21px;
+  font-weight: 700;
 }
 
 .site-footer {
@@ -1104,7 +1132,7 @@ html[data-lang="en"] .post-lang-en {
 }
 
 .footer-brand-block p {
-  max-width: 60ch;
+  max-width: 90ch;
 }
 
 .footer-grid h3 {
@@ -1124,7 +1152,7 @@ html[data-lang="en"] .post-lang-en {
   gap: .55rem;
   color: var(--paper-ink) !important;
   font-family: var(--serif);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .footer-brand img {
@@ -1138,7 +1166,7 @@ html[data-lang="en"] .post-lang-en {
   margin-top: 2.6rem;
   border-top: 2px solid var(--line-strong);
   color: var(--muted);
-  font-size: .85rem;
+  font-size: 16px;
   padding-top: 1.6rem;
 }
 
@@ -1182,7 +1210,7 @@ html[data-lang="en"] .post-lang-en {
   }
 
   .hero h1 {
-    font-size: clamp(3.45rem, 5.6vw, 4.35rem);
+    font-size: clamp(55px, 5.6vw, 70px);
   }
 
   .site-nav a {
@@ -1260,7 +1288,7 @@ html[data-lang="en"] .post-lang-en {
     transform: none;
   }
 
-  .metric-row {
+  .hero-choices {
     grid-template-columns: 1fr;
   }
 
@@ -1272,23 +1300,19 @@ html[data-lang="en"] .post-lang-en {
     padding-top: 2.5rem;
   }
 
-  .hero-card {
-    order: -1;
-  }
-
   .hero h1 {
-    font-size: 3.8rem;
+    font-size: 61px;
   }
 
   .page-hero h1,
   .post-hero h1 {
-    font-size: 3.1rem;
+    font-size: 50px;
   }
 
   .section-head h2,
   .callout h2,
   .release-panel h2 {
-    font-size: 2.8rem;
+    font-size: 45px;
   }
 
   .footer-bottom {
@@ -1320,16 +1344,16 @@ html[data-lang="en"] .post-lang-en {
 
 @media (max-width: 520px) {
   .hero h1 {
-    font-size: 3rem;
+    font-size: 48px;
   }
 
   .page-hero h1,
   .post-hero h1 {
-    font-size: 2.55rem;
+    font-size: 41px;
   }
 
   .lede {
-    font-size: 1.08rem;
+    font-size: 17px;
   }
 }
 
@@ -1398,7 +1422,7 @@ html.js .reveal.is-in {
   }
 }
 
-/* Woven divider — refined jia-zhi-bag (茄芷袋) stripe. */
+/* Woven divider: refined Gaji bag (Taiwan Striped Bag) stripe. */
 .weave-rule {
   height: 12px;
   border: 2px solid var(--line-strong);
@@ -1431,7 +1455,7 @@ html.js .reveal.is-in {
 .promise strong {
   display: block;
   font-family: var(--serif);
-  font-size: 1.85rem;
+  font-size: 30px;
   line-height: 1.05;
 }
 
@@ -1439,8 +1463,8 @@ html.js .reveal.is-in {
   display: inline-block;
   margin: .55rem 0 .4rem;
   color: var(--accent, var(--green));
-  font-size: .76rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
 }
@@ -1448,7 +1472,11 @@ html.js .reveal.is-in {
 .promise span.gloss {
   display: block;
   color: var(--muted);
-  font-size: .92rem;
+  font-size: 16px;
+}
+
+.status-route-grid {
+  margin: 1rem 0 1.2rem;
 }
 
 /* ---- Mission band ---- */
@@ -1479,9 +1507,9 @@ html.js .reveal.is-in {
 
 .mission h2 {
   margin: 0 0 1rem;
-  max-width: 22ch;
+  max-width: 28ch;
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  font-size: clamp(35px, 4.4vw, 54px);
   line-height: 1.05;
 }
 
@@ -1489,7 +1517,7 @@ html.js .reveal.is-in {
   max-width: 70ch;
   margin: 0;
   color: var(--inverse-muted);
-  font-size: 1.1rem;
+  font-size: 18px;
 }
 
 /* ---- Problems we solve ---- */
@@ -1515,21 +1543,21 @@ html.js .reveal.is-in {
   margin-bottom: .35rem;
   color: var(--red);
   font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .problem-card h3 {
   margin: 0 0 .5rem;
   font-family: var(--serif);
-  font-size: 1.3rem;
+  font-size: 21px;
   line-height: 1.12;
 }
 
 .problem-card p {
   margin: 0;
   color: var(--muted);
-  font-size: .95rem;
+  font-size: 16px;
 }
 
 /* ---- Model family (species) ---- */
@@ -1560,7 +1588,7 @@ html.js .reveal.is-in {
   color: var(--accent, var(--green));
 }
 
-/* Illustrated jia-zhi-bag model icons. */
+/* Illustrated Gaji bag model icons. */
 .crest-img {
   display: block;
   border: 2px solid var(--line-strong);
@@ -1597,29 +1625,29 @@ html.js .reveal.is-in {
   border-radius: 3px;
   background: var(--surface);
   color: var(--paper-ink);
-  font-size: .72rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   padding: .26rem .45rem;
 }
 
 .family-card h3 {
   margin: .1rem 0 0;
   font-family: var(--serif);
-  font-size: 1.5rem;
+  font-size: 24px;
   line-height: 1.05;
 }
 
 .family-card .latin {
   margin: -.2rem 0 .1rem;
   color: var(--accent, var(--green));
-  font-size: .82rem;
+  font-size: 16px;
   font-weight: 800;
 }
 
 .family-card p {
   margin: 0;
   color: var(--muted);
-  font-size: .94rem;
+  font-size: 16px;
 }
 
 /* ---- Application scenarios ---- */
@@ -1647,7 +1675,7 @@ html.js .reveal.is-in {
 .scenario-card h3 {
   margin: 0 0 .55rem;
   font-family: var(--serif);
-  font-size: 1.18rem;
+  font-size: 19px;
   line-height: 1.1;
 }
 
@@ -1655,7 +1683,7 @@ html.js .reveal.is-in {
   margin: 0;
   padding-left: 1.05rem;
   color: var(--muted);
-  font-size: .9rem;
+  font-size: 16px;
 }
 
 .scenario-card li {
@@ -1681,7 +1709,7 @@ html.js .reveal.is-in {
 
 .spec-row .spec-key {
   font-family: var(--serif);
-  font-size: 1.3rem;
+  font-size: 21px;
   line-height: 1.1;
 }
 
@@ -1700,8 +1728,8 @@ html.js .reveal.is-in {
   margin-top: .25rem;
   color: var(--green);
   font-family: var(--font);
-  font-size: .78rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   letter-spacing: .03em;
   text-transform: uppercase;
 }
@@ -1731,8 +1759,8 @@ html.js .reveal.is-in {
   border-radius: 999px;
   padding: .24em .62em;
   font-family: var(--font);
-  font-size: .68rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
   line-height: 1;
@@ -1797,7 +1825,7 @@ html.js .reveal.is-in {
   display: flex;
   align-items: center;
   gap: .5rem;
-  font-size: .85rem;
+  font-size: 16px;
   color: var(--muted);
 }
 
@@ -1827,8 +1855,8 @@ html.js .reveal.is-in {
 
 .status-name {
   font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 900;
+  font-size: 20px;
+  font-weight: 700;
   line-height: 1.05;
 }
 
@@ -1837,8 +1865,8 @@ html.js .reveal.is-in {
   border-radius: 3px;
   background: var(--surface);
   color: var(--paper-ink);
-  font-size: .66rem;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
   line-height: 1;
@@ -1852,7 +1880,7 @@ html.js .reveal.is-in {
 .status-what {
   margin: .6rem 0 0;
   color: var(--muted);
-  font-size: .95rem;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -1861,7 +1889,7 @@ html.js .reveal.is-in {
   display: flex;
   flex-wrap: wrap;
   gap: .35rem 1.1rem;
-  font-size: .85rem;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -1899,11 +1927,16 @@ html.js .reveal.is-in {
   color: var(--paper-ink);
 }
 
-/* ---- Why the jia-zhi bag: symbol grid ---- */
+/* ---- Why the Gaji bag: symbol grid ---- */
 .symbol-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: .7rem;
+}
+
+.about-section-lede {
+  max-width: 82ch;
+  margin: 0 0 1.4rem;
 }
 
 .symbol-card {
@@ -1918,13 +1951,13 @@ html.js .reveal.is-in {
   display: block;
   margin-bottom: .35rem;
   font-family: var(--serif);
-  font-size: 1.25rem;
+  font-size: 20px;
 }
 
 .symbol-card p {
   margin: 0;
   color: var(--muted);
-  font-size: .94rem;
+  font-size: 16px;
 }
 
 /* ---- Manifesto ---- */
@@ -1943,23 +1976,27 @@ html.js .reveal.is-in {
 
 .manifesto .quote {
   margin: 0 0 1.1rem;
-  max-width: 62ch;
+  max-width: 78ch;
   font-family: var(--serif);
-  font-size: clamp(1.5rem, 2.6vw, 2.05rem);
+  font-size: clamp(24px, 2.6vw, 33px);
   line-height: 1.32;
 }
 
 .manifesto .quote.en {
   color: var(--muted);
-  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-size: clamp(17px, 1.8vw, 20px);
   line-height: 1.5;
 }
 
 .manifesto .sig {
   margin: 1.4rem 0 0;
   color: var(--green);
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .02em;
+}
+
+.manifesto-cta {
+  margin-top: 1.4rem;
 }
 
 /* ---- Responsive for new components ---- */
@@ -2013,13 +2050,13 @@ html.js .reveal.is-in {
 .tts-demo__title {
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 17px;
   color: var(--paper-ink);
 }
 
 .tts-demo__hint {
   color: var(--muted);
-  font-size: .82rem;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -2090,7 +2127,7 @@ html.js .reveal.is-in {
 .tts-card__text {
   margin: .15rem 0 .55rem !important;
   color: var(--paper-ink) !important;
-  font-size: 1.02rem;
+  font-size: 16px;
   line-height: 1.7 !important;
 }
 
@@ -2124,7 +2161,7 @@ html.js .reveal.is-in {
 
 .tts-card__time {
   font-variant-numeric: tabular-nums;
-  font-size: .8rem;
+  font-size: 16px;
   color: var(--muted);
 }
 
@@ -2134,7 +2171,7 @@ html.js .reveal.is-in {
   background: var(--surface);
   color: var(--prose-ink);
   font: inherit;
-  font-size: .8rem;
+  font-size: 16px;
   padding: .2rem .6rem;
   cursor: pointer;
 }
@@ -2156,13 +2193,13 @@ html.js .reveal.is-in {
   border: 1px dashed var(--line);
   border-radius: 4px;
   background: var(--surface);
-  font-size: .9rem;
+  font-size: 16px;
   line-height: 1.6;
 }
 
 .tts-card__asr-k {
   display: block;
-  font-size: .72rem;
+  font-size: 16px;
   letter-spacing: .04em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2178,7 +2215,7 @@ html.js .reveal.is-in {
   margin-left: .4rem;
   padding: .05rem .5rem;
   border-radius: 999px;
-  font-size: .72rem;
+  font-size: 16px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -2200,6 +2237,6 @@ html.js .reveal.is-in {
   }
 
   .tts-card__text {
-    font-size: .98rem;
+    font-size: 16px;
   }
 }

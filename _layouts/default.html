@@ -1,12 +1,12 @@
-{% assign page_key = page.i18n_key %}
-{% unless page_key %}
-  {% assign page_key = page.title | slugify %}
-{% endunless %}
-{% capture page_title %}{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}{% endcapture %}
-{% assign page_description = page.description | default: site.description %}
-{% assign page_url = page.url | absolute_url %}
-{% assign page_image = page.og_image | default: '/assets/img/openformosa-og.png' | absolute_url %}
-{% assign page_locale = page.locale | default: site.locale | default: 'zh_TW' %}
+{%- assign page_key = page.i18n_key -%}
+{%- unless page_key -%}
+  {%- assign page_key = page.title | slugify -%}
+{%- endunless -%}
+{%- capture page_title -%}{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}{%- endcapture -%}
+{%- assign page_description = page.description | default: site.description -%}
+{%- assign page_url = page.url | absolute_url -%}
+{%- assign page_image = page.og_image | default: '/assets/img/openformosa-og.png' | absolute_url -%}
+{%- assign page_locale = page.locale | default: site.locale | default: 'zh_TW' -%}
 <!doctype html>
 <html lang="{{ page.lang | default: site.lang | default: 'en-US' }}">
   <head>
