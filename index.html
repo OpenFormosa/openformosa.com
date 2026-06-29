@@ -2,51 +2,92 @@
 layout: default
 title: Home
 i18n_key: home
-description: OpenFormosa is a Taiwan-rooted open AI foundation-model initiative — a compact base model plus ASR, TTS, and OCR that understand Taiwan's language, voice, documents, and culture.
+description: OpenFormosa is an open family of AI foundation models for Taiwan's language contexts. It helps AI speak Taiwan, hear Taiwan, and read Taiwan.
 ---
 <section class="hero section-pad">
   <div>
-    <p class="eyebrow" data-i18n="home_eyebrow">Taiwan-rooted open AI foundation models</p>
-    <h1><span data-i18n="home_h1_1">Make Taiwan's language,</span><span data-i18n="home_h1_2">voice, and culture</span><span data-i18n="home_h1_3">a foundation for AI.</span></h1>
-    <p class="lede" data-i18n="home_lede">OpenFormosa is a Taiwan-rooted open AI foundation-model initiative. It starts from a compact 1B local language model and reaches out to ASR, TTS, OCR, and multimodal tasks — so AI can truly understand Taiwan's context, voices, documents, and culture.</p>
-    <div class="hero-actions">
-      <a class="btn primary" href="{{ '/models/' | relative_url }}" data-i18n="home_cta_models">Meet the model family</a>
-      <a class="btn" href="{{ '/about/' | relative_url }}" data-i18n="home_cta_about">Read the vision</a>
+    <p class="eyebrow" data-i18n="home_eyebrow">Open foundation models for Taiwan's language contexts</p>
+    <h1><span data-i18n="home_h1_1">Let AI speak Taiwan,</span><span data-i18n="home_h1_2">hear Taiwan,</span><span data-i18n="home_h1_3">and read Taiwan.</span></h1>
+    <p class="lede" data-i18n="home_lede">General AI models often miss usage in Taiwan, local accents, Taigi terms, proper nouns, and sentences that mix Chinese, English, and Taigi. OpenFormosa builds open models and tools for these real scenarios, with lower deployment cost and room for fine tuning.</p>
+    <div class="hero-choices">
+      <a class="hero-choice" href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener">
+        <strong data-i18n="home_metric_open_k">Try it</strong>
+        <span data-i18n="home_metric_open">Hear how the demo handles mixed Chinese and English sentences, Taiwan proper nouns, and natural speech.</span>
+        <em data-i18n="home_cta_demo">Try the TTS demo</em>
+      </a>
+      <a class="hero-choice" href="#status">
+        <strong data-i18n="home_metric_local_k">Run it</strong>
+        <span data-i18n="home_metric_local">Scroll down for the released tokenizer, base model, TTS demo, and upcoming work.</span>
+        <em data-i18n="home_cta_models">See model and technical route</em>
+      </a>
+      <a class="hero-choice" href="https://discord.gg/N4YnrjjcW7" target="_blank" rel="noopener">
+        <strong data-i18n="home_metric_deploy_k">Join in</strong>
+        <span data-i18n="home_metric_deploy">Share test sentences, documentation issues, data licensing leads, or integration examples.</span>
+        <em data-i18n="home_cta_discord">Join Discord</em>
+      </a>
     </div>
   </div>
   <div class="hero-card">
     <picture>
       <source type="image/webp" srcset="{{ '/assets/img/openformosa-logo-780.webp' | relative_url }}">
-      <img class="hero-logo" src="{{ '/assets/img/openformosa-logo-780.png' | relative_url }}" alt="OpenFormosa logo: a Taiwanese woven market bag carrying Taiwan cultural icons and endemic animals" data-i18n-alt="home_logo_alt" width="780" height="780" fetchpriority="high" decoding="async">
+      <img class="hero-logo" src="{{ '/assets/img/openformosa-logo-780.png' | relative_url }}" alt="OpenFormosa logo, a Taiwanese woven market bag carrying Taiwan cultural icons and endemic animals" data-i18n-alt="home_logo_alt" width="780" height="780" fetchpriority="high" decoding="async">
     </picture>
-    <div class="metric-row">
-      <div class="metric"><strong data-i18n="home_metric_open_k">Open</strong><span data-i18n="home_metric_open">A detailed technical report covering the open model, tokenizer, and benchmarks</span></div>
-      <div class="metric"><strong data-i18n="home_metric_local_k">Local</strong><span data-i18n="home_metric_local">Taiwan context, voices, documents, and culture</span></div>
-      <div class="metric"><strong data-i18n="home_metric_deploy_k">Lightweight</strong><span data-i18n="home_metric_deploy">A 1B LLM you can train and run on a laptop</span></div>
-    </div>
   </div>
 </section>
 <section class="section section-pad reveal" id="status">
   <div class="section-head">
-    <h2 data-i18n="home_status_title">What's shipped today — and what's still a plan.</h2>
-    <p data-i18n="home_status_desc">No guessing. “Shipped” means there are weights, a demo, or a technical report you can open right now; “planned” means it's on the roadmap but not built yet. Every shipped item links straight to its build log.</p>
+    <h2 data-i18n="home_status_title">Models and technical route.</h2>
   </div>
   {% assign pangolin = site.posts | where: "i18n_key", "pangolin" | first %}
   {% assign barbet = site.posts | where: "i18n_key", "barbet" | first %}
   {% assign bluemagpie = site.posts | where: "i18n_key", "bluemagpie" | first %}
+  <div class="promise-grid status-route-grid">
+    <div class="promise" style="--accent:var(--barbet)">
+      <strong data-i18n="home_promise_remember">Remember Taiwan</strong>
+      <span class="role" data-i18n="home_promise_remember_role">Base · Barbet</span>
+      <span class="gloss" data-i18n="home_promise_remember_text">A shared base for Taiwan context, long documents, culture, and knowledge.</span>
+    </div>
+    <div class="promise" style="--accent:var(--bluemagpie)">
+      <strong data-i18n="home_promise_speak">Speak Taiwan</strong>
+      <span class="role" data-i18n="home_promise_speak_role">TTS · Blue Magpie</span>
+      <span class="gloss" data-i18n="home_promise_speak_text">Natural Taiwanese Mandarin voice with Bopomofo and Tâi-lô support.</span>
+    </div>
+    <div class="promise" style="--accent:var(--blackbear)">
+      <strong data-i18n="home_promise_hear">Hear Taiwan</strong>
+      <span class="role" data-i18n="home_promise_hear_role">ASR · Black Bear</span>
+      <span class="gloss" data-i18n="home_promise_hear_text">Taiwan Mandarin, Taigi and Hakka accents, and speech that mixes Chinese and English.</span>
+    </div>
+    <div class="promise" style="--accent:var(--sikadeer)">
+      <strong data-i18n="home_promise_read">Read Taiwan</strong>
+      <span class="role" data-i18n="home_promise_read_role">OCR · Sika Deer</span>
+      <span class="gloss" data-i18n="home_promise_read_text">Layout and structure of public documents, receipts, forms, menus, and addresses.</span>
+    </div>
+  </div>
   <ul class="status-legend">
-    <li><span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span><span data-i18n="status_legend_shipped">weights, demo, or report you can open now</span></li>
+    <li><span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span><span data-i18n="status_legend_shipped">weights, a demo, or a report you can open now</span></li>
     <li><span class="status-badge is-progress" data-i18n="status_progress">In progress</span><span data-i18n="status_legend_progress">actively training or building</span></li>
     <li><span class="status-badge is-planned" data-i18n="status_planned">Planned</span><span data-i18n="status_legend_planned">on the roadmap, not started yet</span></li>
   </ul>
   <ol class="status-board">
+    <li class="status-item" style="--accent:var(--pangolin)">
+      <div class="status-head">
+        <span class="status-name">PangolinTokenizer</span>
+        <span class="status-role" data-i18n="status_role_tokenizer">Tokenizer</span>
+        <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
+      </div>
+      <p class="status-what" data-i18n="home_status_pangolin">A byte level BPE tokenizer built for Taiwan. It has 114,688 merges and reduces tokens per character on PangolinBench with a smaller vocabulary, so the same context window can hold more real Taiwan content.</p>
+      <div class="status-links">
+        {% if pangolin %}<a href="{{ pangolin.url | relative_url }}" data-i18n="status_read_log">Read the log →</a>{% endif %}
+        <a href="https://huggingface.co/OpenFormosa/PangolinTokenizer" target="_blank" rel="noopener">Hugging Face</a>
+      </div>
+    </li>
     <li class="status-item" style="--accent:var(--barbet)">
       <div class="status-head">
         <span class="status-name">Barbet 1B Base</span>
         <span class="status-role">Base</span>
         <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p class="status-what" data-i18n="home_status_barbet">1B hybrid decoder — sliding-window and global attention interleaved with Mamba, context up to 1M, tied embeddings. Weights, HuggingFace conversion, and a full technical report are out.</p>
+      <p class="status-what" data-i18n="home_status_barbet">A 1B hybrid language model with long context support. It serves as the shared Taiwan context base for ASR, TTS, and OCR tasks. The weights, Hugging Face conversion, and full technical report are available.</p>
       <div class="status-links">
         {% if barbet %}<a href="{{ barbet.url | relative_url }}" data-i18n="status_read_log">Read the log →</a>{% endif %}
         <a href="https://github.com/OpenFormosa/Barbet" target="_blank" rel="noopener">GitHub</a>
@@ -58,22 +99,10 @@ description: OpenFormosa is a Taiwan-rooted open AI foundation-model initiative 
         <span class="status-role">TTS</span>
         <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p class="status-what" data-i18n="home_status_bluemagpie">Taiwanese-accent, Chinese–English code-switching speech synthesis — VoxCPM's acoustic stack with the Barbet language model swapped in, cutting character error rate by ~58% on a hard set. Live demo online.</p>
+      <p class="status-what" data-i18n="home_status_bluemagpie">Speech synthesis for Taiwanese accents and mixed Chinese and English text. On a hard pronunciation set, it reduces character error rate by about 58% against the baseline, which means less manual correction for news voiceover, exhibition guides, and educational content. The online demo is live.</p>
       <div class="status-links">
         {% if bluemagpie %}<a href="{{ bluemagpie.url | relative_url }}" data-i18n="status_read_log">Read the log →</a>{% endif %}
         <a href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener" data-i18n="status_live_demo">Live demo</a>
-      </div>
-    </li>
-    <li class="status-item" style="--accent:var(--pangolin)">
-      <div class="status-head">
-        <span class="status-name">PangolinTokenizer</span>
-        <span class="status-role" data-i18n="status_role_tokenizer">Tokenizer</span>
-        <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
-      </div>
-      <p class="status-what" data-i18n="home_status_pangolin">Byte-level BPE built for Taiwan — 114,688 merges, the lowest tokens/character on PangolinBench at the smallest vocabulary. This is the shared backbone all the models tokenize through.</p>
-      <div class="status-links">
-        {% if pangolin %}<a href="{{ pangolin.url | relative_url }}" data-i18n="status_read_log">Read the log →</a>{% endif %}
-        <a href="https://huggingface.co/OpenFormosa/PangolinTokenizer" target="_blank" rel="noopener">Hugging Face</a>
       </div>
     </li>
     <li class="status-item" style="--accent:var(--blackbear)">
@@ -82,7 +111,7 @@ description: OpenFormosa is a Taiwan-rooted open AI foundation-model initiative 
         <span class="status-role">ASR</span>
         <span class="status-badge is-planned" data-i18n="status_planned">Planned</span>
       </div>
-      <p class="status-what" data-i18n="home_status_blackbear">A listener for Taiwan Mandarin and Taigi/Hakka accents. Designed as a branch on the shared base — not yet trained, no weights or demo exist.</p>
+      <p class="status-what" data-i18n="home_status_blackbear">A planned ASR branch for Taiwan Mandarin, Taigi and Hakka accents, speech that mixes Chinese and English, meetings, and classroom audio. It has not been trained yet and has no weights or demo.</p>
       <div class="status-links">
         <a href="{{ '/roadmap/' | relative_url }}" data-i18n="status_see_roadmap">See the roadmap →</a>
       </div>
@@ -93,7 +122,7 @@ description: OpenFormosa is a Taiwan-rooted open AI foundation-model initiative 
         <span class="status-role">OCR</span>
         <span class="status-badge is-planned" data-i18n="status_planned">Planned</span>
       </div>
-      <p class="status-what" data-i18n="home_status_sikadeer">An eye for Taiwan receipts, forms, tables, menus, and addresses. Designed as a branch on the shared base — not yet trained, no weights or demo exist.</p>
+      <p class="status-what" data-i18n="home_status_sikadeer">A planned OCR branch for Taiwan receipts, forms, tables, menus, addresses, and archive documents. It has not been trained yet and has no weights or demo.</p>
       <div class="status-links">
         <a href="{{ '/roadmap/' | relative_url }}" data-i18n="status_see_roadmap">See the roadmap →</a>
       </div>
@@ -101,184 +130,102 @@ description: OpenFormosa is a Taiwan-rooted open AI foundation-model initiative 
   </ol>
 </section>
 <section class="section section-pad reveal">
-  <div class="section-head">
-    <h2 data-i18n="home_promise_title">Hear, speak, read, and remember Taiwan.</h2>
-    <p data-i18n="home_promise_desc">One vision, four capabilities. Each maps to a model in the family and to a Taiwan endemic species that carries its character.</p>
-  </div>
-  <div class="promise-grid">
-    <div class="promise" style="--accent:var(--blackbear)">
-      <strong data-i18n="home_promise_hear">聽得懂台灣</strong>
-      <span class="role" data-i18n="home_promise_hear_role">ASR · Black Bear</span>
-      <span class="gloss" data-i18n="home_promise_hear_text">Taiwan Mandarin, Taigi/Hakka accents, and code-switching.</span>
-    </div>
-    <div class="promise" style="--accent:var(--bluemagpie)">
-      <strong data-i18n="home_promise_speak">說得出台灣</strong>
-      <span class="role" data-i18n="home_promise_speak_role">TTS · Blue Magpie</span>
-      <span class="gloss" data-i18n="home_promise_speak_text">Natural Taiwan voice with Bopomofo and Tailo support.</span>
-    </div>
-    <div class="promise" style="--accent:var(--sikadeer)">
-      <strong data-i18n="home_promise_read">讀得懂台灣</strong>
-      <span class="role" data-i18n="home_promise_read_role">OCR · Sika Deer</span>
-      <span class="gloss" data-i18n="home_promise_read_text">Layout and structure of public documents, receipts, forms, menus, and addresses.</span>
-    </div>
-    <div class="promise" style="--accent:var(--barbet)">
-      <strong data-i18n="home_promise_remember">記得住台灣</strong>
-      <span class="role" data-i18n="home_promise_remember_role">Base · Barbet</span>
-      <span class="gloss" data-i18n="home_promise_remember_text">A shared base that holds Taiwan context, long documents, culture, and knowledge.</span>
-    </div>
-  </div>
-</section>
-<section class="section section-pad reveal">
   <div class="mission">
     <p class="eyebrow" data-i18n="home_mission_eyebrow">Why this matters</p>
-    <h2 data-i18n="home_mission_title">Taiwan should not only be a market for AI — it should help define how AI hears its language, voice, and culture.</h2>
-    <p data-i18n="home_mission_desc">Today's large models are trained mostly on English, Simplified Chinese, generic Mandarin, and global web text. They can produce Traditional Chinese, but they do not necessarily understand Taiwan: its public-document tone, institutions, place names, history, Taiwanese Mandarin, Taigi and Hakka accents, Bopomofo, Tailo, and the real sound of Taiwan's meetings, classrooms, and local life. OpenFormosa exists to close that gap.</p>
+    <h2 data-i18n="home_mission_title">Writing Traditional Chinese does not mean understanding usage, accents, and culture in Taiwan.</h2>
+    <p data-i18n="home_mission_desc">News voiceover, exhibition guides, classroom transcripts, Taiwan addresses, institution names, Taiwan Mandarin, Taigi and Hakka accents, Bopomofo, Tâi-lô, Taigi words, and sentences that mix Chinese and English often need manual correction. OpenFormosa helps smaller models handle tasks that used to rely on large models or manual work, lowering deployment cost and making more Taiwan content easier to generate, transcribe, read aloud, and rewrite.</p>
   </div>
 </section>
 <section class="section section-pad reveal">
   <div class="section-head">
-    <h2 data-i18n="home_problem_title">Where today's AI still misses Taiwan.</h2>
-    <p data-i18n="home_problem_desc">Generic models can write Traditional Chinese, yet five gaps show up again and again in real Taiwan use.</p>
+    <h2 data-i18n="home_problem_title">Taiwan scenarios where generic models often fail.</h2>
   </div>
   <div class="problem-grid">
     <article class="problem-card">
       <span class="num">01</span>
-      <h3 data-i18n="home_problem_1_title">Imprecise cultural context</h3>
-      <p data-i18n="home_problem_1_text">Terms, institutions, place names, and history get swapped for non-Taiwan versions, from health insurance to local government.</p>
+      <h3 data-i18n="home_problem_1_title">Proper nouns</h3>
+      <p data-i18n="home_problem_1_text">People, places, schools, government agencies, news terms, and local systems are often replaced with versions from outside Taiwan or pronounced incorrectly.</p>
     </article>
     <article class="problem-card">
       <span class="num">02</span>
-      <h3 data-i18n="home_problem_2_title">Speech that isn't local</h3>
-      <p data-i18n="home_problem_2_text">Taiwan Mandarin, Taigi/Hakka accents, code-switching, meetings, classes, and night-market audio differ from standard Mandarin training sets.</p>
+      <h3 data-i18n="home_problem_2_title">Chinese, English, and Taigi mixed text</h3>
+      <p data-i18n="home_problem_2_text">Everyday language in Taiwan often puts Chinese, English abbreviations, Taigi words, and domain terms in the same sentence. Generic models often split those boundaries incorrectly.</p>
     </article>
     <article class="problem-card">
       <span class="num">03</span>
-      <h3 data-i18n="home_problem_3_title">TTS without Taiwan tone</h3>
-      <p data-i18n="home_problem_3_text">Many voices speak Chinese but not natural Taiwanese Mandarin, and mishandle Bopomofo, Tailo, polyphones, place names, and personal names.</p>
+      <h3 data-i18n="home_problem_3_title">Accents, tone, and narrated content</h3>
+      <p data-i18n="home_problem_3_text">Taiwan Mandarin, Taigi and Hakka accents, speech that mixes Chinese and English, news scripts, exhibition guides, and educational content need local pronunciation, pauses, and tone.</p>
     </article>
     <article class="problem-card">
       <span class="num">04</span>
-      <h3 data-i18n="home_problem_4_title">Documents left behind</h3>
-      <p data-i18n="home_problem_4_text">Official letters, invoices, receipts, forms, menus, temple lots, and Taiwan address formats need OCR and structure that generic models skip.</p>
+      <h3 data-i18n="home_problem_4_title">Documents and layout</h3>
+      <p data-i18n="home_problem_4_text">Official letters, invoices, receipts, forms, menus, temple lots, and Taiwan address formats need OCR and structural understanding that generic models often miss.</p>
     </article>
-    <article class="problem-card">
-      <span class="num">05</span>
-      <h3 data-i18n="home_problem_5_title">Data sovereignty and cost</h3>
-      <p data-i18n="home_problem_5_text">Enterprises, schools, and the public sector cannot ship sensitive data to overseas APIs. Taiwan needs private-deployable, auditable, affordable models.</p>
-    </article>
-  </div>
-</section>
-<section class="section section-pad reveal">
-  <div class="section-head">
-    <h2 data-i18n="home_family_title">One bag, four characters.</h2>
-    <p data-i18n="home_family_desc">The jia-zhi bag carries Taiwan into AI. Each model wears the same bag with a different endemic species, so the family stays one system you can recognize at a glance.</p>
-  </div>
-  <div class="family-grid">
-    <article class="family-card" style="--accent:var(--barbet)">
-      {% include crest.html type="base" %}
-      <span class="card-tags"><span class="role">Base</span><span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span></span>
-      <p class="latin" data-i18n="home_family_base_latin">Taiwan Barbet · Barbet</p>
-      <h3 data-i18n="home_family_base_title">記得住台灣</h3>
-      <p data-i18n="home_family_base_text">The five-color bird: a multimodal, multi-capability base model that holds Taiwan context.</p>
-    </article>
-    <article class="family-card" style="--accent:var(--blackbear)">
-      {% include crest.html type="asr" %}
-      <span class="card-tags"><span class="role">ASR</span><span class="status-badge is-planned" data-i18n="status_planned">Planned</span></span>
-      <p class="latin" data-i18n="home_family_asr_latin">Formosan Black Bear · BlackBear-ASR</p>
-      <h3 data-i18n="home_family_asr_title">聽得懂台灣</h3>
-      <p data-i18n="home_family_asr_text">A steady listener for Taiwan Mandarin and Taigi/Hakka accents.</p>
-    </article>
-    <article class="family-card" style="--accent:var(--bluemagpie)">
-      {% include crest.html type="tts" %}
-      <span class="card-tags"><span class="role">TTS</span><span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span></span>
-      <p class="latin" data-i18n="home_family_tts_latin">Taiwan Blue Magpie · BlueMagpie-TTS</p>
-      <h3 data-i18n="home_family_tts_title">說得出台灣</h3>
-      <p data-i18n="home_family_tts_text">A living voice for Taiwan pronunciation, Bopomofo, Tailo, local terms, prosody, and style control.</p>
-    </article>
-    <article class="family-card" style="--accent:var(--sikadeer)">
-      {% include crest.html type="ocr" %}
-      <span class="card-tags"><span class="role">OCR</span><span class="status-badge is-planned" data-i18n="status_planned">Planned</span></span>
-      <p class="latin" data-i18n="home_family_ocr_latin">Formosan Sika Deer · SikaDeer-OCR</p>
-      <h3 data-i18n="home_family_ocr_title">讀得懂台灣</h3>
-      <p data-i18n="home_family_ocr_text">A careful eye for receipts, forms, tables, menus, addresses, layout parsing, and structured extraction.</p>
-    </article>
-  </div>
-  <div class="hero-actions">
-    <a class="btn primary" href="{{ '/models/' | relative_url }}" data-i18n="home_family_cta">See the full family and technical route</a>
   </div>
 </section>
 <section class="section section-pad reveal">
   <div class="section-head">
     <h2 data-i18n="home_use_title">Who OpenFormosa is for.</h2>
-    <p data-i18n="home_use_desc">Taiwan runs on meetings, classes, podcasts, local archives, official letters, receipts, and forms. That is where local AI is worth the most.</p>
   </div>
   <div class="scenario-grid">
     <article class="scenario-card">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M21 8v5"/><path d="M7 10.5V15c0 1.1 2.2 2.5 5 2.5s5-1.4 5-2.5v-4.5"/></svg>
-      <h3 data-i18n="home_use_edu_title">Education & research</h3>
+      <h3 data-i18n="home_use_edu_title">Education and research institutions</h3>
       <ul>
         <li data-i18n="home_use_edu_1">Classroom transcripts and lecture summaries</li>
-        <li data-i18n="home_use_edu_2">Educational TTS and study material</li>
-        <li data-i18n="home_use_edu_3">Language and culture research</li>
+        <li data-i18n="home_use_edu_2">Educational TTS and learning materials</li>
+        <li data-i18n="home_use_edu_3">Language, culture, and model evaluation research</li>
       </ul>
     </article>
     <article class="scenario-card">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M8 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg>
-      <h3 data-i18n="home_use_media_title">Media & creators</h3>
+      <h3 data-i18n="home_use_media_title">Developer contributors</h3>
       <ul>
-        <li data-i18n="home_use_media_1">Podcast and video transcripts</li>
-        <li data-i18n="home_use_media_2">Subtitles and dubbing</li>
-        <li data-i18n="home_use_media_3">Taiwan-toned copywriting</li>
+        <li data-i18n="home_use_media_1">Improve docs, Colab, and Quickstart</li>
+        <li data-i18n="home_use_media_2">Report test sentences, errors, and issues</li>
+        <li data-i18n="home_use_media_3">Help with model loading, examples, and PRs</li>
       </ul>
     </article>
     <article class="scenario-card">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21h16"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9.5 21v-6h5v6"/></svg>
-      <h3 data-i18n="home_use_culture_title">Culture & local venues</h3>
+      <h3 data-i18n="home_use_culture_title">Partner organizations</h3>
       <ul>
-        <li data-i18n="home_use_culture_1">Museum and site guides</li>
-        <li data-i18n="home_use_culture_2">Bilingual local content</li>
-        <li data-i18n="home_use_culture_3">Archive OCR and summaries</li>
+        <li data-i18n="home_use_culture_1">Media: podcasts, video, and subtitles</li>
+        <li data-i18n="home_use_culture_2">Venues: exhibition guides and OCR for archives</li>
+        <li data-i18n="home_use_culture_3">Public sector: document summaries and secure deployment</li>
       </ul>
     </article>
     <article class="scenario-card">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
-      <h3 data-i18n="home_use_biz_title">Companies & teams</h3>
+      <h3 data-i18n="home_use_biz_title">Software integrators</h3>
       <ul>
-        <li data-i18n="home_use_biz_1">Customer-service ASR and TTS</li>
-        <li data-i18n="home_use_biz_2">Meeting notes and document OCR</li>
-        <li data-i18n="home_use_biz_3">Internal knowledge-base RAG</li>
-      </ul>
-    </article>
-    <article class="scenario-card">
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-3z"/><path d="M9.5 12l2 2 3.5-3.5"/></svg>
-      <h3 data-i18n="home_use_gov_title">Public sector & high security</h3>
-      <ul>
-        <li data-i18n="home_use_gov_1">Official-letter and regulation summaries</li>
-        <li data-i18n="home_use_gov_2">Data that never leaves the building</li>
-        <li data-i18n="home_use_gov_3">Auditable, controllable local models</li>
+        <li data-i18n="home_use_biz_1">Customer service ASR and TTS</li>
+        <li data-i18n="home_use_biz_2">Meeting notes, document OCR, and form workflows</li>
+        <li data-i18n="home_use_biz_3">Internal knowledge base RAG and private deployment</li>
       </ul>
     </article>
   </div>
 </section>
-<section class="section section-pad split reveal">
+<section class="section section-pad split reveal open-trust">
   <div class="callout">
-    <p class="eyebrow" data-i18n="home_loop_eyebrow">Open is a trust mechanism</p>
-    <h2 data-i18n="home_loop_title">We open-source more than models.</h2>
-    <p data-i18n="home_loop_desc">Open source is how we earn trust. Beyond model weights, we build Taiwan-local evaluation and benchmark systems, publish the model cards and lessons learned from training, and open the core wherever we can.</p>
+    <p class="eyebrow" data-i18n="home_loop_eyebrow">Open source is a trust mechanism</p>
+    <h2 data-i18n="home_loop_title">We open more than model weights. We also open evaluation methods.</h2>
+    <p data-i18n="home_loop_desc">Open source is how we build trust. Beyond model weights, we publish evaluations designed for Taiwan, benchmark systems, model cards, training lessons, and core implementation work.</p>
     <a class="btn green" href="{{ '/evaluation/' | relative_url }}" data-i18n="home_evaluation_cta">Read evaluation workflow</a>
   </div>
   <ul class="check-list">
-    <li><strong data-i18n="home_open_models_title">Open models.</strong> <span data-i18n="home_open_models_text">Deployable, fine-tunable weights and specs for the Barbet, BlackBear, BlueMagpie, and SikaDeer family.</span></li>
-    <li><strong data-i18n="home_open_eval_title">Open evaluation systems.</strong> <span data-i18n="home_open_eval_text">Taiwan-local benchmarks, scoring scripts, and leaderboards, so capability can actually be tested.</span></li>
-    <li><strong data-i18n="home_open_cards_title">Model cards and lessons.</strong> <span data-i18n="home_open_cards_text">Training recipes, tokenizer notes, checkpoints, limitations, and the experience behind each run.</span></li>
-    <li><strong data-i18n="home_open_core_title">Open the core whenever we can.</strong> <span data-i18n="home_open_core_text">Code, tokenizer specs, benchmark tools, and safe summaries should be public whenever possible.</span></li>
+    <li><strong data-i18n="home_open_models_title">Try directly</strong> <span data-i18n="home_open_models_text">BlueMagpie-TTS has an online demo for usage in Taiwan, mixed Chinese and English sentences, and proper nouns.</span></li>
+    <li><strong data-i18n="home_open_eval_title">Run locally</strong> <span data-i18n="home_open_eval_text">Barbet, PangolinTokenizer, and related technical reports provide weights, settings, and reproducibility notes.</span></li>
+    <li><strong data-i18n="home_open_cards_title">Check the numbers</strong> <span data-i18n="home_open_cards_text">Benchmarks should include test sets, baselines, tasks, and real usage differences, not only scores.</span></li>
+    <li><strong data-i18n="home_open_core_title">Help close gaps</strong> <span data-i18n="home_open_core_text">Docs, Quickstart, Colab, error cases, test sentences, and data licensing leads can all become contributions.</span></li>
   </ul>
 </section>
 <section class="section section-pad reveal">
   <div class="manifesto">
     <div class="weave-rule" aria-hidden="true"></div>
-    <p class="quote" data-i18n="home_manifesto_lead">OpenFormosa is an open AI model family rooted in Taiwan. Inspired by the jia-zhi bag, we weave Taiwan's voices, texts, images, and memories into open AI infrastructure.</p>
-    <p class="quote en" data-i18n="home_manifesto_body">We build compact, deployable, Taiwan-native language and multimodal models that understand Traditional Chinese, Taiwanese Mandarin, local speech, Bopomofo, Taigi, Taiwanese internet language, documents, and cultural context — so the world can see that Taiwan is not only using AI, but building its own.</p>
-    <p class="sig" data-i18n="home_manifesto_sig">— Hear Taiwan, speak Taiwan, read Taiwan, and remember Taiwan.</p>
+    <p class="quote" data-i18n="home_manifesto_lead">OpenFormosa is an open family of AI models. With the Gaji bag (Taiwan Striped Bag) as its symbol, it weaves Taiwan's voices, texts, images, and memories into model capabilities people can try, inspect, and deploy.</p>
+    <p class="quote en" data-i18n="home_manifesto_body">If you work with Taiwan language, speech, documents, or local use cases, join us on GitHub or in the community to discuss testing, docs, model integration, data licensing, and collaboration. If you only want to see the results, start with the demo and released models.</p>
+    <p class="sig" data-i18n="home_manifesto_sig">Make local usage, local accents, and mixed language contexts part of everyday model work.</p>
+    <a class="btn green manifesto-cta" href="{{ '/about/' | relative_url }}" data-i18n="home_cta_about">Read the project idea</a>
   </div>
 </section>
