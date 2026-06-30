@@ -5,33 +5,35 @@ i18n_key: home
 description: OpenFormosa is an open family of AI foundation models for Taiwan's language contexts. It helps AI speak Taiwan, hear Taiwan, and read Taiwan.
 ---
 <section class="hero section-pad">
-  <div>
-    <p class="eyebrow" data-i18n="home_eyebrow">Open foundation models for Taiwan's language contexts</p>
-    <h1><span data-i18n="home_h1_1">Let AI speak Taiwan,</span><span data-i18n="home_h1_2">hear Taiwan,</span><span data-i18n="home_h1_3">and read Taiwan.</span></h1>
-    <p class="lede" data-i18n="home_lede">General AI models often miss usage in Taiwan, local accents, Taigi terms, proper nouns, and sentences that mix Chinese, English, and Taigi. OpenFormosa builds open models and tools for these real scenarios, with lower deployment cost and room for fine tuning.</p>
-    <div class="hero-choices">
-      <a class="hero-choice" href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener">
-        <strong data-i18n="home_metric_open_k">Try it</strong>
-        <span data-i18n="home_metric_open">Hear how the demo handles mixed Chinese and English sentences, Taiwan proper nouns, and natural speech.</span>
-        <em data-i18n="home_cta_demo">Try the TTS demo</em>
-      </a>
-      <a class="hero-choice" href="#status">
-        <strong data-i18n="home_metric_local_k">Run it</strong>
-        <span data-i18n="home_metric_local">Scroll down for the released tokenizer, base model, TTS demo, and upcoming work.</span>
-        <em data-i18n="home_cta_models">See model and technical route</em>
-      </a>
-      <a class="hero-choice" href="https://discord.gg/N4YnrjjcW7" target="_blank" rel="noopener">
-        <strong data-i18n="home_metric_deploy_k">Join in</strong>
-        <span data-i18n="home_metric_deploy">Share test sentences, documentation issues, data licensing leads, or integration examples.</span>
-        <em data-i18n="home_cta_discord">Join Discord</em>
-      </a>
+  <div class="hero-main">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="home_eyebrow">Open foundation models for Taiwan's language contexts</p>
+      <h1><span data-i18n="home_h1_1">Let AI speak Taiwan,</span><span data-i18n="home_h1_2">hear Taiwan,</span><span data-i18n="home_h1_3">and read Taiwan.</span></h1>
+      <p class="lede" data-i18n="home_lede">General AI models often miss usage in Taiwan, local accents, Taigi terms, proper nouns, and sentences that mix Chinese, English, and Taigi. OpenFormosa builds open models and tools for these real scenarios, with lower deployment cost and room for fine tuning.</p>
+    </div>
+    <div class="hero-card">
+      <picture>
+        <source type="image/webp" srcset="{{ '/assets/img/openformosa-logo-780.webp' | relative_url }}">
+        <img class="hero-logo" src="{{ '/assets/img/openformosa-logo-780.png' | relative_url }}" alt="OpenFormosa logo, a Taiwanese woven market bag carrying Taiwan cultural icons and endemic animals" data-i18n-alt="home_logo_alt" width="780" height="780" fetchpriority="high" decoding="async">
+      </picture>
     </div>
   </div>
-  <div class="hero-card">
-    <picture>
-      <source type="image/webp" srcset="{{ '/assets/img/openformosa-logo-780.webp' | relative_url }}">
-      <img class="hero-logo" src="{{ '/assets/img/openformosa-logo-780.png' | relative_url }}" alt="OpenFormosa logo, a Taiwanese woven market bag carrying Taiwan cultural icons and endemic animals" data-i18n-alt="home_logo_alt" width="780" height="780" fetchpriority="high" decoding="async">
-    </picture>
+  <div class="hero-choices">
+    <a class="hero-choice" href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener">
+      <strong data-i18n="home_metric_open_k">Try it</strong>
+      <span data-i18n="home_metric_open">Hear how the demo handles mixed Chinese and English sentences, Taiwan proper nouns, and natural speech.</span>
+      <em data-i18n="home_cta_demo">Try the TTS demo</em>
+    </a>
+    <a class="hero-choice" href="#status">
+      <strong data-i18n="home_metric_local_k">Run it</strong>
+      <span data-i18n="home_metric_local">Scroll down for the released tokenizer, base model, TTS demo, and upcoming work.</span>
+      <em data-i18n="home_cta_models">See model and technical route</em>
+    </a>
+    <a class="hero-choice" href="https://discord.gg/N4YnrjjcW7" target="_blank" rel="noopener">
+      <strong data-i18n="home_metric_deploy_k">Join in</strong>
+      <span data-i18n="home_metric_deploy">Share test sentences, documentation issues, data licensing leads, or integration examples.</span>
+      <em data-i18n="home_cta_discord">Join Discord</em>
+    </a>
   </div>
 </section>
 <section class="section section-pad reveal" id="status">
