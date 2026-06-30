@@ -4,6 +4,7 @@ title: "Barbet 1B Base: a hybrid decoder-only language model for Traditional Chi
 zh_title: "Barbet 1B Base：為繁體中文打造的混合式語言模型"
 i18n_key: barbet
 description: "A 1B-parameter hybrid decoder-only causal language model — global and sliding-window attention interleaved with Mamba, context up to 1M, embedding tying, built on PangolinTokenizer."
+zh_description: "為繁體中文、多語與長上下文打造的十億級混合式因果語言模型——全域、滑動視窗注意力與 Mamba 交錯，最高支援 1M 上下文。"
 date: 2026-06-21
 category: research
 tags: [pretrain, model, long-context, barbet]
