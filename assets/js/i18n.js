@@ -588,9 +588,15 @@ const OpenFormosaZh = {
 
   /* ===== Blog post: Barbet 1B Base ===== */
   title_barbet: "Barbet 1B Base：為繁體中文打造的混合式語言模型 · OpenFormosa",
-  desc_barbet: "Barbet 1B Base 是十億級混合式純解碼器因果語言模型：全域＋滑動視窗注意力與 Mamba 交錯、最高支援 1M 上下文、嵌入層綁定，以 PangolinTokenizer 為基礎。",
+  desc_barbet: "2026 年 6 月 Barbet R2 的原始紀錄：十億級混合式因果語言模型，原生訓練至 256K，另提供研究用的 1M 線性 RoPE 外推設定。",
   post_barbet_title: "Barbet 1B Base",
-  post_barbet_desc: "為繁體中文、多語與長上下文打造的十億級混合式因果語言模型——全域、滑動視窗注意力與 Mamba 交錯，最高支援 1M 上下文。",
+  post_barbet_desc: "2026 年 6 月 R2 原始紀錄：原生訓練至 256K，另提供研究用的 1M 線性 RoPE 外推設定。",
+
+  /* ===== Blog post: Barbet 1B Base native 1M ===== */
+  title_barbet_1m: "Barbet 1B Base 的原生 1M：從位置外推到可驗證的遠距資訊使用 · OpenFormosa",
+  desc_barbet_1m: "同一條 1.1B Barbet 訓練沿革如何從「256K 原生、1M 外推」走到 exact-1M 持續預訓練，並在七類長上下文任務中的六類驗出正向遠距證據效果。",
+  post_barbet_1m_title: "Barbet 1B Base 的原生 1M",
+  post_barbet_1m_desc: "從 256K 原生、1M 外推走到 exact-1M 持續預訓練；六類長上下文任務驗出正向遠距證據效果，aggregation 仍未證明。",
 
   /* ===== Blog post: BlueMagpie-TTS ===== */
   tag_tts: "語音合成",

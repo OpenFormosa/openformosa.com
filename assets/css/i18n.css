@@ -77,3 +77,11 @@
 .post-body th {
   background: var(--table-heading-bg);
 }
+
+@media (max-width: 640px) {
+  .post-body table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
