@@ -3,8 +3,8 @@ layout: post
 title: "Barbet 1B Base: a hybrid decoder-only language model for Traditional Chinese"
 zh_title: "Barbet 1B Base：為繁體中文打造的混合式語言模型"
 i18n_key: barbet
-description: "A 1B-parameter hybrid decoder-only causal language model — global and sliding-window attention interleaved with Mamba, context up to 1M, embedding tying, built on PangolinTokenizer."
-zh_description: "為繁體中文、多語與長上下文打造的十億級混合式因果語言模型——全域、滑動視窗注意力與 Mamba 交錯，最高支援 1M 上下文。"
+description: "The original June 2026 Barbet R2 report: a 1B-parameter hybrid causal language model trained natively to 256K, with a research-only linear-RoPE extrapolation preset for 1M."
+zh_description: "2026 年 6 月 Barbet R2 的原始紀錄：十億級混合式因果語言模型，原生訓練至 256K，另提供研究用的 1M 線性 RoPE 外推設定。"
 date: 2026-06-21
 category: research
 tags: [pretrain, model, long-context, barbet]
@@ -19,6 +19,8 @@ tags: [pretrain, model, long-context, barbet]
 本文完整揭露架構取捨、tokenizer 契約、訓練配方、長上下文策略與評估結果，並嚴格區分 256K **原生上下文**與 1M **RoPE 外推**設定。Barbet 1B Base 是研究用基底模型，不是對話助理。
 
 </div>
+
+> **2026 年 8 月 30 日更新：** 本文保留 2026 年 6 月 R2 權重的原始紀錄。後續 iter7008 checkpoint 已完成 exact-1M 持續預訓練，正式設定不再使用線性 RoPE 外推。新的訓練路徑、評測方法與能力邊界請見[〈Barbet 1B Base 的原生 1M：從位置外推到可驗證的遠距資訊使用〉]({% post_url 2026-08-30-barbet-1b-native-1m %})。
 
 **本文重點**
 
@@ -422,6 +424,8 @@ Barbet 1B Base 是 Open Formosa 訓練堆疊產出的十億級混合式因果語
 This report fully discloses the architectural trade-offs, the tokenizer contract, the training recipe, the long-context strategy, and the evaluation results, and strictly separates the 256K **native context** from the 1M **RoPE-extrapolation** configuration. Barbet 1B Base is a research base model, not a conversational assistant.
 
 </div>
+
+> **Update, August 30, 2026:** This article remains the historical record for the June 2026 R2 weights. The later iter7008 checkpoint has undergone exact-1M continued pretraining and no longer uses linear RoPE extrapolation in its release configuration. See [How Barbet 1B Base reached a native, evidence-backed 1M context]({% post_url 2026-08-30-barbet-1b-native-1m %}) for the new training path, evaluation method, and capability boundaries.
 
 **Key points**
 
