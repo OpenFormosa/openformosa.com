@@ -20,7 +20,7 @@ tags: [pretrain, model, long-context, barbet]
 
 </div>
 
-> **2026 年 8 月 30 日更新：** 本文保留 2026 年 6 月 R2 權重的原始紀錄。後續 iter7008 checkpoint 已完成 exact-1M 持續預訓練，正式設定不再使用線性 RoPE 外推。新的訓練路徑、評測方法與能力邊界請見[〈Barbet 1B Base 的原生 1M：從位置外推到可驗證的遠距資訊使用〉]({% post_url 2026-08-30-barbet-1b-native-1m %})。
+> **2026 年 8 月 30 日更新：** 本文保留 6 月版本的原始紀錄。後續發布的 Barbet 已用完整的 1M 長序列繼續預訓練。訓練過程、測試結果與限制，請見[〈Barbet 如何學會使用 1M 長上下文〉]({% post_url 2026-08-30-barbet-1b-native-1m %})。
 
 **本文重點**
 
@@ -425,7 +425,7 @@ This report fully discloses the architectural trade-offs, the tokenizer contract
 
 </div>
 
-> **Update, August 30, 2026:** This article remains the historical record for the June 2026 R2 weights. The later iter7008 checkpoint has undergone exact-1M continued pretraining and no longer uses linear RoPE extrapolation in its release configuration. See [How Barbet 1B Base reached a native, evidence-backed 1M context]({% post_url 2026-08-30-barbet-1b-native-1m %}) for the new training path, evaluation method, and capability boundaries.
+> **Update, August 30, 2026:** This article preserves the record of the June release. A later Barbet release has completed continued pretraining on full 1M-token sequences. See [How Barbet learned to use a 1M-token context]({% post_url 2026-08-30-barbet-1b-native-1m %}) for the training process, test results, and limitations.
 
 **Key points**
 
