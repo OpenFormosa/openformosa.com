@@ -594,9 +594,9 @@ const OpenFormosaZh = {
 
   /* ===== Blog post: Barbet 1B Base native 1M ===== */
   title_barbet_1m: "Barbet 如何學會使用 1M 長上下文 · OpenFormosa",
-  desc_barbet_1m: "Barbet 如何透過百萬長度訓練與較短的能力補強，學習使用遠處的資訊？本文說明訓練過程、六類測試的正向結果，以及仍未解決的資訊彙整問題。",
+  desc_barbet_1m: "從逐步拉長訓練資料，到補強查找與計算，說明 Barbet 如何在百萬長度測試中使用遠處資訊，以及哪些能力還做不到。",
   post_barbet_1m_title: "Barbet 如何學會使用 1M 長上下文",
-  post_barbet_1m_desc: "百萬長度的訓練如何進行、六類測試看到了什麼，以及資訊彙整為何仍未通過。",
+  post_barbet_1m_desc: "Barbet 怎麼練到百萬長度、為什麼還要練較短的計算，以及測試究竟證明了什麼。",
 
   /* ===== Blog post: BlueMagpie-TTS ===== */
   tag_tts: "語音合成",
