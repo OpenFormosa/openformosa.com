@@ -3,10 +3,10 @@ layout: post
 title: "How Barbet learned to use a 1M-token context"
 zh_title: "Barbet 如何學會使用 1M 長上下文"
 i18n_key: barbet_1m
-description: "How Barbet was trained on million-token texts, why it still needed shorter exercises, and how we tested whether distant information helped it predict the right answer."
-zh_description: "Barbet 怎麼從較短的文字練到百萬長度？為什麼又回頭練 8K？本文說明訓練經過、測試方法，以及目前能做和還做不到的事。"
+description: "Barbet's path to a million-token context: longer training texts, shorter calculation exercises, and tests that separate using distant information from answering correctly."
+zh_description: "Barbet 如何接續預訓練到百萬長度，為什麼還要回頭練短文，以及我們如何分辨「用到遠處資料」和「能自行答對」。"
 date: 2026-08-30
-last_modified_at: 2026-09-08
+last_modified_at: 2026-09-09
 category: research
 tags: [pretrain, model, long-context, barbet]
 ---
@@ -15,57 +15,55 @@ tags: [pretrain, model, long-context, barbet]
 
 <div class="post-abstract" markdown="1">
 
-Barbet 已經用單段長達一百萬 tokens 的文字做過預訓練。在七類長文測試中，六類顯示：前面相隔很遠的資訊，確實能幫助它預測正確答案。至於要合併多筆資料來運算的題目，遠處資訊是否有幫助，目前仍未證明。這些結果還不能保證它能自行答對任意長文件的問題。
+我們從既有的 Barbet 接續預訓練，把單段訓練文字逐步延長到 1M，也穿插較短的查找與計算練習。訓練後的測試顯示，七類長文任務中有六類，遠處的正確資料能提高正確答案的機率。這支持 Barbet 已能利用部分百萬長度的資訊；需要合併多筆資料來計算的任務，以及自行產生可靠答案的能力，仍待證明。
 
 </div>
 
-Barbet 是約 11 億參數的基底語言模型：它學的是根據前文預測接下來的文字，還沒有被訓練成聊天助理。這些可供參考的前文，就是「上下文」。
+Barbet 是約 11 億參數的基底語言模型。它根據前文預測接下來的文字，還沒有被訓練成聊天助理。這些可供參考的前文，就是「上下文」。
 
 本文的 1M 精確指 1,048,576 tokens。Token 是模型讀寫文字的單位，不等於一個中文字；1M 說的是單段輸入的長度，不是訓練累計讀過多少資料。以下結果對應 2026 年 8 月發布的 Barbet，不包含後續實驗。
 
-## 從延長設定，到真正用 1M 文字訓練
+## 1M 是怎麼練出來的？
 
-[6 月的 Barbet 介紹]({% post_url 2026-06-21-barbet-1b-base %})記錄的訓練長度到 256K。當時要嘗試 1M，得調整模型辨識文字位置的設定，也就是「位置編碼」。這能讓程式嘗試處理更長的輸入，卻還不能證明模型會使用整段文字裡的資訊。
+[6 月的 Barbet 介紹]({% post_url 2026-06-21-barbet-1b-base %})記錄的訓練長度到 256K。當時的 1M 是研究用設定：調整模型辨識文字位置的方式，讓程式嘗試處理更長的輸入。模型還沒有用完整的 1M 文字接受訓練。
 
-8 月發布的 Barbet，已經實際用完整的 1M 文字訓練。模型根據前文預測下一個 token，訓練程式再依預測誤差調整模型的內部參數，也就是「權重」。因此，百萬長度的文字已經參與學習，不只是在測試時才放進模型。發布設定也不再使用先前的線性位置縮放。
+後續訓練從既有的 Barbet 繼續，依序使用 64K、128K、256K、512K，最後到 1M。到了 1M 階段，完整的百萬長度文字會參與下一個 token 的預測，預測誤差也會用來更新模型參數。因此，8 月發布的 Barbet 確實接受過 1M 預訓練，發布設定也不再使用先前的線性位置縮放。
 
-我們也改了模型讀取前文的方式。原本有些層只能直接參考附近的 8K tokens，後來逐步改成能參考完整前文的「全域注意力」層，最後再加上一層。原有的七個 Mamba2 層則保留，完整架構列在附錄。
+配合長文訓練，我們也調整了模型讀取前文的方式。原本有些層只能直接參考附近的 8K tokens，後來逐步改成能參考完整前文的「全域注意力」層，最後再加上一層。原有的七個 Mamba2 層保留；完整架構列在附錄。更多層因此能直接讀到遠處資料，長文運算的成本也隨之增加。
 
-這樣讓更多層能直接讀到遠處的資料，代價是長文運算更貴。整個過程都是從原本的 Barbet 接著訓練，沒有換成另一個模型。不過，架構、資料和訓練量都曾改變；這份紀錄能說明我們做了什麼，不能單獨證明哪一項改動貢獻最大。
+資料則加入查找資訊、排列事件先後、追蹤數值變化，以及沿著幾段關係找答案的練習。關鍵資料放在不同位置，避免只練習找文章開頭或結尾。
 
-## 為什麼練到 1M，又回頭練 8K？
+這些都是預訓練：模型學習預測整段文字，訓練計入每個 token 的預測誤差，不只計算最後答案的誤差。這次發布沒有做指令微調、對話訓練或人類偏好訓練，也沒有接上外部記憶模組。整個過程延續原本的 Barbet，沒有換成另一個模型。
 
-訓練先經過 64K、128K、256K、512K，再到 1M。我們在資料中加入找資料、排事件先後、追蹤數值變化，以及沿著幾段關係找答案的練習。關鍵資訊會放在不同位置，避免只練習找開頭或結尾。
+## 為什麼還要回頭練短文？
 
-測試後，我們發現 Barbet 有時能找回遠處的一個數字，卻不一定會用它計算。用一份庫存紀錄就能說明這個差別。以下是示意例子，不是本次實際考題：
+Barbet 有時能找回遠處的一個數字，卻不一定會用它計算。以庫存紀錄為例，下面只是說明用的例子，不是實際考題：
 
 > 甲倉庫原本有 3 箱貨。後來又收到 2 箱。
 
-問「後來收到幾箱」，找到「2 箱」就夠了。問「現在共有幾箱」，則要把兩筆資料合起來，算出「5 箱」。如果兩筆紀錄相隔很遠，模型還得在計算時用到前面的資料。這時答錯，可能是沒找到資料，也可能是找到了卻不會算。
+接著寫「後來收到 2 箱」，只要找到原文的數字。接著寫「現在共有 5 箱」，則需要合併兩筆資料並完成加法。如果兩筆紀錄相隔很遠，答錯時就有兩種可能：沒找到資料，或找到了卻不會算。
 
-後續訓練因此也使用 512 至 8K 的較短文字，分開補強這幾件事：資料就在附近時能不能算對、相隔較遠時能不能找回原文、找回後能不能繼續計算。期間仍穿插完整 1M 訓練。短文練習是在補基本操作，沒有把模型的最大長度改回 8K。
+我們因此使用 512 至 8K 的短文，分開練習「資料在附近時做計算」和「資料較遠時找回原文」，再練習找回後繼續計算。期間仍穿插完整 1M 訓練。回頭練短文是為了補基本操作，模型的最大長度並沒有改回 8K；練過之後是否真的改善，也必須重新測試。
 
-最後一段訓練使用 8K 文字，完成 768 次權重更新，約處理 1 億 tokens。訓練結束後，我們把存下來的模型重新載入，再測完整的 1M 長度。
+最後一段使用 8K 文字，完成 768 次參數更新，約處理 1 億 tokens。結束後，我們重新載入存下來的 Barbet，再測完整的 1M 長度，確認最後的短文訓練之後還能使用遠處資料。
 
-從原始 Barbet 接續訓練、最後用於這次發布的紀錄，合計處理約 55.2 億 tokens，其中約 39.3 億來自長度恰好為 1M 的文字。這是累計處理量，可能包含重複資料，也不包含 Barbet 最初的預訓練量。
+接續到這次發布的訓練紀錄，合計處理約 55.2 億 tokens，其中約 39.3 億來自長度恰好為 1M 的文字。這是累計處理量，可能包含重複資料，不包含 Barbet 最初的預訓練量。完整的階段數與用量列在附錄。
 
-這些工作都屬於預訓練。即使資料包含計算練習，模型仍然是在學習預測整段文字；訓練計入每個 token 的預測誤差，不只看最後答案。這次發布沒有做指令微調、對話訓練或人類偏好訓練，也沒有接上外部記憶模組。
+## 怎麼驗證它用到了遠處資料？
 
-## 怎麼知道 Barbet 真的用到了遠處的資料？
+跑完 1M 輸入，只能說明運算完成。要知道前面的資料有沒有幫助，還需要一組對照。
 
-評測沿用基底模型的工作方式：給它前文，檢查它對後續文字的預測。這樣可以先測長文資訊是否有用，不把熟不熟悉聊天格式混進來。
+每題準備兩份一樣長、結構相近的文字。一份保留正確的關鍵資料，另一份移除或改壞那些資料。讓同一個 Barbet 分別讀過兩份文字，再比較它給正確答案的機率。這就是本文的「配對測試」。
 
-每題都有兩份一樣長、結構相近的文字：一份保留正確的關鍵資料，另一份移除或改壞那些資料。接著比較，在這兩種情況下，模型各給正確答案多高的機率。這就是「配對測試」；要比較的不是兩個模型，而是同一個 Barbet 看過兩種前文後的差別。
+沿用庫存的例子，正確紀錄還在時，「5 箱」是否變得比較可能？如果是，就支持那些資料對預測有幫助。這種評測直接檢查基底模型對後續文字的預測，不需要先把 Barbet 訓練成聊天助理。
 
-沿用庫存的例子：前面有正確紀錄時，Barbet 是否更傾向接著寫出「5 箱」？若正確資料能提高正確答案的機率，就有證據支持它的預測用到了那些資料，而不只是成功跑完一百萬 tokens。
+不過，評分程式事先知道正確答案。答案如果有好幾個 tokens，評分時會依序提供正確的前幾個 tokens，再計算下一個的機率；模型沒有自行寫完整個答案。即使「5 箱」的機率提高，也可能仍低於錯誤答案。因此，「資料有幫助」和「模型自己能答對」是兩個不同的結果。
 
-這裡有一個重要限制：評分程式已經知道正確答案，會按照正確答案的順序，逐個 token 計算機率；它沒有讓模型自行把整個答案寫出來。即使「5 箱」的機率提高，也可能仍低於某個錯誤答案。因此，這項測試能回答「資料有沒有幫助預測」，還不能回答「模型自己作答時，有多少題會答對」。
-
-## 目前做到哪裡？
+## 測試結果：六類看得到幫助，計算仍有缺口
 
 重新載入模型後，140 筆長度恰好為 1M 的樣本都完成評分，沒有記憶體不足或無效數值。七類任務各有 20 組配對樣本。
 
-下表的「有幫助」，表示這類題目平均來看，正確資料讓模型更傾向預測正確答案。我們也估計了換一批樣本可能帶來的誤差；將這個不確定性納入後，六類仍支持正面的效果。完整數字與統計方法列在附錄。
+下表的「有幫助」，表示這類題目平均來看，有正確資料時，正確答案的機率較高。我們也估計了換一批題目可能造成的結果變動；考慮這項不確定性後，六類仍支持正面的效果。完整分數與統計方法列在附錄。
 
 | 測試內容 | 遠處的正確資料有沒有幫助？ |
 | --- | --- |
@@ -77,15 +75,19 @@ Barbet 是約 11 億參數的基底語言模型：它學的是根據前文預測
 | 沿著三段相連的關係找到結果 | 有幫助 |
 | 合併多筆資料來求出結果 | 仍未證明 |
 
-「六類通過」不能換算成答對六成或七分之六的題目。它描述的是六類任務的平均機率變化，不保證每個位置、每一道題都有改善。
+這裡的六類是任務種類，不能換算成六成或七分之六的答對率，也不代表每道題、每個位置都有改善。
 
-最後一類通常稱為「資訊彙整」（aggregation），也是目前的弱點。它的平均改善很小，統計上還無法排除沒有改善的可能。關鍵資料放在全文約 30% 和 50% 的位置時，有正確資料的版本，平均預測反而更差。另一組 8K 計算測試也只通過六項中的三項，顯示計算上的問題不只出現在百萬長度。
+合併多筆資料來計算，通常稱為「資訊彙整」（aggregation）。這類的平均改善很小，還無法排除沒有改善的可能。關鍵資料放在全文約 30% 和 50% 的位置時，有正確資料的版本，平均預測反而更差。另一組 8K 計算測試也只通過六項中的三項，表示問題不只發生在百萬長度。
 
-練長文時，也要檢查原本的能力有沒有退步。我們用 6,955 筆樣本，測量 Barbet 對程式碼、英文、日韓文、數學、多語和中文的文字預測。六類分數都沒有比原始 Barbet 變差。這只說明受測的文字預測能力保留下來，不能推論所有應用、事實正確性或安全性都沒有退步。
+原本的語言能力也要保留。我們另用 6,955 筆樣本，測量 Barbet 對程式碼、英文、日韓文、數學、多語和中文的文字預測。六類分數都沒有比原始 Barbet 變差，但這不等於測過所有應用、事實正確性或安全性。
 
-本文稱為「穩定 1M」的，是上述受測範圍：Barbet 能完成百萬長度的運算、在六類測試中使用遠處資料，並保留這組評測涵蓋的基礎能力。這不是對任意長文件的保證。可靠地自行作答、彙整多筆資訊，以及完整理解百萬長度文件，都還沒有證明；本次結果也不包含 2M，或整體能力追上大型模型的主張。
+## 「穩定 1M」的範圍到哪裡？
 
-接下來需要補強的，是找到資料之後的合併、更新與計算。單看輸入有多長、訓練用了多少 tokens，還看不出這些能力是否進步。最終仍要讓 Barbet 自己接著寫，檢查它能不能產生正確的答案。
+本文的「穩定 1M」是本專案對上述發布結果的稱呼：完整百萬長度可以完成運算，六類測試顯示遠處資料有助於預測，受測的基礎語言能力也沒有退步。它不保證 Barbet 能理解任意百萬長度文件，或自行可靠地回答其中的問題；本次也沒有證明 2M，或整體能力追上大型模型。
+
+訓練方法上的經驗，是把延長文字、練習基本操作和檢查遠距資料是否有用放在同一個流程裡。不過，過程中架構、資料與訓練量都曾改變，沒有逐項分開比較，因此不能斷言哪一項改動貢獻最大，也不能把這份紀錄當成保證成功的配方。
+
+下一個需要證明的，是 Barbet 找到資料之後，能否正確地合併、更新與計算。這需要讓它自行接著寫出答案，再檢查結果；增加輸入長度或累計訓練量，都不能代替這項證據。
 
 ## 技術附錄
 
@@ -238,7 +240,7 @@ config.json
 
 <div class="post-abstract" markdown="1">
 
-Barbet has been pretrained on texts a million tokens long. In six of seven long-context task families, information far back in the text helped it predict the correct answer. For tasks that require combining several records to calculate a result, a benefit from distant information remains unproven. These results do not guarantee that Barbet can answer questions about arbitrary long documents correctly on its own.
+We continued pretraining the existing Barbet with progressively longer texts, reaching 1M tokens, while also using shorter retrieval and calculation exercises. After training, correct distant information increased the probability of the correct answer in six of seven long-context task families. This supports some use of information within a million-token context. Combining several records to calculate a result, and reliably producing complete answers on its own, remain unproven.
 
 </div>
 
@@ -246,49 +248,47 @@ Barbet is a base language model with approximately 1.1 billion parameters. It le
 
 Here, 1M means exactly 1,048,576 tokens. A token is a unit of text used by the model, not necessarily a word or character. This is the length of one input, not the total amount of data processed during training. The results below describe the August 2026 Barbet release, excluding later experiments.
 
-## From a longer setting to training on 1M-token texts
+## How was Barbet trained to reach 1M?
 
-The [June introduction to Barbet]({% post_url 2026-06-21-barbet-1b-base %}) described training up to 256K. Trying 1M at that point required changing how the model represents positions in a text, known as its position encoding. The setting allowed experiments with longer inputs, but did not establish that the model could use information throughout them.
+The [June introduction to Barbet]({% post_url 2026-06-21-barbet-1b-base %}) described training up to 256K. At that point, 1M was a research configuration: it changed how the model represents text positions so that the program could attempt longer inputs. Barbet had not yet been trained on full 1M-token texts.
 
-The August release has been trained on full 1M-token texts. The model predicts the next token from the preceding text, and the training program uses its prediction error to adjust its internal parameters, or “weights.” Million-token texts have therefore contributed to learning, rather than appearing only at test time. The release configuration also no longer uses the earlier linear position scaling.
+Continued training used the existing Barbet, progressing through 64K, 128K, 256K, 512K, and finally 1M. At the 1M stage, full million-token texts took part in next-token prediction, and the prediction errors were used to update the model's parameters. The August release has therefore received actual 1M pretraining. Its configuration also no longer uses the earlier linear position scaling.
 
-We also changed how Barbet reads the preceding text. Some layers could originally refer directly only to the nearest 8K tokens. They were progressively converted to “global attention” layers, which can refer to the full preceding text, and one more such layer was added. The original seven Mamba2 layers were retained. The appendix gives the full architecture.
+We also changed how Barbet reads the preceding text. Some layers could originally refer directly only to the nearest 8K tokens. They were progressively converted to “global attention” layers, which can refer to the full preceding text, and one more such layer was added. The original seven Mamba2 layers were retained; the appendix gives the full architecture. More layers could thus read distant information directly, at a higher computational cost.
 
-This lets more layers read distant information directly, at a higher computational cost. Training continued from the existing Barbet throughout; we did not substitute another model. Architecture, data, and training volume all changed, however. This record documents what we did, but cannot establish which change contributed most.
+The data included exercises in finding information, ordering events, tracking changing values, and following linked relationships. Important information appeared at different positions, so practice was not limited to searching the beginning or end.
 
-## Why return to 8K after training at 1M?
+This was pretraining throughout: the model learned to predict the whole text, with prediction errors counted at every token, not just the final answer. This release did not use instruction tuning, dialogue training, or human-preference training, and it has no external-memory module. We continued training the original Barbet rather than substituting another model.
 
-Training first progressed through 64K, 128K, 256K, 512K, and then 1M. The data included exercises in finding information, ordering events, tracking changing values, and following linked relationships. Important information appeared at different positions, so practice was not limited to searching the beginning or end.
+## Why return to shorter texts?
 
-Tests showed that Barbet could sometimes find a distant number without reliably using it in a calculation. A simple inventory record illustrates the difference. This is an example for explanation, not an actual evaluation item:
+Barbet could sometimes find a distant number without reliably using it in a calculation. Consider this inventory record, used here only as an illustration, not an actual evaluation item:
 
 > Warehouse A held 3 boxes. It later received 2 more.
 
-To answer how many boxes arrived, the model only needs to find “2.” To work out the current stock, it must combine both records and calculate “5.” If the records are far apart, it also has to use the earlier information when calculating. A wrong answer could mean it failed to find the information, or found it but could not do the calculation.
+Continuing with “It received 2 boxes” only requires finding a number in the text. Continuing with “It now holds 5 boxes” requires combining both records and doing the addition. If the records are far apart, an error could have either cause: failure to find the information, or failure to calculate with it.
 
-Later training therefore also used shorter texts, from 512 to 8K. These exercises separately addressed calculating with nearby information, finding the original text farther away, and calculating with what had been found. Full 1M training was interleaved with this work. The shorter exercises addressed basic operations; they did not reduce the model's maximum context to 8K.
+We therefore used shorter texts, from 512 to 8K, to practice calculation with nearby information and retrieval from farther away, followed by calculation with the retrieved information. Full 1M training was interleaved with this work. Returning to short texts was intended to strengthen basic operations, without reducing the maximum context to 8K. Whether those exercises helped still had to be tested.
 
-The final stage used 8K texts for 768 weight updates, processing about 100 million tokens. After training, we loaded the saved model again and tested it at the full 1M length.
+The final stage used 8K texts for 768 parameter updates, processing about 100 million tokens. We then reloaded the saved Barbet and tested it at the full 1M length, checking whether it could still use distant information after the short-text training.
 
-The continued-training runs leading from the original Barbet to this release processed approximately 5.52 billion tokens, including 3.93 billion in texts exactly 1M tokens long. These are cumulative processed tokens, potentially including repeated data. They exclude Barbet's original pretraining.
+The continued-training runs leading to this release processed approximately 5.52 billion tokens, including 3.93 billion in texts exactly 1M tokens long. These are cumulative processed tokens, potentially including repeated data, and exclude Barbet's original pretraining. The appendix lists the stage counts and exact totals.
 
-All of this was pretraining. Even when the text contains calculation exercises, the model is learning to predict the whole text. Training counts prediction errors at every token, not just the final answer. This release did not use instruction tuning, dialogue training, or human-preference training, and it has no external-memory module.
+## How do we test whether distant information helps?
 
-## How do we know Barbet used the distant information?
+Completing a 1M-token input establishes that the computation ran. Testing whether the earlier information helped requires a comparison.
 
-The evaluation follows the base model's task: give it preceding text and examine its predictions for what follows. This tests whether the long context helps, without mixing in familiarity with a chat format.
+For each item, we prepare two texts of equal length and similar structure. One retains the correct information; the other removes or corrupts it. The same Barbet reads each version, and we compare the probability it assigns to the correct answer. This is the article's “paired test.”
 
-Each item has two texts of equal length and similar structure. One retains the correct information; the other removes or corrupts it. We compare the probability assigned to the correct answer in each case. This is a “paired test”: the comparison is between the same Barbet reading two versions of the text, not between two models.
+In the inventory illustration, is “5 boxes” more likely when the correct records are present? If so, that supports a contribution from those records to the prediction. This evaluates a base model's predictions for the text that follows, without first training Barbet as a chat assistant.
 
-Using the inventory illustration, do the correct records make Barbet more likely to predict “5 boxes”? If correct information raises the probability of the correct answer, that supports its use in the prediction, beyond simply completing a million-token computation.
+The scoring program already knows the correct answer, however. For an answer with several tokens, it supplies the correct preceding answer tokens and calculates the next token's probability. The model does not write the whole answer on its own. Even if “5 boxes” becomes more likely, a wrong answer could still be more likely. Helpful information and a correctly generated answer are different results.
 
-There is an important limit. The scoring program already knows the correct answer. It follows that answer token by token, supplying its correct preceding tokens and calculating the next token's probability. It does not let the model write the entire answer on its own. Even if “5 boxes” becomes more likely, a wrong answer could still be more likely. The test tells us whether the information helps prediction, not how many questions the model would answer correctly by itself.
-
-## What can Barbet do so far?
+## Results: evidence helps in six families; calculation remains a gap
 
 After reloading, Barbet completed scoring for all 140 examples, each exactly 1M tokens long, without running out of memory or producing invalid scores. The seven task families each had 20 matched examples.
 
-“Helpful” below means that, on average within that family, correct information made the correct answer more likely. We also estimated the uncertainty from sampling different examples. Six families still supported a positive effect after accounting for that uncertainty. The appendix gives the exact results and statistical method.
+“Helpful” below means that, on average within that family, the correct answer was more likely with the correct information present. We also estimated how the results might vary with a different sample of questions. Six families still supported a positive effect after accounting for that uncertainty. The appendix gives the exact scores and statistical method.
 
 | Test | Did the correct distant information help? |
 | --- | --- |
@@ -300,15 +300,19 @@ After reloading, Barbet completed scoring for all 140 examples, each exactly 1M 
 | Follow three linked relationships | Helpful |
 | Combine several records to work out a result | Not proven |
 
-Six passing families does not mean 60% or six-sevenths of the questions were answered correctly. It describes an average probability change within six task families, not improvement on every item or at every position.
+The six families are types of tasks, not a 60% or six-sevenths answer accuracy. The result also does not establish improvement on every question or at every position.
 
-The last family, usually called “aggregation,” remains a weakness. Its mean improvement was small, and the statistical interval could not rule out no improvement. With the key information around 30% and 50% of the way through the context, predictions were worse on average when the correct information was present. A separate 8K computation diagnostic passed only three of six tests, showing that calculation problems are not limited to million-token inputs.
+Combining several records to calculate a result is usually called “aggregation.” Its mean improvement was small, and the interval could not rule out no improvement. With key information around 30% and 50% of the way through the text, predictions were worse on average when the correct information was present. A separate 8K computation diagnostic passed only three of six tests, showing that the problem is not limited to million-token inputs.
 
-Long-context training also needs a check on earlier abilities. We used 6,955 examples to measure Barbet's text predictions for code, English, Japanese and Korean, math, multilingual text, and Chinese. None of the six scores worsened relative to the original Barbet. This supports retention of the tested text-prediction abilities, not a guarantee about every application, factual accuracy, or safety behavior.
+Earlier language abilities also need to be retained. We used another 6,955 examples to measure Barbet's text predictions for code, English, Japanese and Korean, math, multilingual text, and Chinese. None of the six scores worsened relative to the original Barbet. This does not cover every application, factual accuracy, or safety behavior.
 
-“Stable 1M” refers to that tested scope: Barbet completes million-token computation, uses distant information in six task families, and retains the base abilities measured by this suite. It is not a guarantee about arbitrary long documents. Reliable answers generated on its own, aggregation, and complete understanding of million-token documents remain unproven. These results also make no claim about 2M or overall parity with larger models.
+## What does “stable 1M” mean here?
 
-The remaining work is to combine, update, and calculate with information after finding it. Input length and total training tokens cannot tell us whether those operations have improved. Barbet will need to produce its own continuations so we can check whether the answers are correct.
+“Stable 1M” is this project's name for the release results above: full million-token computation completes, distant information helps prediction in six task families, and the tested base-language scores do not regress. It does not guarantee understanding of arbitrary million-token documents or reliable answers generated about them. These results also do not establish 2M capability or overall parity with larger models.
+
+The training approach combined longer texts, practice on basic operations, and checks on whether distant information helped. Architecture, data, and training volume all changed along the way without separate comparisons isolating each factor. We therefore cannot say which change contributed most or offer this history as a guaranteed recipe.
+
+The next result to establish is whether Barbet can combine, update, and calculate with information after finding it. That requires letting it generate the answer and checking the result. Longer inputs and more training tokens cannot replace that evidence.
 
 ## Technical appendix
 
