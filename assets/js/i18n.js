@@ -593,10 +593,10 @@ const OpenFormosaZh = {
   post_barbet_desc: "2026 年 6 月 R2 原始紀錄：原生訓練至 256K，另提供研究用的 1M 線性 RoPE 外推設定。",
 
   /* ===== Blog post: Barbet 1B Base native 1M ===== */
-  title_barbet_1m: "Barbet 如何學會使用 1M 長上下文 · OpenFormosa",
-  desc_barbet_1m: "從逐步拉長訓練資料，到補強查找與計算，說明 Barbet 如何在百萬長度測試中使用遠處資訊，以及哪些能力還做不到。",
-  post_barbet_1m_title: "Barbet 如何學會使用 1M 長上下文",
-  post_barbet_1m_desc: "Barbet 怎麼練到百萬長度、為什麼還要練較短的計算，以及測試究竟證明了什麼。",
+  title_barbet_1m: "Barbet 怎麼練到 1M：方法、結果與限制 · OpenFormosa",
+  desc_barbet_1m: "從拉長訓練文字，到補練查找與計算，用一個庫存例子說清楚 Barbet 的 1M 訓練，以及測試能證明的能力。",
+  post_barbet_1m_title: "Barbet 怎麼練到 1M：方法、結果與限制",
+  post_barbet_1m_desc: "從拉長訓練文字，到補練查找與計算，用一個庫存例子說清楚 Barbet 的 1M 訓練，以及測試能證明的能力。",
 
   /* ===== Blog post: BlueMagpie-TTS ===== */
   tag_tts: "語音合成",
