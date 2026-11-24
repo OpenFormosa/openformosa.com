@@ -13,6 +13,8 @@ const requiredFiles = [
   "sitemap.xml",
   "robots.txt",
   "feed.xml",
+  "llms.txt",
+  "llms-full.txt",
   "assets/css/main.css",
   "assets/js/i18n.js",
   "assets/img/openformosa-og.png"
@@ -145,12 +147,16 @@ if (errors.length === 0) {
   const sitemap = exists("sitemap.xml") ? read(path.join(siteDir, "sitemap.xml")) : "";
   const robots = exists("robots.txt") ? read(path.join(siteDir, "robots.txt")) : "";
   const feed = exists("feed.xml") ? read(path.join(siteDir, "feed.xml")) : "";
+  const llms = exists("llms.txt") ? read(path.join(siteDir, "llms.txt")) : "";
+  const llmsFull = exists("llms-full.txt") ? read(path.join(siteDir, "llms-full.txt")) : "";
   const sitemapLocs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   const feedLinks = [...feed.matchAll(/(?:href|<id>)(?:=")?([^"<]+)(?:"|<\/id>)/g)].map((match) => match[1]);
 
   if (!sitemap.includes("</urlset>")) fail("sitemap.xml is missing closing urlset");
   if (!feed.includes("</feed>")) fail("feed.xml is missing closing feed");
   if (!robots.includes("Sitemap:")) fail("robots.txt is missing Sitemap line");
+  if (!llms.includes("# OpenFormosa")) fail("llms.txt is missing canonical # OpenFormosa heading");
+  if (!llmsFull.includes("# OpenFormosa")) fail("llms-full.txt is missing canonical # OpenFormosa heading");
   if (sitemap.includes("/404/") || sitemap.includes("/SECURITY/")) fail("sitemap.xml includes non-public routes");
 
   if (requireAbsolute) {
@@ -160,6 +166,8 @@ if (errors.length === 0) {
     }
     const robotsSitemap = robots.match(/^Sitemap:\s*(.+)$/m)?.[1] || "";
     assertAbsolute(robotsSitemap, "robots Sitemap");
+    if (expectedBase && !llms.includes(expectedBase)) fail(`llms.txt does not reference ${expectedBase}`);
+    if (expectedBase && !llmsFull.includes(expectedBase)) fail(`llms-full.txt does not reference ${expectedBase}`);
   }
 
   const publicText = allFiles

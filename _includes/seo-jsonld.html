@@ -1,0 +1,242 @@
+{%- assign site_root = '/' | absolute_url -%}
+{%- assign org_id = site_root | append: '#organization' -%}
+{%- assign website_id = site_root | append: '#website' -%}
+{%- assign logo_url = '/assets/img/openformosa-logo-780.png' | absolute_url -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ResearchOrganization",
+      "@id": {{ org_id | jsonify }},
+      "name": "OpenFormosa",
+      "alternateName": ["Open Formosa", "開放福爾摩沙", "OpenFormosa AI"],
+      "url": {{ site_root | jsonify }},
+      "logo": {
+        "@type": "ImageObject",
+        "url": {{ logo_url | jsonify }},
+        "width": 780,
+        "height": 780
+      },
+      "description": "Taiwan-rooted open AI foundation-model initiative building compact, private-deployable language, speech (ASR/TTS), OCR, and tokenizer models for Taiwan's language, voice, documents, and culture.",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Taiwan"
+      },
+      "knowsAbout": [
+        "Traditional Chinese NLP",
+        "Taiwan Mandarin ASR",
+        "Taiwanese-accent Text-to-Speech",
+        "Chinese-English Code-Switching Speech Synthesis",
+        "Taiwan Document OCR",
+        "Byte-level BPE Tokenizer",
+        "Long-Context Foundation Models",
+        "Open-Source AI Benchmarks"
+      ],
+      "sameAs": [
+        "https://github.com/OpenFormosa",
+        "https://huggingface.co/OpenFormosa",
+        "https://discord.gg/N4YnrjjcW7"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": {{ website_id | jsonify }},
+      "name": {{ site.title | jsonify }},
+      "alternateName": "開放福爾摩沙",
+      "url": {{ site_root | jsonify }},
+      "description": {{ site.description | jsonify }},
+      "inLanguage": ["zh-Hant-TW", "en"],
+      "publisher": { "@id": {{ org_id | jsonify }} },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ '/blog/' | absolute_url }}?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {% if page.layout == 'post' %}{
+      "@type": "TechArticle",
+      "@id": {{ include.page_url | append: '#article' | jsonify }},
+      "headline": {{ page.zh_title | default: page.title | strip | jsonify }},
+      "alternativeHeadline": {{ page.title | strip | jsonify }},
+      "name": {{ include.seo_title | strip | jsonify }},
+      "description": {{ include.seo_description | jsonify }},
+      "abstract": {{ page.zh_description | default: page.description | jsonify }},
+      "url": {{ include.page_url | jsonify }},
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ include.page_url | jsonify }} },
+      "image": {
+        "@type": "ImageObject",
+        "url": {{ include.page_image | jsonify }},
+        "width": 1200,
+        "height": 630
+      },
+      "inLanguage": ["zh-Hant-TW", "en"],
+      "author": { "@id": {{ org_id | jsonify }} },
+      "publisher": { "@id": {{ org_id | jsonify }} },
+      "isPartOf": { "@id": {{ website_id | jsonify }} },
+      "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+      "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
+      "articleSection": {{ page.category | default: 'research' | jsonify }}{% if page.tags %},
+      "keywords": {{ page.tags | join: ', ' | jsonify }}{% endif %}
+    }{% elsif include.page_key == 'blog' %}{
+      "@type": "CollectionPage",
+      "@id": {{ include.page_url | append: '#webpage' | jsonify }},
+      "name": {{ include.seo_title | strip | jsonify }},
+      "description": {{ include.seo_description | jsonify }},
+      "url": {{ include.page_url | jsonify }},
+      "image": {{ include.page_image | jsonify }},
+      "inLanguage": ["zh-Hant-TW", "en"],
+      "isPartOf": { "@id": {{ website_id | jsonify }} },
+      "about": { "@id": {{ org_id | jsonify }} },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {% for post in site.posts %}{
+            "@type": "ListItem",
+            "position": {{ forloop.index }},
+            "url": {{ post.url | absolute_url | jsonify }},
+            "name": {{ post.zh_title | default: post.title | jsonify }}
+          }{% unless forloop.last %},{% endunless %}{% endfor %}
+        ]
+      }
+    }{% else %}{
+      "@type": "{% if include.page_key == 'about' %}AboutPage{% else %}WebPage{% endif %}",
+      "@id": {{ include.page_url | append: '#webpage' | jsonify }},
+      "name": {{ include.seo_title | strip | jsonify }},
+      "description": {{ include.seo_description | jsonify }},
+      "url": {{ include.page_url | jsonify }},
+      "image": {{ include.page_image | jsonify }},
+      "inLanguage": ["zh-Hant-TW", "en"],
+      "isPartOf": { "@id": {{ website_id | jsonify }} },
+      "about": { "@id": {{ org_id | jsonify }} }
+    }{% endif %}{% unless include.page_key == 'home' or include.page_key == 'not_found' %},
+    {
+      "@type": "BreadcrumbList",
+      "@id": {{ include.page_url | append: '#breadcrumb' | jsonify }},
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenFormosa",
+          "item": {{ site_root | jsonify }}
+        }{% if page.layout == 'post' %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Log · 開發紀錄",
+          "item": {{ '/blog/' | absolute_url | jsonify }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ page.zh_title | default: page.title | jsonify }},
+          "item": {{ include.page_url | jsonify }}
+        }{% else %},
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ page.zh_title | default: page.title | jsonify }},
+          "item": {{ include.page_url | jsonify }}
+        }{% endif %}
+      ]
+    }{% endunless %}{% if include.page_key == 'home' or include.page_key == 'models' or include.page_key == 'barbet' or include.page_key == 'barbet_1m' %},
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": {{ site_root | append: '#model-barbet' | jsonify }},
+      "name": "Barbet 1B Base",
+      "alternateName": ["OpenFormosa Barbet", "OpenFormosa-Base", "五色鳥 1B 模型"],
+      "description": "1B-parameter hybrid decoder-only causal language model for Traditional Chinese and Taiwan context — global and sliding-window attention interleaved with Mamba, 256K native context / 1M RoPE extrapolation, #1 open 1B model on TAIDE-14 (0.7488 bits/byte).",
+      "codeRepository": "https://github.com/OpenFormosa/Barbet",
+      "url": "https://github.com/OpenFormosa/Barbet",
+      "programmingLanguage": "Python",
+      "creator": { "@id": {{ org_id | jsonify }} },
+      "keywords": "Traditional Chinese LLM, 1B base model, Mamba hybrid, 1M long context, Taiwan AI, TAIDE-14"
+    }{% endif %}{% if include.page_key == 'home' or include.page_key == 'models' or include.page_key == 'bluemagpie' %},
+    {
+      "@type": "SoftwareApplication",
+      "@id": {{ site_root | append: '#model-bluemagpie-tts' | jsonify }},
+      "name": "BlueMagpie-TTS",
+      "alternateName": ["台灣藍鵲語音合成", "OpenFormosa BlueMagpie TTS"],
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Linux, macOS, Windows",
+      "description": "Open-source Taiwanese-accent and Chinese-English code-switching text-to-speech model combining VoxCPM's acoustic stack with Barbet LM (CER 4.81%, WER 5.36% on a 500-sentence hard test set via Breeze-ASR-25, ~58% CER reduction).",
+      "url": "https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": { "@id": {{ org_id | jsonify }} }
+    }{% endif %}{% if include.page_key == 'home' or include.page_key == 'models' or include.page_key == 'pangolin' %},
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": {{ site_root | append: '#model-pangolin-tokenizer' | jsonify }},
+      "name": "PangolinTokenizer",
+      "alternateName": ["台灣穿山甲斷詞器", "OpenFormosa Pangolin Tokenizer"],
+      "description": "Byte-level BPE tokenizer built for Traditional Chinese and Taiwan context with 114,688 merges — achieving the lowest 0.485 tokens/character overall on PangolinBench with roughly half the vocabulary size of mainstream multilingual tokenizers.",
+      "codeRepository": "https://github.com/OpenFormosa/ubi_tokenizer",
+      "url": "https://huggingface.co/OpenFormosa/PangolinTokenizer",
+      "programmingLanguage": "Python",
+      "creator": { "@id": {{ org_id | jsonify }} },
+      "keywords": "Traditional Chinese tokenizer, BPE, Taiwan NLP, PangolinBench, UbiTok"
+    }{% endif %}{% if include.page_key == 'home' %},
+    {
+      "@type": "FAQPage",
+      "@id": {{ site_root | append: '#faq' | jsonify }},
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "OpenFormosa 是什麼？與一般繁體中文微調模型有何不同？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OpenFormosa（開放福爾摩沙）是以台灣為根的開源 AI 基礎模型家族計畫。不同於僅將海外模型做表層繁體中文翻譯或微調，OpenFormosa 從斷詞器（PangolinTokenizer）、1B 混合式基底語言模型（Barbet 1B Base）、評測基準到語音／文件分支皆端到端為台灣語境設計，涵蓋台灣華語、台語／客語口音、注音與台羅、中英夾雜、台灣制度用語與在地文件。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenFormosa 目前已釋出哪些開源模型？哪些仍在規劃中？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "目前已正式釋出三項成果：(1) Barbet 1B Base（1B 混合式基底模型、權重與技術報告，github.com/OpenFormosa/Barbet）；(2) BlueMagpie-TTS（台灣口音與中英夾雜語音合成模型與 Hugging Face 線上 Demo）；(3) PangolinTokenizer（114,688 merges 台灣多語斷詞器、UbiTok 套件與 PangolinBench 評測組）。BlackBear-ASR 與 SikaDeer-OCR 目前為規劃中（Planned），尚未訓練釋出。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "台灣口音、中英夾雜的開源 TTS 語音合成模型推薦哪一款？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OpenFormosa 開源的 BlueMagpie-TTS 專為台灣口音中文與中英夾雜（code-switching）設計，保留 VoxCPM 聲學堆疊並替換為 Barbet 語言模型，在 500 句高難度中英混雜測試集上經 Breeze-ASR-25 往返評測達到 CER 4.81%、WER 5.36%（字元錯誤率相對參考模型下降約 58%），並提供 Hugging Face Space 即時線上試聽。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "PangolinTokenizer 為什麼比主流多語斷詞器更適合繁體中文與台灣文本？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PangolinTokenizer 僅使用 114,688 個 BPE 合併項（約為主流多語 tokenizer 的三分之一至一半詞彙量），卻在涵蓋 10 項台灣語境子集的 PangolinBench 上以 0.485 tokens/character 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣上下文視窗容納更多台灣真實內容。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Barbet 1B Base 的架構與長上下文能力是什麼？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）搭配嵌入層權重綁定，具備 256K（262,144 tokens）原生上下文與 1M（1,048,576 tokens）RoPE 外推研究設定，在 TAIDE-14 評測上以 0.7488 bits/byte 位居同級公開 1B 模型第一。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OpenFormosa 模型可以本機離線運行或企業私有部署嗎？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "可以。OpenFormosa 聚焦緊湊可部署的 1B 級別骨幹，適合筆電、研究實驗室、播客創作者、在地文化場館與重視資料主權的企業／公部門私有隔離環境；路線圖 Phase 5 亦規劃企業私有微調與評測支援，確保客戶資料不混入公開基礎模型。"
+          }
+        }
+      ]
+    }{% endif %}
+  ]
+}
+</script>

@@ -1,0 +1,74 @@
+<section class="demand-poll-widget" data-demand-poll aria-labelledby="demand-poll-title">
+  <div class="demand-poll-inner">
+    <div class="demand-poll-header">
+      <p class="eyebrow" data-i18n="demand_poll_eyebrow">Community Wishlist · 需求調查</p>
+      <h3 id="demand-poll-title" data-i18n="demand_poll_title">Tell us: What Taiwan AI capabilities do you need most?</h3>
+      <p class="lede" data-i18n="demand_poll_desc">OpenFormosa is planning the next model branches and evaluation suites. Take 10 seconds to share your primary needs and use case to help shape open AI priorities.</p>
+    </div>
+
+    <form class="demand-poll-form" id="demand-poll-form" data-demand-form>
+      <div class="demand-form-grid">
+        <div class="demand-field">
+          <label for="demand-capability" data-i18n="demand_label_capability">1. Desired Model Capability</label>
+          <select id="demand-capability" name="capability" required>
+            <option value="" disabled selected data-i18n="demand_opt_cap_prompt">-- Select most wanted capability --</option>
+            <option value="asr_blackbear" data-i18n="demand_opt_asr">ASR Speech Recognition (Taiwan Mandarin, Taigi/Hakka accents, code-switching)</option>
+            <option value="tts_bluemagpie" data-i18n="demand_opt_tts">TTS Speech Synthesis (Authentic Taiwan accent, Tailo/Bopomofo, prosody control)</option>
+            <option value="ocr_sikadeer" data-i18n="demand_opt_ocr">OCR Document Intelligence (Taiwan receipts, forms, tables, public records)</option>
+            <option value="base_1b_barbet" data-i18n="demand_opt_base">1B Compact Base Model (Deployable, fine-tunable on laptops &amp; edge devices)</option>
+            <option value="long_context" data-i18n="demand_opt_long_context">Long Context &amp; Official Docs (128K~1M context, law/regulation retrieval &amp; QA)</option>
+            <option value="tokenizer_pangolin" data-i18n="demand_opt_tokenizer">Tokenizer (Taiwan multilingual byte-level BPE lattice)</option>
+          </select>
+        </div>
+
+        <div class="demand-field">
+          <label for="demand-role" data-i18n="demand_label_role">2. Your Role or Primary Use Case</label>
+          <select id="demand-role" name="role" required>
+            <option value="" disabled selected data-i18n="demand_opt_role_prompt">-- Select your scenario --</option>
+            <option value="developer" data-i18n="demand_opt_role_dev">Software Engineer / Open-source Integration &amp; App Development</option>
+            <option value="researcher" data-i18n="demand_opt_role_research">Researcher / Student / NLP &amp; Speech Experiments</option>
+            <option value="enterprise" data-i18n="demand_opt_role_enterprise">Enterprise Private Deployment / Production System Evaluation</option>
+            <option value="creator" data-i18n="demand_opt_role_creator">Content Creator / Podcaster / Media Production</option>
+            <option value="enthusiast" data-i18n="demand_opt_role_enthusiast">Culture Preservationist / Community Enthusiast</option>
+          </select>
+        </div>
+
+        <div class="demand-field">
+          <label for="demand-deployment" data-i18n="demand_label_deployment">3. Preferred Deployment Target</label>
+          <select id="demand-deployment" name="deployment" required>
+            <option value="" disabled selected data-i18n="demand_opt_dep_prompt">-- Select deployment preference --</option>
+            <option value="edge_local" data-i18n="demand_opt_dep_edge">Local / On-device (Laptop, Apple Silicon Mac, mobile offline)</option>
+            <option value="server_private" data-i18n="demand_opt_dep_server">Self-hosted GPU Server / Air-gapped Private Cloud</option>
+            <option value="cloud_api" data-i18n="demand_opt_dep_api">Cloud-hosted API / Hugging Face Spaces &amp; Inference</option>
+          </select>
+        </div>
+
+        <div class="demand-field demand-field-full">
+          <span class="demand-field-label" data-i18n="demand_label_tags">4. Languages &amp; Domain Needs (Optional, multi-select)</span>
+          <div class="demand-tag-group" role="group" aria-label="Languages and domains">
+            <button type="button" class="demand-tag-chip" data-demand-tag="taigi" aria-pressed="false" data-i18n="demand_tag_taigi">Taigi (Taiwanese)</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="hakka" aria-pressed="false" data-i18n="demand_tag_hakka">Hakka</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="tw_mandarin" aria-pressed="false" data-i18n="demand_tag_tw_mandarin">Taiwan Mandarin / Code-switching</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="indigenous" aria-pressed="false" data-i18n="demand_tag_indigenous">Indigenous Languages</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="bopomofo_tailo" aria-pressed="false" data-i18n="demand_tag_bopomofo_tailo">Bopomofo / Tailo</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="medical" aria-pressed="false" data-i18n="demand_tag_medical">Medical / Clinical</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="legal_gov" aria-pressed="false" data-i18n="demand_tag_legal_gov">Legal / Public Docs</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="customer_meeting" aria-pressed="false" data-i18n="demand_tag_customer_meeting">Call Center / Meetings</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="invoice_ocr" aria-pressed="false" data-i18n="demand_tag_invoice_ocr">Invoices / Forms OCR</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="media_edu" aria-pressed="false" data-i18n="demand_tag_media_edu">Education / Podcasts</button>
+          </div>
+        </div>
+
+        <div class="demand-field demand-field-full">
+          <label for="demand-note" data-i18n="demand_label_note">5. Specific Notes or Requests (Optional, do not enter confidential personal data)</label>
+          <input type="text" id="demand-note" name="note" maxlength="100" placeholder="e.g. Need medical terminology support / Taigi POJ / Uniform invoice parsing..." data-i18n-placeholder="demand_placeholder_note">
+        </div>
+      </div>
+
+      <div class="demand-form-actions">
+        <button type="submit" class="btn primary" data-i18n="demand_btn_submit">Submit Demand · 送出需求</button>
+        <span class="demand-status-msg" data-demand-status aria-live="polite"></span>
+      </div>
+    </form>
+  </div>
+</section>

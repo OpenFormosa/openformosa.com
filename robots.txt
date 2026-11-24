@@ -1,7 +1,51 @@
 ---
 layout: null
 ---
+# OpenFormosa — Search Engine & AI Crawler Policy
+# AI / LLM structured index: {{ '/llms.txt' | absolute_url }}
+# Full AI / LLM reference:  {{ '/llms-full.txt' | absolute_url }}
+
 User-agent: *
+Allow: /
+
+# Major Search & AI Citation Crawlers (explicitly welcomed for indexing & attribution)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Amazonbot
 Allow: /
 
 Sitemap: {{ '/sitemap.xml' | absolute_url }}

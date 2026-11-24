@@ -5,6 +5,7 @@ zh_title: "Barbet 怎麼練到 1M"
 i18n_key: barbet_1m
 description: "Longer training texts, short calculation exercises, and tests with key information removed: how we checked whether Barbet uses information from far back in its context."
 zh_description: "把訓練文字拉長、補練查找與計算，再拿掉關鍵資料做對照，檢查 Barbet 是否用到了遠處的資訊。"
+keywords: "Barbet 1M, 1M 長上下文訓練, 繁體中文長文本 LLM, Mamba 長序列評測, OpenFormosa"
 date: 2026-08-30
 last_modified_at: 2026-09-09
 category: research

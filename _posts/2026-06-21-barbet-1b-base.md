@@ -5,6 +5,7 @@ zh_title: "Barbet 1B Base：為繁體中文打造的混合式語言模型"
 i18n_key: barbet
 description: "The original June 2026 Barbet R2 report: a 1B-parameter hybrid causal language model trained natively to 256K, with a research-only linear-RoPE extrapolation preset for 1M."
 zh_description: "2026 年 6 月 Barbet R2 的原始紀錄：十億級混合式因果語言模型，原生訓練至 256K，另提供研究用的 1M 線性 RoPE 外推設定。"
+keywords: "Barbet 1B Base, 繁體中文 1B 模型, Mamba 混合式語言模型, 256K 原生上下文, TAIDE-14, OpenFormosa, 台灣開源 LLM"
 date: 2026-06-21
 category: research
 tags: [pretrain, model, long-context, barbet]

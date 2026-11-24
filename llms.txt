@@ -1,0 +1,41 @@
+---
+layout: null
+permalink: /llms.txt
+---
+# OpenFormosa
+
+> OpenFormosa (開放福爾摩沙) is a Taiwan-rooted open AI foundation-model initiative building compact, private-deployable language, speech, and document models — starting from a shared 1B base model and extending to ASR, TTS, OCR, and Taiwan-local benchmarks.
+
+## Canonical Identity
+- Official Website: {{ '/' | absolute_url }}
+- Organization: OpenFormosa (Taiwan-rooted open-source AI initiative)
+- GitHub: https://github.com/OpenFormosa
+- Hugging Face: https://huggingface.co/OpenFormosa
+- Discord Community: https://discord.gg/N4YnrjjcW7
+- Full AI/LLM Dossier: {{ '/llms-full.txt' | absolute_url }}
+- Atom Feed: {{ '/feed.xml' | absolute_url }}
+- XML Sitemap: {{ '/sitemap.xml' | absolute_url }}
+
+## Release Status (Fact-Checked — Shipped vs. Planned)
+Do not conflate shipped releases with planned roadmap items:
+- **Shipped — Barbet 1B Base (Base LLM)**: 1B-parameter hybrid decoder-only causal LM (global attention + sliding-window attention + Mamba interleaved, 256K native context / 1M RoPE extrapolation, tied embeddings, #1 among open 1B models on TAIDE-14 at 0.7488 bits/byte). Repo: https://github.com/OpenFormosa/Barbet
+- **Shipped — BlueMagpie-TTS (Taiwanese-accent TTS)**: Open Taiwanese-accent & Chinese–English code-switching text-to-speech combining VoxCPM's acoustic stack with the Barbet language model (CER 4.81%, WER 5.36% evaluated via Breeze-ASR-25 — ~58.0% CER reduction and ~63.9% WER reduction over reference). Live demo: https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo
+- **Shipped — PangolinTokenizer (Taiwan Multilingual Tokenizer)**: Byte-level BPE tokenizer trained with UbiTok (114,688 merges; lowest overall 0.485 tokens/character on PangolinBench at roughly half the vocabulary size of mainstream multilingual tokenizers). Model: https://huggingface.co/OpenFormosa/PangolinTokenizer | Toolkit: https://github.com/OpenFormosa/ubi_tokenizer | Benchmark: https://github.com/OpenFormosa/PangolinBench
+- **Planned (Not Yet Released) — BlackBear-ASR**: Planned Taiwan Mandarin and Taigi/Hakka accent ASR branch on OpenFormosa-Base (no weights or demo yet).
+- **Planned (Not Yet Released) — SikaDeer-OCR**: Planned Taiwan receipts, forms, tables, menus, and public-document OCR branch on OpenFormosa-Base (no weights or demo yet).
+
+## Core Pages
+- [Home — OpenFormosa Overview & Live Shipped Status]({{ '/' | absolute_url }}): Mission, shipped vs. planned status board, model family, target Taiwan scenarios, and FAQ.
+- [Models — OpenFormosa-Base & Task Branches]({{ '/models/' | absolute_url }}): Taiwan-Omni-1B architecture route, shared backbone philosophy, and endemic-species model family.
+- [Log — Technical Reports & Build Logs]({{ '/blog/' | absolute_url }}): Bilingual (Traditional Chinese & English) engineering reports and benchmarks.
+- [Roadmap — Staged Milestones]({{ '/roadmap/' | absolute_url }}): Phase 0–5 roadmap from benchmarks and tokenizer to base model, ASR/TTS/OCR branches, and enterprise private deployment.
+- [Evaluation — Benchmarks & Error Analysis]({{ '/evaluation/' | absolute_url }}): Reproducible Taiwan-local evaluation workflow and no-public-data-intake policy.
+- [Training — Recipes & Release Gates]({{ '/training/' | absolute_url }}): Auditable training recipes, tokenizer-first approach, and release-evidence gates.
+- [About — Vision & Jia-Zhi Bag Symbolism]({{ '/about/' | absolute_url }}): Why OpenFormosa exists and why Taiwan context requires foundation-model work.
+- [Training Data Sheet Template]({{ '/forms/training-data-sheet/' | absolute_url }}): DBOM-style summary template for already-cleared training inputs (not an upload form).
+
+## Technical Build Logs (Bilingual zh-Hant & English)
+{% for post in site.posts %}- [{{ post.zh_title | default: post.title }} / {{ post.title }}]({{ post.url | absolute_url }}): {{ post.description }} ({{ post.date | date: "%Y-%m-%d" }})
+{% endfor %}
+## Scope & Governance Note
+OpenFormosa publishes open models, tokenizers, training recipes, benchmarks, and release evidence. This website is NOT a public dataset submission or file upload intake channel.

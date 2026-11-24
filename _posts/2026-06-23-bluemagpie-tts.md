@@ -1,9 +1,11 @@
 ---
 layout: post
 title: "BlueMagpie-TTS: Taiwanese-accent, Chinese–English code-switching speech synthesis"
-zh_title: "BlueMagpie-TTS：臺灣口音、中英混合的語音合成模型"
+zh_title: "BlueMagpie-TTS：臺灣口音、中英混合的開源語音合成模型（附線上試聽）"
 i18n_key: bluemagpie
 description: "An open Taiwanese-accent text-to-speech model that handles Chinese–English code-switching — keep VoxCPM's acoustic stack, swap in the Barbet language model, and cut character error rate by about 58% on a hard test set."
+zh_description: "BlueMagpie-TTS 是 OpenFormosa 開源的台灣口音與中英夾雜文字轉語音（TTS）模型，結合 VoxCPM 聲學架構與 Barbet 語言模型，經 Breeze-ASR-25 評估達 CER 4.81%、WER 5.36%（錯誤率降約 58%），支援互動試聽與線上 Demo。"
+keywords: "BlueMagpie-TTS, 台灣口音 TTS, 開源中文語音合成, 中英夾雜 TTS, VoxCPM, Barbet, Breeze-ASR-25, OpenFormosa"
 zh_description: "BlueMagpie-TTS 是臺灣口音、中英混合的開源語音合成模型：保留 VoxCPM 聲學架構，換上 Barbet 文字語意模型，在難唸測試集上把字元錯誤率降低約 58%。"
 date: 2026-06-23
 category: research

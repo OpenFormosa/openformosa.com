@@ -87,6 +87,15 @@ search?.addEventListener("input", filterPosts);
 tag?.addEventListener("change", filterPosts);
 window.addEventListener("openformosa:language", filterPosts);
 
+// Support SearchAction query param (/blog/?q=...) for search engines and shareable links.
+if (search) {
+  const initialQuery = new URLSearchParams(window.location.search).get("q");
+  if (initialQuery) {
+    search.value = initialQuery;
+    filterPosts();
+  }
+}
+
 const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const revealTargets = [...document.querySelectorAll(".reveal")];
 

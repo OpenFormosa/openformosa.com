@@ -628,16 +628,96 @@ const OpenFormosaZh = {
 
   roadmap_phase1_status: "已完成：PangolinTokenizer 已釋出。",
   roadmap_phase2_status: "已完成：Barbet 1B Base 已釋出。",
-  roadmap_phase3_status: "進行中：BlueMagpie-TTS 已釋出；BlackBear-ASR 與 SikaDeer-OCR 接著做。"
+  roadmap_phase3_status: "進行中：BlueMagpie-TTS 已釋出；BlackBear-ASR 與 SikaDeer-OCR 接著做。",
+
+  /* ===== Community Demand & Wishlist ===== */
+  demand_poll_eyebrow: "需求調查 · Community Wishlist",
+  demand_poll_title: "告訴我們：您最需要什麼樣的台灣在地 AI 能力？",
+  demand_poll_desc: "OpenFormosa 正在推進下一階段的模型與任務分支。請花 10 秒選擇您的需求與場景，直接參與開源生態藍圖的優先順序。",
+  demand_label_capability: "1. 最期待的在地模型能力",
+  demand_opt_cap_prompt: "-- 請選擇最迫切的能力 --",
+  demand_opt_asr: "ASR 語音辨識（台灣國語、台語、客語口音與中英混雜）",
+  demand_opt_tts: "TTS 語音合成（在地自然台灣腔、Tailo/注音、風格控制）",
+  demand_opt_ocr: "OCR 文件辨識（台灣發票、收據、表格、公文結構化擷取）",
+  demand_opt_base: "1B 底座語言模型（筆電/手機可跑的緊湊台灣語言核心）",
+  demand_opt_long_context: "長文本與法規公文（128K~1M context、公文/法律/檢索）",
+  demand_opt_tokenizer: "Tokenizer 分詞器（台灣多語高效 byte-level BPE）",
+  demand_label_role: "2. 您的身份或主要應用場景",
+  demand_opt_role_prompt: "-- 請選擇您的情境 --",
+  demand_opt_role_dev: "軟體工程師 / 開源專案與 App 整合",
+  demand_opt_role_research: "學術研究 / 學生 / NLP 與語音實驗",
+  demand_opt_role_enterprise: "企業私有化部署 / 內部商業系統評估",
+  demand_opt_role_creator: "數位內容創作者 / 播客 / 媒體製作",
+  demand_opt_role_enthusiast: "在地文化保存者 / 個人愛好者",
+  demand_label_deployment: "3. 偏好的運行與部署方式",
+  demand_opt_dep_prompt: "-- 請選擇部署偏好 --",
+  demand_opt_dep_edge: "本地離線運行（筆電、Mac Apple Silicon、手機端）",
+  demand_opt_dep_server: "自建 GPU 伺服器 / 私有私密隔離雲",
+  demand_opt_dep_api: "雲端託管 API / Hugging Face 快速呼叫",
+  demand_label_tags: "4. 台灣語言與領域需求（選填，可多選）",
+  demand_tag_taigi: "台語（Taigi）",
+  demand_tag_hakka: "客語（Hakka）",
+  demand_tag_tw_mandarin: "台灣國語 / 中英夾雜",
+  demand_tag_indigenous: "原住民語",
+  demand_tag_bopomofo_tailo: "注音 / 台羅",
+  demand_tag_medical: "醫療 / 生醫術語",
+  demand_tag_legal_gov: "法律 / 公文法規",
+  demand_tag_customer_meeting: "客服 / 會議逐字稿",
+  demand_tag_invoice_ocr: "發票 / 表格 OCR",
+  demand_tag_media_edu: "教育 / 播客配音",
+  demand_label_note: "5. 具體許願或需求細節（選填，請勿填寫個人機密資料）",
+  demand_placeholder_note: "例如：希望支援醫療術語 / 想要台語白話字音訊 / 想要二聯式發票統編解析...",
+  demand_btn_submit: "送出需求許願 · Submit",
+  demand_status_saved: "✓ 已記錄您的需求，可隨時重新選擇並更新。",
+  demand_status_success: "✓ 感謝您的回饋！您的需求已傳遞至 OpenFormosa 團隊與藍圖。",
+  demand_status_updated: "✓ 需求已更新！感謝您的寶貴回饋。",
+
+  /* ===== Post Micro-Feedback ===== */
+  post_fb_eyebrow: "快速回饋",
+  post_fb_title: "這篇技術紀錄對您有幫助嗎？下一步最想看到什麼？",
+  post_fb_helpful: "有幫助",
+  post_fb_run: "我想部署 / 試跑這個模型",
+  post_fb_detail: "想看更多評測與訓練細節",
+  post_fb_use_case: "我有台灣在地應用需求",
+  post_fb_thanks: "✓ 感謝回饋！您的點擊能幫助 OpenFormosa 決定下一個優先方向。",
+  post_fb_recorded: "✓ 已記錄回饋，可隨時點擊其他選項更新。",
+
+  /* ===== Home FAQ (SEO & AI SEO) ===== */
+  home_faq_eyebrow: "常見問題 · FAQ",
+  home_faq_title: "關於 OpenFormosa 的關鍵事實。",
+  home_faq_desc: "整理最常被問到的模型釋出狀態、實測數據、台灣口音語音合成、斷詞效率與企業私有部署說明。",
+  faq_q1: "OpenFormosa 是什麼？與一般繁體中文微調模型有何不同？",
+  faq_a1: "OpenFormosa（開放福爾摩沙）是以台灣為根的開源 AI 基礎模型家族計畫。不同於僅將海外模型做表層繁體中文翻譯或微調，我們從斷詞器（PangolinTokenizer）、1B 混合式基底語言模型（Barbet 1B Base）、評測基準到語音／文件分支皆端到端為台灣語境設計。",
+  faq_q2: "目前已釋出哪些開源模型？哪些仍在規劃中？",
+  faq_a2: "目前已釋出三項成果：Barbet 1B Base（權重與技術報告於 GitHub）、BlueMagpie-TTS（台灣口音中英混合語音合成，附 Hugging Face 線上 Demo）與 PangolinTokenizer（模型、UbiTok 與 PangolinBench）。BlackBear-ASR 與 SikaDeer-OCR 目前為規劃中，尚未釋出權重。",
+  faq_q3: "BlueMagpie-TTS 在台灣口音與中英夾雜上的實測表現如何？",
+  faq_a3: "BlueMagpie-TTS 保留 VoxCPM 聲學架構並換上 Barbet 文字語意模型。在 500 句高難度中英混雜測試集上經 Breeze-ASR-25 往返評測，達到 CER 4.81%、WER 5.36%，字元錯誤率相對參考模型下降約 58%，並提供 Hugging Face Space 即時試聽。",
+  faq_q4: "PangolinTokenizer 為什麼比主流多語斷詞器更適合台灣文本？",
+  faq_a4: "PangolinTokenizer 僅使用 114,688 個 byte-level BPE 合併項（約主流多語詞表的三分之一至一半），卻在 PangolinBench 10 項台灣語境測試子集以 0.485 tokens／字元取得整體最佳壓縮率，並原生支援語音逐字稿結構標記。",
+  faq_q5: "Barbet 1B Base 的架構與長上下文能力是什麼？",
+  faq_a5: "Barbet 1B Base 採用四層一循環的混合式解碼器（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba）與權重綁定，原生支援長上下文訓練延伸至 1M tokens（1,048,576 tokens），在 TAIDE-14 以 0.7488 bits/byte 位居同級 1B 公開模型第一。",
+  faq_q6: "OpenFormosa 的模型可以本機離線運行或企業私有部署嗎？",
+  faq_a6: "可以。1B 緊湊骨幹專為筆電、學校實驗室、文化場館與高度重視資料主權的企業／公部門隔離環境打造，不必將敏感台灣資料送往海外 API；路線圖 Phase 5 亦規劃企業私有微調與評測支援。",
+
+  /* ===== Footer Internal Navigation ===== */
+  footer_col_explore: "網站導覽",
+  footer_col_assets: "開放模型與社群",
+  footer_col_feeds: "訂閱與 AI 索引",
+  footer_link_about: "關於我們",
+  footer_link_tds: "訓練資料表範本",
+  footer_link_feed: "Atom 訂閱（RSS）",
+  footer_link_sitemap: "網站地圖（Sitemap）"
 };
 
 (function () {
   "use strict";
   const storageKey = "openformosa-language";
   const defaultLanguage = "zh-Hant";
-  const englishTitle = document.title;
+  const englishTitle = (document.body && document.body.dataset && document.body.dataset.enTitle) || document.title;
   const descriptionMeta = document.querySelector('meta[name="description"]');
-  const englishDescription = descriptionMeta ? descriptionMeta.getAttribute("content") : "";
+  const englishDescription = (document.body && document.body.dataset && document.body.dataset.enDescription) || (descriptionMeta ? descriptionMeta.getAttribute("content") : "");
+  const initialZhTitle = document.title;
+  const initialZhDescription = descriptionMeta ? descriptionMeta.getAttribute("content") : "";
 
   function normalizeLanguage(value) {
     if (!value) return defaultLanguage;
@@ -686,15 +766,9 @@ const OpenFormosaZh = {
     document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => setAttribute(el, "i18nAriaLabel", "aria-label", "i18nAriaLabelDefault"));
     document.querySelectorAll("[data-i18n-alt]").forEach((el) => setAttribute(el, "i18nAlt", "alt", "i18nAltDefault"));
 
-    const pageKey = document.body.dataset.pageKey;
-    const zhTitle = pageKey ? OpenFormosaZh[`title_${pageKey}`] : "";
-    const nextTitle = lang === "zh-Hant" && zhTitle ? zhTitle : englishTitle;
-    document.title = nextTitle;
-
-    const zhDescription = pageKey ? OpenFormosaZh[`desc_${pageKey}`] : "";
-    const nextDescription = lang === "zh-Hant" && zhDescription ? zhDescription : englishDescription;
+    document.title = lang === "zh-Hant" ? initialZhTitle : englishTitle;
     if (descriptionMeta) {
-      descriptionMeta.setAttribute("content", nextDescription);
+      descriptionMeta.setAttribute("content", lang === "zh-Hant" ? initialZhDescription : englishDescription);
     }
 
     document.querySelectorAll("[data-lang-option]").forEach((button) => {

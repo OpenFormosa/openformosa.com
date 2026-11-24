@@ -1,8 +1,11 @@
 ---
 layout: default
 title: Home
+zh_title: 台灣開源 AI 基礎模型家族（Barbet 1B・BlueMagpie-TTS・PangolinTokenizer）
 i18n_key: home
-description: OpenFormosa is an open family of AI foundation models for Taiwan's language contexts. It helps AI speak Taiwan, hear Taiwan, and read Taiwan.
+description: OpenFormosa is an open family of AI foundation models for Taiwan's language contexts — Barbet 1B Base (1M context), BlueMagpie-TTS (Taiwanese-accent TTS), PangolinTokenizer, plus planned ASR and OCR branches.
+zh_description: OpenFormosa（開放福爾摩沙）是以台灣為根的開源 AI 基礎模型家族——涵蓋已釋出的 Barbet 1B 混合式基底模型（1M 長文本）、BlueMagpie-TTS 台灣口音中英混合語音合成、PangolinTokenizer 繁中斷詞器，以及規劃中的 BlackBear-ASR 與 SikaDeer-OCR。
+keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, 繁體中文語言模型, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, 台灣口音 TTS, 中英夾雜語音合成, 台灣 ASR, 台灣 OCR, TAIDE-14
 ---
 <section class="hero section-pad">
   <div class="hero-main">
@@ -221,6 +224,39 @@ description: OpenFormosa is an open family of AI foundation models for Taiwan's 
     <li><strong data-i18n="home_open_cards_title">Check the numbers</strong> <span data-i18n="home_open_cards_text">Benchmarks should include test sets, baselines, tasks, and real usage differences, not only scores.</span></li>
     <li><strong data-i18n="home_open_core_title">Help close gaps</strong> <span data-i18n="home_open_core_text">Docs, Quickstart, Colab, error cases, test sentences, and data licensing leads can all become contributions.</span></li>
   </ul>
+</section>
+<section class="section section-pad reveal" id="faq" aria-labelledby="home-faq-title">
+  <div class="section-head">
+    <p class="eyebrow" data-i18n="home_faq_eyebrow">FAQ · 常見問題</p>
+    <h2 id="home-faq-title" data-i18n="home_faq_title">Quick facts about OpenFormosa.</h2>
+    <p data-i18n="home_faq_desc">Direct answers on what is shipped today, verified benchmarks, Taiwanese-accent speech synthesis, tokenizer efficiency, and private deployment.</p>
+  </div>
+  <dl class="faq-grid">
+    <div class="faq-card">
+      <dt data-i18n="faq_q1">What is OpenFormosa and how does it differ from generic Traditional Chinese fine-tunes?</dt>
+      <dd data-i18n="faq_a1">OpenFormosa is a Taiwan-rooted open AI foundation-model family built end to end — custom tokenizer (PangolinTokenizer), compact 1B hybrid base model (Barbet 1B Base), reproducible benchmarks, and speech/document branches — rather than a surface Traditional Chinese translation patch on foreign models.</dd>
+    </div>
+    <div class="faq-card">
+      <dt data-i18n="faq_q2">Which models are shipped today and which are still planned?</dt>
+      <dd data-i18n="faq_a2">Shipped today: Barbet 1B Base (weights &amp; reports on GitHub), BlueMagpie-TTS (Taiwanese-accent code-switching TTS with a live Hugging Face demo), and PangolinTokenizer (weights, UbiTok, and PangolinBench). BlackBear-ASR and SikaDeer-OCR are planned roadmap branches with no weights yet.</dd>
+    </div>
+    <div class="faq-card">
+      <dt data-i18n="faq_q3">How does BlueMagpie-TTS perform on Taiwanese accents and Chinese–English code-switching?</dt>
+      <dd data-i18n="faq_a3">BlueMagpie-TTS keeps VoxCPM's acoustic stack and swaps in Barbet as the text-semantic LM. On a 500-sentence hard code-switching set evaluated round-trip via Breeze-ASR-25, it reaches 4.81% CER and 5.36% WER — roughly a 58% CER reduction over the reference model — with a live Hugging Face Space demo.</dd>
+    </div>
+    <div class="faq-card">
+      <dt data-i18n="faq_q4">Why is PangolinTokenizer more efficient for Taiwan text than mainstream multilingual tokenizers?</dt>
+      <dd data-i18n="faq_a4">PangolinTokenizer uses 114,688 byte-level BPE merges — roughly one-third to half the vocabulary size of mainstream multilingual tokenizers — while achieving the lowest 0.485 tokens/character overall on PangolinBench and natively supporting speech transcript markers.</dd>
+    </div>
+    <div class="faq-card">
+      <dt data-i18n="faq_q5">What is Barbet 1B Base's architecture and long-context capability?</dt>
+      <dd data-i18n="faq_a5">Barbet 1B Base interleaves global attention, sliding-window attention, and Mamba layers in a 4-layer cycle with tied embeddings. It extends to 1M-token context (1,048,576 tokens) and ranks #1 among open 1B models on TAIDE-14 at 0.7488 bits/byte.</dd>
+    </div>
+    <div class="faq-card">
+      <dt data-i18n="faq_q6">Can OpenFormosa models run offline on local devices or in private enterprise environments?</dt>
+      <dd data-i18n="faq_a6">Yes. The compact 1B backbone is designed to be runnable, fine-tunable, and auditable on laptops, university labs, cultural venues, and air-gapped enterprise or public-sector infrastructure without shipping sensitive Taiwan data to overseas APIs.</dd>
+    </div>
+  </dl>
 </section>
 <section class="section section-pad reveal">
   <div class="manifesto">

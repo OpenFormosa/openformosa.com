@@ -4,6 +4,8 @@ title: "PangolinTokenizer: a byte-level BPE tokenizer for Traditional Chinese an
 zh_title: "PangolinTokenizer：面向繁體中文與台灣語境的 Byte-level BPE Tokenizer"
 i18n_key: pangolin
 description: "A byte-level BPE tokenizer built for Taiwan — 114,688 merges, the lowest tokens/character on PangolinBench with the smallest vocabulary."
+zh_description: "OpenFormosa 開源的台灣語境 byte-level BPE 斷詞器：僅 114,688 merges（約主流多語詞表一半），在 PangolinBench 10 項測試集以 0.485 tokens/字取得最佳壓縮效率，原生支援語音逐字稿標記。"
+keywords: "PangolinTokenizer, 繁體中文 Tokenizer, 台灣 BPE 斷詞器, PangolinBench, UbiTok, OpenFormosa, 台灣 NLP"
 zh_description: "面向繁體中文與台灣語境的 byte-level BPE tokenizer——以最小的詞彙表，在台灣語境達到最低 tokens/character。"
 date: 2026-06-20
 category: research

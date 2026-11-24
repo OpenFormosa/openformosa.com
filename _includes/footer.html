@@ -1,11 +1,39 @@
 <footer class="site-footer section-pad">
+  {% include demand-poll.html %}
   <div class="footer-grid">
     <div class="footer-brand-block">
-      <a class="footer-brand" href="{{ '/' | relative_url }}"><img src="{{ '/assets/img/favicon.svg' | relative_url }}" alt="">OpenFormosa</a>
-      <p data-i18n="footer_desc">OpenFormosa is an open family of AI foundation models for Taiwan's languages, voices, documents, and culture, helping AI speak Taiwan, hear Taiwan, and read Taiwan.</p>
+      <a class="footer-brand" href="{{ '/' | relative_url }}"><img src="{{ '/assets/img/favicon.svg' | relative_url }}" alt="" width="32" height="32" loading="lazy">OpenFormosa</a>
+      <p data-i18n="footer_desc">OpenFormosa is a Taiwan-rooted open AI foundation-model family — compact, deployable models and evaluation systems that understand Taiwan's language, voice, documents, and culture.</p>
+    </div>
+    <nav class="footer-nav-col" aria-label="Site navigation">
+      <h3 data-i18n="footer_col_explore">Explore</h3>
+      <a href="{{ '/models/' | relative_url }}" data-i18n="nav_models">Models</a>
+      <a href="{{ '/blog/' | relative_url }}" data-i18n="nav_blog">Log</a>
+      <a href="{{ '/roadmap/' | relative_url }}" data-i18n="nav_roadmap">Roadmap</a>
+      <a href="{{ '/evaluation/' | relative_url }}" data-i18n="nav_evaluation">Evaluation</a>
+      <a href="{{ '/training/' | relative_url }}" data-i18n="nav_training">Training</a>
+      <a href="{{ '/about/' | relative_url }}" data-i18n="footer_link_about">About</a>
+      <a href="{{ '/forms/training-data-sheet/' | relative_url }}" data-i18n="footer_link_tds">Training Data Sheet</a>
+    </nav>
+    <div class="footer-nav-col">
+      <h3 data-i18n="footer_col_assets">Open Models &amp; Community</h3>
+      <a href="https://github.com/OpenFormosa/Barbet" target="_blank" rel="noopener">Barbet 1B Base (GitHub)</a>
+      <a href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener">BlueMagpie-TTS Live Demo</a>
+      <a href="https://huggingface.co/OpenFormosa/PangolinTokenizer" target="_blank" rel="noopener">PangolinTokenizer (HF)</a>
+      <a href="https://github.com/OpenFormosa" target="_blank" rel="me noopener">GitHub Organization</a>
+      <a href="https://huggingface.co/OpenFormosa" target="_blank" rel="me noopener">Hugging Face Organization</a>
+      <a href="https://discord.gg/N4YnrjjcW7" target="_blank" rel="me noopener">Discord Community</a>
+    </div>
+    <div class="footer-nav-col">
+      <h3 data-i18n="footer_col_feeds">Feeds &amp; AI Discovery</h3>
+      <a href="{{ '/feed.xml' | relative_url }}" data-i18n="footer_link_feed">Atom Feed (RSS)</a>
+      <a href="{{ '/sitemap.xml' | relative_url }}" data-i18n="footer_link_sitemap">XML Sitemap</a>
+      <a href="{{ '/llms.txt' | relative_url }}">llms.txt (AI Summary)</a>
+      <a href="{{ '/llms-full.txt' | relative_url }}">llms-full.txt (AI Full Dossier)</a>
     </div>
   </div>
   <div class="footer-bottom">
-    <span data-i18n="footer_copyright">© {{ 'now' | date: '%Y' }} OpenFormosa</span>
+    <span data-i18n="footer_copyright">© {{ 'now' | date: '%Y' }} OpenFormosa contributors.</span>
+    <span data-i18n="footer_tagline">Hear Taiwan, speak Taiwan, read Taiwan, and remember Taiwan.</span>
   </div>
 </footer>

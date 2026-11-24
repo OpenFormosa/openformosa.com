@@ -1,22 +1,99 @@
 {%- comment -%}
-  Google Analytics 4 (gtag.js). Emitted only in production builds that have a
-  Measurement ID set — see the gate in _layouts/default.html. Detailed custom
-  interaction events (language/theme switch, blog search & tag filter, TTS audio
-  play/progress/complete, ASR transcript reveal, CTA clicks) live in
-  assets/js/analytics.js. Outbound link, scroll and page_view tracking are left
-  to GA4 Enhanced Measurement to avoid double counting.
+  Google Analytics 4 (gtag.js) v2 — First-hit accurate UI language, returning
+  visitor profile, and pre-config user properties so page_view and session_start
+  inherit full context immediately. Detailed behavioral, timing, traffic, and
+  demand telemetry lives in assets/js/analytics.js.
 {%- endcomment -%}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', {{ site.google_analytics | jsonify }}, {
-    // Report the in-page UI language, not the browser locale (this site switches
-    // language client-side, so navigator.language would misattribute switchers).
-    language: document.documentElement.lang || 'zh-Hant',
-    cookie_flags: 'SameSite=Lax;Secure',
-    // Server-rendered page identity, attached to page_view and every later event.
-    page_key: {{ include.page_key | jsonify }}
-  });
+
+  (function () {
+    var lang = document.documentElement.lang || 'zh-Hant';
+    var visitorType = 'unknown';
+    var visitBucket = '1';
+    var savedDemand = null;
+    var savedPersona = null;
+    var savedModel = null;
+    var savedTier = null;
+
+    try {
+      var savedLang = localStorage.getItem('openformosa-language');
+      if (savedLang) {
+        var lower = savedLang.toLowerCase();
+        lang = (lower === 'en' || lower.indexOf('en-') === 0) ? 'en' : 'zh-Hant';
+      }
+
+      var prevVisited = localStorage.getItem('openformosa_visited');
+      var count = parseInt(localStorage.getItem('openformosa_visit_count') || '0', 10) || 0;
+      if (!sessionStorage.getItem('openformosa_session_counted')) {
+        sessionStorage.setItem('openformosa_session_counted', '1');
+        count += 1;
+        localStorage.setItem('openformosa_visit_count', String(count));
+        if (!prevVisited) {
+          localStorage.setItem('openformosa_visited', String(Date.now()));
+          visitorType = 'new_visitor';
+        } else {
+          visitorType = 'returning_visitor';
+        }
+      } else {
+        visitorType = count > 1 ? 'returning_visitor' : 'new_visitor';
+      }
+      if (count <= 1) visitBucket = '1';
+      else if (count <= 3) visitBucket = '2-3';
+      else if (count <= 10) visitBucket = '4-10';
+      else visitBucket = '10+';
+
+      var rawDemand = localStorage.getItem('openformosa_user_demand');
+      if (rawDemand) savedDemand = JSON.parse(rawDemand);
+
+      var rawIntent = localStorage.getItem('openformosa_intent_v2');
+      if (rawIntent) {
+        var intentObj = JSON.parse(rawIntent);
+        savedPersona = intentObj.topPersona || null;
+        savedModel = intentObj.topModel || null;
+        savedTier = intentObj.tier || null;
+      }
+    } catch (e) {}
+
+    var w = window.innerWidth || (window.screen ? window.screen.width : 1024);
+    var devCat = w < 768 ? 'mobile' : (w < 1024 ? 'tablet' : 'desktop');
+    var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = document.documentElement.dataset.theme || (isDark ? 'dark' : 'light');
+    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var netType = (conn && conn.effectiveType) ? conn.effectiveType : 'unknown';
+
+    var userProps = {
+      viewport_class: devCat,
+      screen_resolution: (window.screen ? (window.screen.width + 'x' + window.screen.height) : 'unknown'),
+      preferred_theme: theme,
+      browser_language: (navigator.language || 'unknown').slice(0, 36),
+      ui_language: lang,
+      hardware_concurrency: String(navigator.hardwareConcurrency || 'unknown'),
+      network_type: String(netType).slice(0, 36),
+      visitor_type: visitorType,
+      visit_frequency: visitBucket
+    };
+    if (savedDemand && savedDemand.capability) userProps.user_demand_capability = String(savedDemand.capability).slice(0, 36);
+    if (savedDemand && savedDemand.role) userProps.user_demand_role = String(savedDemand.role).slice(0, 36);
+    if (savedDemand && savedDemand.deployment) userProps.user_demand_deployment = String(savedDemand.deployment).slice(0, 36);
+    if (savedDemand && savedDemand.tags && savedDemand.tags.length) userProps.user_demand_tags = savedDemand.tags.join(',').slice(0, 36);
+    if (savedPersona) userProps.user_persona = String(savedPersona).slice(0, 36);
+    if (savedModel) userProps.primary_model_interest = String(savedModel).slice(0, 36);
+    if (savedTier) userProps.engagement_tier = String(savedTier).slice(0, 36);
+
+    // Set user_properties BEFORE config so the initial page_view & session_start inherit them.
+    gtag('set', 'user_properties', userProps);
+
+    gtag('config', {{ site.google_analytics | jsonify }}, {
+      language: lang,
+      content_language: lang,
+      cookie_flags: 'SameSite=Lax;Secure',
+      page_key: {{ include.page_key | jsonify }},
+      page_type: {{ include.page_type | default: 'page' | jsonify }},
+      send_page_view: true
+    });
+  })();
 </script>

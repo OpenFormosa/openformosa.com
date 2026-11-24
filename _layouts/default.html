@@ -2,32 +2,69 @@
 {%- unless page_key -%}
   {%- assign page_key = page.title | slugify -%}
 {%- endunless -%}
+{%- if page.layout == 'post' -%}
+  {%- assign page_type = 'post' -%}
+{%- elsif page_key == 'home' -%}
+  {%- assign page_type = 'home' -%}
+{%- elsif page_key == 'blog' -%}
+  {%- assign page_type = 'blog_index' -%}
+{%- elsif page_key == 'not_found' -%}
+  {%- assign page_type = 'not_found' -%}
+{%- elsif page_key contains 'form_' -%}
+  {%- assign page_type = 'form' -%}
+{%- else -%}
+  {%- assign page_type = page_key | default: 'page' -%}
+{%- endif -%}
+{%- capture en_page_title -%}{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}{%- endcapture -%}
+{%- assign en_page_description = page.description | default: site.description -%}
 {%- assign meta_title = page.og_title | default: page.zh_title | default: page.title -%}
-{%- capture page_title -%}{% if meta_title %}{{ meta_title }} · {% endif %}{{ site.title }}{%- endcapture -%}
-{%- assign page_description = page.og_description | default: page.zh_description | default: page.description | default: site.description -%}
+{%- capture seo_title -%}{% if meta_title %}{{ meta_title }} · {% endif %}{{ site.title }}{%- endcapture -%}
+{%- assign seo_description = page.og_description | default: page.zh_description | default: page.description | default: site.description -%}
 {%- assign page_url = page.url | absolute_url -%}
 {%- assign page_image = page.og_image | default: '/assets/img/openformosa-og.png' | absolute_url -%}
+{%- assign page_image_alt = page.og_image_alt | default: 'OpenFormosa（開放福爾摩沙）— 台灣開源 AI 基礎模型家族（Barbet 1B、BlueMagpie-TTS、PangolinTokenizer）' -%}
 {%- assign page_locale = page.locale | default: site.locale | default: 'zh_TW' -%}
+{%- assign page_keywords = page.keywords | default: 'OpenFormosa, 開放福爾摩沙, 台灣 AI, 繁體中文 LLM, 開源語言模型, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, 台灣口音 TTS, 台灣 ASR, 台灣 OCR' -%}
 <!doctype html>
-<html lang="{{ page.lang | default: site.lang | default: 'en-US' }}">
+<html lang="{{ page.lang | default: site.lang | default: 'zh-Hant' }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page_title | strip | escape }}</title>
-    <meta name="description" content="{{ page_description | escape }}">
+    <title>{{ seo_title | strip | escape }}</title>
+    <meta name="description" content="{{ seo_description | strip | escape }}">
+    <meta name="keywords" content="{{ page_keywords | strip | escape }}">
+    <meta name="author" content="{{ page.author | default: site.author.name | escape }}">
+    {% if page_type == 'not_found' %}
+    <meta name="robots" content="noindex, follow">
+    {% else %}
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    {% endif %}
     <link rel="canonical" href="{{ page_url | escape }}">
+    <link rel="alternate" hreflang="zh-Hant-TW" href="{{ page_url | escape }}">
+    <link rel="alternate" hreflang="x-default" href="{{ page_url | escape }}">
     <meta property="og:site_name" content="{{ site.title | escape }}">
     <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
     <meta property="og:locale" content="{{ page_locale | escape }}">
     <meta property="og:locale:alternate" content="en_US">
-    <meta property="og:title" content="{{ page_title | strip | escape }}">
-    <meta property="og:description" content="{{ page_description | escape }}">
+    <meta property="og:title" content="{{ seo_title | strip | escape }}">
+    <meta property="og:description" content="{{ seo_description | strip | escape }}">
     <meta property="og:url" content="{{ page_url | escape }}">
     <meta property="og:image" content="{{ page_image | escape }}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ page_image_alt | escape }}">
+    {% if page.layout == 'post' %}
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+    <meta property="article:modified_time" content="{{ page.last_modified_at | default: page.date | date_to_xmlschema }}">
+    <meta property="article:section" content="{{ page.category | default: 'research' | escape }}">
+    {% for tag in page.tags %}<meta property="article:tag" content="{{ tag | escape }}">
+    {% endfor %}{% endif %}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ page_title | strip | escape }}">
-    <meta name="twitter:description" content="{{ page_description | escape }}">
+    <meta name="twitter:title" content="{{ seo_title | strip | escape }}">
+    <meta name="twitter:description" content="{{ seo_description | strip | escape }}">
     <meta name="twitter:image" content="{{ page_image | escape }}">
+    <meta name="twitter:image:alt" content="{{ page_image_alt | escape }}">
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#fff9ed" data-theme-color>
     <script>
@@ -45,32 +82,18 @@
       }());
     </script>
     {%- if jekyll.environment == 'production' and site.google_analytics and site.google_analytics != "" -%}
-    {% include google-analytics.html page_key=page_key %}
+    {% include google-analytics.html page_key=page_key page_type=page_type %}
     {%- endif -%}
     <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
     <link rel="alternate" type="application/atom+xml" title="{{ site.title }} feed" href="{{ '/feed.xml' | absolute_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/main.css?v=brand29' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/i18n.css?v=brand29' | relative_url }}">
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "{% if page.layout == 'post' %}BlogPosting{% else %}WebPage{% endif %}",
-        "name": {{ page_title | strip | jsonify }},
-        "description": {{ page_description | jsonify }},
-        "url": {{ page_url | jsonify }},
-        "image": {{ page_image | jsonify }},
-        "inLanguage": {{ page.lang | default: site.lang | default: 'zh-Hant' | jsonify }},
-        "isPartOf": {
-          "@type": "WebSite",
-          "name": {{ site.title | jsonify }},
-          "url": {{ '/' | absolute_url | jsonify }}
-        }{% if page.layout == 'post' %},
-        "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
-        "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }}{% endif %}
-      }
-    </script>
+    <link rel="alternate" type="text/plain" title="LLMs.txt (AI &amp; LLM summary)" href="{{ '/llms.txt' | absolute_url }}">
+    <link rel="alternate" type="text/plain" title="LLMs Full Context" href="{{ '/llms-full.txt' | absolute_url }}">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ '/sitemap.xml' | absolute_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css?v=brand32' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/i18n.css?v=brand32' | relative_url }}">
+    {% include seo-jsonld.html page_key=page_key page_type=page_type page_url=page_url page_image=page_image seo_title=seo_title seo_description=seo_description %}
   </head>
-  <body class="{{ page.body_class | default: '' }}" data-page-key="{{ page_key }}">
+  <body class="{{ page.body_class | default: '' }}" data-page-key="{{ page_key }}" data-page-type="{{ page_type }}" data-en-title="{{ en_page_title | strip | escape }}" data-en-description="{{ en_page_description | strip | escape }}">
     {% include header.html %}
     <main id="main" tabindex="-1">
       {{ content }}
@@ -79,10 +102,10 @@
     {% if page.math %}
     {% include mathjax.html %}
     {% endif %}
-    <script src="{{ '/assets/js/i18n.js?v=brand31' | relative_url }}"></script>
-    <script src="{{ '/assets/js/main.js?v=brand29' | relative_url }}"></script>
-    {%- if jekyll.environment == 'production' and site.google_analytics and site.google_analytics != "" -%}
-    <script src="{{ '/assets/js/analytics.js?v=brand29' | relative_url }}"></script>
+    <script src="{{ '/assets/js/i18n.js?v=brand32' | relative_url }}"></script>
+    <script src="{{ '/assets/js/main.js?v=brand32' | relative_url }}"></script>
+    {%- if site.google_analytics and site.google_analytics != "" -%}
+    <script src="{{ '/assets/js/analytics.js?v=brand32' | relative_url }}"></script>
     {%- endif -%}
   </body>
 </html>
