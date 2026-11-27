@@ -22,6 +22,7 @@ exclude:
   - CODE_OF_CONDUCT.md
   - CONTRIBUTING.md
   - GOVERNANCE.md
+  - TRADEMARK.md
   - Gemfile
   - Gemfile.lock
   - LICENSE

@@ -71,10 +71,12 @@ Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意�
 
 ## 5. Organization, Governance & Participation
 
-**繁體中文**：OpenFormosa 是由貢獻者共同完成的非法人開源社群專案，目前尚未登記為社團法人或財團法人。成果的 credit 屬於所有貢獻者，技術報告以「OpenFormosa Contributors」署名。角色分為貢獻者、審查者、維護者與指導小組（3 至 5 人，每年改選，同一雇主或實驗室不超過半數）。一般變更採 72 小時 lazy consensus，重大變更需公開 RFC 並經三分之二維護者同意，決策記錄在 GitHub。現階段不接受大眾捐款。致謝：Taipei-1 提供運算資源，臺大語音實驗室提供研究支持；支持單位不擁有成果，也不主導社群決策。聯絡：contact@openformosa.com。
+**繁體中文**：OpenFormosa 是由貢獻者共同完成的非法人開源社群專案，目前尚未登記為社團法人或財團法人。成果的 credit 屬於所有貢獻者，技術報告以「OpenFormosa Contributors」署名。角色分為貢獻者、審查者、維護者與指導小組（3 至 5 人，每年改選，同一雇主或實驗室不超過半數）。一般變更採 72 小時 lazy consensus，重大變更需公開 RFC 並經三分之二維護者同意，決策記錄在 GitHub。現階段不接受大眾捐款。致謝：Taipei-1 提供運算資源，臺大語音實驗室與 NTU SPML Lab 提供研究支持；支持單位不擁有成果，也不主導社群決策。聯絡：hello@openformosa.com。
 
-**English**: OpenFormosa is an unincorporated, community-run open-source project; it is not yet a registered association or foundation. Credit belongs to all contributors, and technical reports are authored as "OpenFormosa Contributors". Roles: contributor, reviewer, maintainer, and a 3–5 person steering group elected yearly (no more than half from one employer or lab). Everyday changes use 72-hour lazy consensus; major changes need a public RFC and two thirds of maintainers; decisions are recorded on GitHub. No public donations are accepted at this stage. Acknowledgements: compute from Taipei-1 and research support from the NTU Speech Lab; supporters do not own results or direct decisions. Community page: {{ '/community/' | absolute_url }} · Governance: https://github.com/OpenFormosa/openformosa.com/blob/main/GOVERNANCE.md · Contact: contact@openformosa.com
+**English**: OpenFormosa is an unincorporated, community-run open-source project; it is not yet a registered association or foundation. Credit belongs to all contributors, and technical reports are authored as "OpenFormosa Contributors". Roles: contributor, reviewer, maintainer, and a 3–5 person steering group elected yearly (no more than half from one employer or lab). Everyday changes use 72-hour lazy consensus; major changes need a public RFC and two thirds of maintainers; decisions are recorded on GitHub. No public donations are accepted at this stage. Acknowledgements: compute from Taipei-1 and research support from the NTU Speech Lab and the NTU SPML Lab; supporters do not own results or direct decisions. Community page: {{ '/community/' | absolute_url }} · Governance: https://github.com/OpenFormosa/openformosa.com/blob/main/GOVERNANCE.md · Contact: hello@openformosa.com
 
+
+Policies: Privacy {{ '/privacy/' | absolute_url }} · Terms {{ '/terms/' | absolute_url }} · Acceptable Use {{ '/acceptable-use/' | absolute_url }} · Sponsorship {{ '/sponsorship/' | absolute_url }} · Press Kit {{ '/press/' | absolute_url }} · Security https://github.com/OpenFormosa/openformosa.com/blob/main/SECURITY.md
 ---
 
 ## 6. Technical Build Logs & Reports

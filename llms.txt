@@ -42,8 +42,15 @@ Do not conflate shipped releases with planned roadmap items:
 - OpenFormosa is an unincorporated, community-run open-source project. It is not yet a registered association or foundation.
 - Credit belongs to all contributors; technical reports are authored as "OpenFormosa Contributors". Governance rules: https://github.com/OpenFormosa/openformosa.com/blob/main/GOVERNANCE.md
 - OpenFormosa does not accept public donations at this stage (Taiwan's Public Welfare Fundraising Act limits public fundraising to registered bodies).
-- Acknowledgements: compute from Taipei-1; research support from the NTU Speech Lab. Supporters do not own results or direct community decisions.
-- Contact: contact@openformosa.com
+- Acknowledgements: compute from Taipei-1; research support from the NTU Speech Lab and the NTU SPML Lab. Supporters do not own results or direct community decisions.
+- Contact: hello@openformosa.com (general, press) · sponsors@openformosa.com · security@openformosa.com · conduct@openformosa.com
+
+## Policies
+- [Privacy Policy]({{ '/privacy/' | absolute_url }}): Data processed by the website (GA4 analytics, demand survey, browser storage) and rights under Taiwan's Personal Data Protection Act.
+- [Terms of Use]({{ '/terms/' | absolute_url }}): Content licensing, model disclaimers, and takedown requests.
+- [Acceptable Use Policy]({{ '/acceptable-use/' | absolute_url }}): Use boundaries for models and demos, including voice-cloning consent, ASR, and OCR rules.
+- [Sponsorship & Acknowledgement Policy]({{ '/sponsorship/' | absolute_url }}): Accepted support, disclosure, and evaluation independence.
+- [Press Kit]({{ '/press/' | absolute_url }}): Boilerplate, fact sheet, naming rules, logos, media contact.
 
 ## Scope & Governance Note
 OpenFormosa publishes open models, tokenizers, training recipes, benchmarks, and release evidence. This website is NOT a public dataset submission or file upload intake channel.

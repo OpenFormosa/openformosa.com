@@ -22,7 +22,7 @@ OpenFormosa welcomes contributors across languages, disciplines, and communities
 
 ## 回報 / Reporting
 
-請寄信到 **contact@openformosa.com**，主旨註明「行為準則」或 "Code of Conduct"。也可以私訊任一位 Discord 管理員。
+請寄信到 **conduct@openformosa.com**。也可以私訊任一位 Discord 管理員。
 
 - 回報內容只由指導小組（過渡期為現任維護者）閱讀。
 - 與事件有關的成員應迴避處理。
