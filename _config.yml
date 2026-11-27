@@ -19,6 +19,8 @@ kramdown:
   syntax_highlighter: rouge
 exclude:
   - README.md
+  - README.en.md
+  - docs
   - CODE_OF_CONDUCT.md
   - CONTRIBUTING.md
   - GOVERNANCE.md
