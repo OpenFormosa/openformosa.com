@@ -216,3 +216,33 @@ document.querySelectorAll("[data-copy]").forEach((btn) => {
     players.forEach((audio) => audio.pause());
   });
 })();
+
+/* BlackBear-ASR post: streaming caption illustration and bar animation */
+(() => {
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const steps = [["", ""], ["", "今仔"], ["", "今仔日天"], ["今仔日", "天氣真"], ["今仔日天氣", "真好，我"],
+    ["今仔日天氣真好，", "我們等"], ["今仔日天氣真好，我們", "等一下去"], ["今仔日天氣真好，我們等一下", "去夜市"],
+    ["今仔日天氣真好，我們等一下去夜市", ""]];
+  document.querySelectorAll("[data-asr-stream]").forEach((fig) => {
+    const c = fig.querySelector(".asr-stream__c"), p = fig.querySelector(".asr-stream__p");
+    const ticks = fig.querySelector(".asr-stream__ticks");
+    if (!c || !p || !ticks) return;
+    steps.forEach(() => ticks.appendChild(document.createElement("span")));
+    const show = (k) => {
+      c.textContent = steps[k][0]; p.textContent = steps[k][1];
+      [...ticks.children].forEach((t, i) => { t.className = i < k ? "is-done" : i === k ? "is-now" : ""; });
+    };
+    if (reduce || !("IntersectionObserver" in window)) { show(steps.length - 1); return; }
+    let timer = null;
+    const play = () => {
+      clearInterval(timer); let k = 0; show(0);
+      timer = setInterval(() => { k += 1; if (k >= steps.length) { clearInterval(timer); setTimeout(play, 2400); return; } show(k); }, 640);
+    };
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { play(); io.disconnect(); } }), { threshold: .5 });
+    io.observe(fig);
+  });
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-playing"); io.unobserve(e.target); } }), { threshold: .3 });
+    document.querySelectorAll(".asr-bars").forEach((s) => io.observe(s));
+  }
+})();
