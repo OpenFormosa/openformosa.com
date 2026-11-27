@@ -64,7 +64,7 @@ barbet-infer run --family mini \
 **這三個月的變化：**
 
 - **一頁看懂所有專案。** [所有專案]({{ '/projects/' | relative_url }})頁面把每個 repo 分成四類，並提供兩種讀法：想直接用的人看成果，研究人員看技術細節與每個數字的測試條件。
-- **授權統一。** 程式碼、文件、網站內容與模型權重改採 Apache 2.0。BlueMagpie-TTS V1 因內附的預設語者向量限非商用，維持原本的授權。
+- **授權統一。** 程式碼、文件與網站內容改採 Apache 2.0。Barbet 與今年新釋出的模型權重，也採 Apache 2.0。BlueMagpie-TTS V1 因內附的預設語者向量限非商用，維持原本的授權。
 - **治理與政策公開。** [社群與治理]({{ '/community/' | relative_url }})說明怎麼參與、怎麼做決定。[隱私權]({{ '/privacy/' | relative_url }})、[使用規範]({{ '/acceptable-use/' | relative_url }})與[服務條款]({{ '/terms/' | relative_url }})也都已上線。
 - **聯絡管道。** 一般與媒體聯絡請寄 hello@openformosa.com，安全問題請寄 security@openformosa.com。日常討論在 [Discord](https://discord.gg/N4YnrjjcW7)。
 - **咱來學台語。** 7 月上線的[台語學習網站](https://openformosa.github.io/OpenTaigi/)，把教育部公開教材整理成手機也好用的互動課程。它現在列在專案頁的「應用」類別。
@@ -140,7 +140,7 @@ At the end of August we released Barbet 1B Base with a native context of 1,048,5
 **What changed:**
 
 - **One page for every project.** The [Projects]({{ '/projects/' | relative_url }}) page groups every repository into four categories with two reading routes: results for people who want to use things, and technical details with the test condition behind each number for researchers.
-- **One license.** Code, docs, site content, and model weights now use Apache 2.0. BlueMagpie-TTS V1 keeps its original license because its bundled default speaker vector is non-commercial only.
+- **One license.** Code, docs, and site content now use Apache 2.0. The weights of Barbet and of the models we release this year also use Apache 2.0. BlueMagpie-TTS V1 keeps its original license because its bundled default speaker vector is non-commercial only.
 - **Open governance and policies.** [Community and governance]({{ '/community/' | relative_url }}) explains how to take part and how decisions are made. The [privacy]({{ '/privacy/' | relative_url }}), [acceptable use]({{ '/acceptable-use/' | relative_url }}), and [terms]({{ '/terms/' | relative_url }}) pages are live.
 - **Contact.** Write to hello@openformosa.com for general and press questions, and security@openformosa.com for security issues. Day-to-day discussion happens on [Discord](https://discord.gg/N4YnrjjcW7).
 - **Learn Taigi.** The [Taigi learning site](https://openformosa.github.io/OpenTaigi/), launched in July, turns the Ministry of Education's open course material into interactive lessons that work on phones. It is now listed under Applications on the Projects page.
