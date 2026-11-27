@@ -1,0 +1,219 @@
+---
+layout: default
+title: Projects
+zh_title: 所有專案（模型、斷詞與評測、技能、學習網站）
+i18n_key: projects
+permalink: /projects/
+description: Every OpenFormosa open-source project in one place, grouped by category. Read the results, or read the technical details, then try the demos.
+zh_description: OpenFormosa 所有開源專案的分類總覽：Barbet、BlueMagpie-TTS、PangolinTokenizer、PangolinBench、ubi_tokenizer、Barbet Skill Library 與咱來學台語。想看成果或想看技術細節，都從這裡開始，最後親手試試看。
+keywords: OpenFormosa 專案, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, PangolinBench, ubi_tokenizer, Barbet Skill Library, OpenTaigi, 咱來學台語, 台灣開源 AI
+---
+{%- comment -%}
+  Content lives in _data/projects.yml. This template only lays it out.
+  Bilingual text uses .l-zh / .l-en blocks (see the "Projects directory" section in main.css).
+  The route switch toggles [data-route] between "public" (results) and "research" (technical details).
+{%- endcomment -%}
+{%- assign data = site.data.projects -%}
+{%- assign status_order = "shipped,live,upcoming,planned" | split: "," -%}
+<div class="pj" data-route="public" data-pj-root>
+
+<header class="page-hero section-pad">
+  <p class="eyebrow"><span class="l-zh">所有專案</span><span class="l-en">All projects</span></p>
+  <h1><span class="l-zh">OpenFormosa 的每一個專案，都在這裡。</span><span class="l-en">Every OpenFormosa project, in one place.</span></h1>
+  <p class="lede"><span class="l-zh">我們把專案分成四類。每個專案都有兩種讀法：想知道它能幫你做什麼，看成果；想知道它怎麼做到，看技術細節。兩條路最後都通往同一件事：親手試試看。</span><span class="l-en">We group the projects into four categories. Each one can be read two ways. Read the results to see what it does for you, or read the technical details to see how it works. Both routes end in the same place: try it yourself.</span></p>
+  <div class="pj-switch" role="group" aria-label="Reading route">
+    <button type="button" class="pj-route-btn" data-pj-route="public" aria-pressed="true">
+      <strong><span class="l-zh">我想看成果</span><span class="l-en">Show me results</span></strong>
+      <span><span class="l-zh">第一次來、想直接用的人。用白話說明每個專案能做什麼。</span><span class="l-en">For first-time visitors who want to use things. Plain words on what each project does.</span></span>
+    </button>
+    <button type="button" class="pj-route-btn" data-pj-route="research" aria-pressed="false">
+      <strong><span class="l-zh">我想看技術細節</span><span class="l-en">Show me the details</span></strong>
+      <span><span class="l-zh">研究人員與開發者。架構、數字，以及每個數字的測試條件。</span><span class="l-en">For researchers and developers. Architecture, numbers, and the test condition behind each number.</span></span>
+    </button>
+  </div>
+  <nav class="pj-jump" aria-label="Categories">
+    {%- for c in data.categories %}
+    <a href="#cat-{{ c.id }}"><span class="l-zh">{{ c.zh.title }}</span><span class="l-en">{{ c.en.title }}</span></a>
+    {%- endfor %}
+    <a href="#roadmap"><span class="l-zh">接下來</span><span class="l-en">What's next</span></a>
+    <a href="#try"><span class="l-zh">試試看</span><span class="l-en">Try it</span></a>
+  </nav>
+</header>
+
+<section class="section section-pad">
+  <div class="section-head">
+    <h2><span class="l-zh">它們怎麼接在一起</span><span class="l-en">How they fit together</span></h2>
+    <p><span class="l-zh">先把文字切好，再讓模型理解，最後變成聲音、文字或答案。評測工具在每一步檢查品質。</span><span class="l-en">Split the text first, let the model understand it, then turn it into speech, text, or answers. Benchmarks check quality at every step.</span></p>
+  </div>
+  <ol class="pj-flow">
+    <li style="--accent:var(--pangolin)">
+      <span class="pj-flow-step">1</span>
+      <strong><span class="l-zh">切字</span><span class="l-en">Split</span></strong>
+      <span>PangolinTokenizer · ubi_tokenizer</span>
+      <small><span class="l-zh">把句子切成模型讀得懂的小片段。PangolinBench 檢查切得好不好。</span><span class="l-en">Cut sentences into pieces a model can read. PangolinBench checks the result.</span></small>
+    </li>
+    <li style="--accent:var(--barbet)">
+      <span class="pj-flow-step">2</span>
+      <strong><span class="l-zh">理解</span><span class="l-en">Understand</span></strong>
+      <span>Barbet 1B</span>
+      <small><span class="l-zh">共同底座。讀懂台灣的文字與長文件。技能庫教它照步驟做事。</span><span class="l-en">The shared base that reads Taiwan text and long documents. The skill library teaches it to follow steps.</span></small>
+    </li>
+    <li style="--accent:var(--bluemagpie)">
+      <span class="pj-flow-step">3</span>
+      <strong><span class="l-zh">說、聽、讀</span><span class="l-en">Speak, listen, read</span></strong>
+      <span>BlueMagpie · BlackBear · SikaDeer</span>
+      <small><span class="l-zh">接在底座上的任務模型：語音合成、語音辨識、文件辨識。</span><span class="l-en">Task models on the base: speech synthesis, speech recognition, and document reading.</span></small>
+    </li>
+  </ol>
+</section>
+
+{%- for c in data.categories %}
+<section class="section section-pad pj-cat" id="cat-{{ c.id }}">
+  <div class="section-head">
+    <h2><span class="l-zh">{{ c.zh.title }}</span><span class="l-en">{{ c.en.title }}</span></h2>
+    <p><span class="l-zh">{{ c.zh.desc }}</span><span class="l-en">{{ c.en.desc }}</span></p>
+  </div>
+  <div class="pj-grid">
+  {%- for st in status_order %}
+  {%- assign items = data.projects | where: "category", c.id | where: "status", st -%}
+  {%- for p in items %}
+    {%- assign compact = false -%}
+    {%- if p.status == "upcoming" or p.status == "planned" -%}{%- assign compact = true -%}{%- endif -%}
+    <article class="pj-card{% if compact %} is-compact{% endif %}" id="{{ p.id }}" style="--accent:var(--{{ p.accent }})">
+      <div class="pj-card-head">
+        {%- if p.crest and compact == false %}{% include crest.html type=p.crest %}{% endif %}
+        <div>
+          <h3><span class="l-zh">{{ p.name }}</span><span class="l-en">{{ p.name_en | default: p.name }}</span></h3>
+          <span class="card-tags">
+            <span class="role">{{ p.role }}</span>
+            {%- case p.status -%}
+            {%- when "shipped" %}<span class="status-badge is-shipped"><span class="l-zh">已釋出</span><span class="l-en">Shipped</span></span>
+            {%- when "live" %}<span class="status-badge is-shipped"><span class="l-zh">上線中</span><span class="l-en">Live</span></span>
+            {%- when "upcoming" %}<span class="status-badge is-progress"><span class="l-zh">預計 {{ p.release | date: "%-m/%-d" }} 這週</span><span class="l-en">Week of {{ p.release | date: "%b %-d" }}</span></span>
+            {%- else %}<span class="status-badge is-planned"><span class="l-zh">研發中</span><span class="l-en">In development</span></span>
+            {%- endcase %}
+          </span>
+        </div>
+      </div>
+      <p class="pj-tagline"><span class="l-zh">{{ p.zh.tagline }}</span><span class="l-en">{{ p.en.tagline }}</span></p>
+
+      <div class="pj-route pj-route-public">
+        <p class="pj-analogy"><span class="l-zh">{{ p.zh.analogy }}</span><span class="l-en">{{ p.en.analogy }}</span></p>
+        <ul class="pj-list l-zh">{% for b in p.zh.public %}<li>{{ b }}</li>{% endfor %}</ul>
+        <ul class="pj-list l-en">{% for b in p.en.public %}<li>{{ b }}</li>{% endfor %}</ul>
+        {%- if p.zh.try_note %}<p class="pj-note"><span class="l-zh">{{ p.zh.try_note }}</span><span class="l-en">{{ p.en.try_note }}</span></p>{% endif %}
+      </div>
+
+      <div class="pj-route pj-route-research">
+        <ul class="pj-list l-zh">{% for b in p.zh.research %}<li>{{ b }}</li>{% endfor %}</ul>
+        <ul class="pj-list l-en">{% for b in p.en.research %}<li>{{ b }}</li>{% endfor %}</ul>
+        {%- if p.try_dev %}
+        <div class="pj-dev">
+          <p class="pj-dev-title"><span class="l-zh">{{ p.try_dev.zh }}</span><span class="l-en">{{ p.try_dev.en }}</span></p>
+          {%- if p.try_dev.code %}<pre><code>{{ p.try_dev.code | strip | escape }}</code></pre>{% endif %}
+          {%- if p.try_dev.url %}<a class="btn" href="{{ p.try_dev.url }}" target="_blank" rel="noopener"><span class="l-zh">{{ p.try_dev.label_zh }}</span><span class="l-en">{{ p.try_dev.label_en }}</span></a>{% endif %}
+        </div>
+        {%- endif %}
+      </div>
+
+      {%- unless compact %}
+      <div class="pj-actions">
+        {%- if p.try %}
+        {%- assign try_ext = p.try.url | slice: 0, 4 -%}
+        <a class="btn primary pj-try" href="{{ p.try.url | relative_url }}"{% if try_ext == "http" %} target="_blank" rel="noopener"{% endif %}><span class="l-zh">{{ p.try.zh }}</span><span class="l-en">{{ p.try.en }}</span> →</a>
+        {%- endif %}
+        <span class="pj-links">
+          {%- if p.repo %}<a href="{{ p.repo }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+          {%- for l in p.links %}
+          {%- assign l_ext = l.url | slice: 0, 4 -%}
+          <a href="{{ l.url | relative_url }}"{% if l_ext == "http" %} target="_blank" rel="noopener"{% endif %}><span class="l-zh">{{ l.zh }}</span><span class="l-en">{{ l.en }}</span></a>
+          {%- endfor %}
+        </span>
+      </div>
+      {%- endunless %}
+
+      {%- if p.zh.join %}
+      <p class="pj-join"><strong><span class="l-zh">如何參與</span><span class="l-en">How to help</span></strong>
+        <span class="l-zh">{{ p.zh.join }}</span><span class="l-en">{{ p.en.join }}</span>
+        {%- if p.repo %} <a href="{{ p.repo }}/issues" target="_blank" rel="noopener">Issues →</a>{% endif %}
+      </p>
+      {%- endif %}
+    </article>
+  {%- endfor %}
+  {%- endfor %}
+  </div>
+</section>
+{%- endfor %}
+
+<section class="section section-pad" id="roadmap">
+  <div class="section-head">
+    <h2><span class="l-zh">接下來：每週發一個模型</span><span class="l-en">What's next: one model a week</span></h2>
+    <p><span class="l-zh">從 11/30 這週開始，我們預計每週釋出一個模型。每次釋出都附上白話的使用報告、使用說明與 demo。時程是預估，準備好才會發。</span><span class="l-en">Starting the week of Nov 30, we plan to release one model a week. Every release comes with a plain-language usage report, a guide, and a demo. Dates are estimates, and nothing ships before it is ready.</span></p>
+  </div>
+  {%- assign upcoming = data.projects | where: "status", "upcoming" | sort: "release" -%}
+  <ol class="pj-timeline">
+    {%- for p in upcoming %}
+    <li style="--accent:var(--{{ p.accent }})">
+      <time datetime="{{ p.release }}"><span class="l-zh">{{ p.release | date: "%-m/%-d" }} 這週</span><span class="l-en">Week of {{ p.release | date: "%b %-d" }}</span></time>
+      <div>
+        <a href="#{{ p.id }}"><strong><span class="l-zh">{{ p.name }}</span><span class="l-en">{{ p.name_en | default: p.name }}</span></strong></a>
+        <p><span class="l-zh">{{ p.zh.tagline }}</span><span class="l-en">{{ p.en.tagline }}</span></p>
+      </div>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- assign later = data.projects | where: "status", "planned" -%}
+  {%- if later.size > 0 %}
+  <p class="pj-later"><strong><span class="l-zh">還在研發，今年不會釋出：</span><span class="l-en">Still in development, not releasing this year:</span></strong>
+    {% for p in later %}<a href="#{{ p.id }}">{{ p.name_en | default: p.name }}</a>{% unless forloop.last %}、{% endunless %}{% endfor %}
+  </p>
+  {%- endif %}
+</section>
+
+<section class="section section-pad" id="try">
+  <div class="section-head">
+    <h2><span class="l-zh">兩條路的終點：親手試試看</span><span class="l-en">Where both routes end: try it yourself</span></h2>
+    <p><span class="l-zh">讀再多介紹，都不如自己聽一次、用一次。下面這些不需要安裝。</span><span class="l-en">No description beats hearing or using it once. None of these need an install.</span></p>
+  </div>
+  <div class="pj-try-grid">
+    {%- for p in data.projects %}
+    {%- if p.try and p.status != "upcoming" and p.status != "planned" %}
+    {%- assign try_ext = p.try.url | slice: 0, 4 -%}
+    <a class="pj-try-card" style="--accent:var(--{{ p.accent }})" href="{{ p.try.url | relative_url }}"{% if try_ext == "http" %} target="_blank" rel="noopener"{% endif %}>
+      <span class="pj-try-name"><span class="l-zh">{{ p.name }}</span><span class="l-en">{{ p.name_en | default: p.name }}</span></span>
+      <strong><span class="l-zh">{{ p.try.zh }}</span><span class="l-en">{{ p.try.en }}</span> →</strong>
+    </a>
+    {%- endif %}
+    {%- endfor %}
+  </div>
+  <div class="pj-join-all">
+    <p><span class="l-zh">想一起做？回報問題、改文件、提議新技能，或到 Discord 聊聊你想用在哪裡。每一份貢獻都會被記下來。</span><span class="l-en">Want to build with us? Report issues, improve docs, propose a skill, or tell us on Discord where you want to use it. Every contribution is credited.</span></p>
+    <a class="btn green" href="https://discord.gg/N4YnrjjcW7" target="_blank" rel="noopener"><span class="l-zh">加入 Discord</span><span class="l-en">Join Discord</span></a>
+    <a class="btn" href="https://github.com/OpenFormosa" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <p class="pj-thanks"><span class="l-zh">感謝 Taipei-1、臺大語音實驗室（NTU Speech Lab）與 NTU SPML Lab 提供的支持，也感謝每一位回報問題、改進程式與文件的貢獻者。</span><span class="l-en">Thanks to Taipei-1, NTU Speech Lab, and NTU SPML Lab for their support, and to every contributor who reports issues and improves the code and docs.</span></p>
+</section>
+
+</div>
+<script>
+(function () {
+  var root = document.querySelector("[data-pj-root]");
+  if (!root) return;
+  var buttons = root.querySelectorAll("[data-pj-route]");
+  function setRoute(route, push) {
+    if (route !== "public" && route !== "research") return;
+    root.dataset.route = route;
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.pjRoute === route)); });
+    if (push && window.history && history.replaceState) {
+      var url = new URL(window.location.href);
+      url.searchParams.set("route", route);
+      history.replaceState(null, "", url);
+    }
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () { setRoute(b.dataset.pjRoute, true); });
+  });
+  var initial = new URL(window.location.href).searchParams.get("route");
+  if (initial) setRoute(initial, false);
+})();
+</script>
