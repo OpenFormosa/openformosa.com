@@ -12,7 +12,7 @@ layout: null
       {% if page.url == "/" %}
         {% assign priority = "1.0" %}
         {% assign freq = "weekly" %}
-      {% elsif page.url == "/models/" or page.url == "/blog/" or page.url == "/roadmap/" %}
+      {% elsif page.url == "/models/" or page.url == "/projects/" or page.url == "/blog/" or page.url == "/roadmap/" %}
         {% assign priority = "0.9" %}
         {% assign freq = "weekly" %}
       {% elsif page.url contains "/forms/" %}

@@ -148,7 +148,7 @@
       "@id": {{ site_root | append: '#model-barbet' | jsonify }},
       "name": "Barbet 1B Base",
       "alternateName": ["OpenFormosa Barbet", "OpenFormosa-Base", "五色鳥 1B 模型"],
-      "description": "1B-parameter hybrid decoder-only causal language model for Traditional Chinese and Taiwan context — global and sliding-window attention interleaved with Mamba, 256K native context / 1M RoPE extrapolation, #1 open 1B model on TAIDE-14 (0.7488 bits/byte).",
+      "description": "1B-parameter hybrid decoder-only causal language model for Traditional Chinese and Taiwan context — global and sliding-window attention interleaved with Mamba, native 1,048,576-token context in the released weights (continued-pretrained on exact 1M sequences).",
       "codeRepository": "https://github.com/OpenFormosa/Barbet",
       "url": "https://github.com/OpenFormosa/Barbet",
       "programmingLanguage": "Python",
@@ -162,7 +162,7 @@
       "alternateName": ["台灣藍鵲語音合成", "OpenFormosa BlueMagpie TTS"],
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Linux, macOS, Windows",
-      "description": "Open-source Taiwanese-accent and Chinese-English code-switching text-to-speech model combining VoxCPM's acoustic stack with Barbet LM (CER 4.81%, WER 5.36% on a 500-sentence hard test set via Breeze-ASR-25, ~58% CER reduction).",
+      "description": "Open-source Taiwanese-accent and Chinese-English code-switching text-to-speech model combining VoxCPM's acoustic stack with Barbet LM (V1: CER 7.44% vs. 11.45% for the reference baseline on an internal held-out set, about 35% lower).",
       "url": "https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo",
       "offers": {
         "@type": "Offer",
@@ -200,7 +200,7 @@
           "name": "OpenFormosa 目前已釋出哪些開源模型？哪些仍在規劃中？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "目前已正式釋出三項成果：(1) Barbet 1B Base（1B 混合式基底模型、權重與技術報告，github.com/OpenFormosa/Barbet）；(2) BlueMagpie-TTS（台灣口音與中英夾雜語音合成模型與 Hugging Face 線上 Demo）；(3) PangolinTokenizer（114,688 merges 台灣多語斷詞器、UbiTok 套件與 PangolinBench 評測組）。BlackBear-ASR 與 SikaDeer-OCR 目前為規劃中（Planned），尚未訓練釋出。"
+            "text": "目前已正式釋出三項成果：(1) Barbet 1B Base（1B 混合式基底模型、權重與技術報告，github.com/OpenFormosa/Barbet）；(2) BlueMagpie-TTS（台灣口音與中英夾雜語音合成模型與 Hugging Face 線上 Demo）；(3) PangolinTokenizer（114,688 merges 台灣多語斷詞器、UbiTok 套件與 PangolinBench 評測組）。BlackBear-ASR 已訓練完成，預計 11/30 這週釋出；SikaDeer-OCR 預計 12/7 這週釋出。"
           }
         },
         {
@@ -208,7 +208,7 @@
           "name": "台灣口音、中英夾雜的開源 TTS 語音合成模型推薦哪一款？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "OpenFormosa 開源的 BlueMagpie-TTS 專為台灣口音中文與中英夾雜（code-switching）設計，保留 VoxCPM 聲學堆疊並替換為 Barbet 語言模型，在 500 句高難度中英混雜測試集上經 Breeze-ASR-25 往返評測達到 CER 4.81%、WER 5.36%（字元錯誤率相對參考模型下降約 58%），並提供 Hugging Face Space 即時線上試聽。"
+            "text": "OpenFormosa 開源的 BlueMagpie-TTS 專為台灣口音中文與中英夾雜（code-switching）設計，保留 VoxCPM 聲學堆疊並替換為 Barbet 語言模型，V1 在內部保留測試集上的字元錯誤率為 7.44%，參考基準系統為 11.45%，約降低 35%，並提供 Hugging Face Space 即時線上試聽。"
           }
         },
         {
