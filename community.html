@@ -1,0 +1,159 @@
+---
+layout: default
+title: Community
+zh_title: 參與 OpenFormosa（開放福爾摩沙）— 社群現況、治理方式與支持方法
+i18n_key: community
+description: How OpenFormosa works as a community project today, how decisions and credit are shared, and how people can take part or support it.
+zh_description: OpenFormosa 是由貢獻者共同完成的開源社群專案。本頁說明組織現況、核心原則、治理與 credit 方式、參與管道，以及目前接受與不接受的支持形式。
+keywords: OpenFormosa 社群, 開放福爾摩沙 參與, 台灣開源 AI 貢獻, OpenFormosa 治理, 台灣開源社群 Discord
+---
+<header class="page-hero section-pad"><p class="eyebrow" data-i18n="community_eyebrow">Community</p><h1 data-i18n="community_h1">Everyone who contributes is OpenFormosa.</h1><p class="lede" data-i18n="community_lede">OpenFormosa is an open community project. Models, evaluation, documentation, and language review are built by contributors together. We write the rules down so the project does not depend on any single person.</p></header>
+
+<section class="section section-pad" id="status">
+  <div class="section-head">
+    <h2 data-i18n="community_status_title">Where we are today</h2>
+  </div>
+  <p class="lede about-section-lede" data-i18n="community_status_desc">We would rather state the current situation plainly than describe a larger community than we have.</p>
+  <div class="directory-grid">
+    <article class="directory-card"><span class="tag" data-i18n="community_status_form_tag">Form</span><h3 data-i18n="community_status_form_title">An unincorporated open-source community</h3><p data-i18n="community_status_form_text">OpenFormosa is not yet a registered association or foundation. It runs as an open-source community with a written governance document. We will consider incorporating once enough people take part on a regular basis.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_status_people_tag">People</span><h3 data-i18n="community_status_people_title">A small core, opening up</h3><p data-i18n="community_status_people_text">The number of active maintainers is still small. We are moving account access, release decisions, and review rights to more people, so that no project stops when one person leaves.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_status_support_tag">Support</span><h3 data-i18n="community_status_support_title">Who supports the work</h3><p data-i18n="community_status_support_text">Compute currently comes from Taipei-1, and research support from the NTU Speech Lab and the NTU SPML Lab. We thank them below. Supporters do not own OpenFormosa's results and do not direct community decisions.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_status_money_tag">Funding</span><h3 data-i18n="community_status_money_title">No public fundraising yet</h3><p data-i18n="community_status_money_text">We do not accept public donations at this stage. Under Taiwan's Public Welfare Fundraising Act, only certain registered bodies may raise money from the public. We will publish a transparent arrangement before accepting any funds.</p></article>
+  </div>
+</section>
+
+<section class="section section-pad" id="principles">
+  <div class="section-head">
+    <h2 data-i18n="community_principles_title">Five working principles</h2>
+  </div>
+  <p class="lede about-section-lede" data-i18n="community_principles_desc">These principles decide the hard cases. When a choice is unclear, we pick the option that keeps the work open and shared.</p>
+  <div class="symbol-grid">
+    <article class="symbol-card" style="border-top:10px solid var(--green)">
+      <span class="key" data-i18n="community_p1_k">Open by default</span>
+      <p data-i18n="community_p1_text">Weights, code, evaluation methods, and decisions are public by default.</p>
+    </article>
+    <article class="symbol-card" style="border-top:10px solid var(--blue)">
+      <span class="key" data-i18n="community_p2_k">The mission outlasts the organization</span>
+      <p data-i18n="community_p2_text">Released work stays under open licenses that cannot be withdrawn. A future change of legal form cannot close what was already opened.</p>
+    </article>
+    <article class="symbol-card" style="border-top:10px solid var(--red)">
+      <span class="key" data-i18n="community_p3_k">Credit belongs to contributors</span>
+      <p data-i18n="community_p3_text">Every release lists the people who made it and what they did. Code is only one kind of contribution.</p>
+    </article>
+    <article class="symbol-card">
+      <span class="key" data-i18n="community_p4_k">No one is irreplaceable</span>
+      <p data-i18n="community_p4_text">Every key account has at least two administrators. Decisions are recorded in public, so anyone can pick up the work.</p>
+    </article>
+    <article class="symbol-card">
+      <span class="key" data-i18n="community_p5_k">Supporters do not steer</span>
+      <p data-i18n="community_p5_text">Sponsors and supporting institutions receive thanks and transparency, not decision rights or exclusive access to results.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section section-pad" id="governance">
+  <div class="section-head">
+    <h2 data-i18n="community_gov_title">How decisions are made</h2>
+    <p data-i18n="community_gov_desc">Roles are earned by contribution and can be held by anyone. The full rules live in GOVERNANCE.md.</p>
+  </div>
+  <div class="timeline">
+    <div class="timeline-card"><time data-i18n="community_role1_k">Contributor</time><div><h3 data-i18n="community_role1_title">Anyone with an accepted contribution</h3><p data-i18n="community_role1_text">Code, evaluation, documentation, translation, language review, design, community work, or a well-documented error case. You are listed as a contributor.</p></div></div>
+    <div class="timeline-card"><time data-i18n="community_role2_k">Reviewer</time><div><h3 data-i18n="community_role2_title">Sustained contributors in one project</h3><p data-i18n="community_role2_text">Nominated by maintainers. Reviewers can review and approve pull requests.</p></div></div>
+    <div class="timeline-card"><time data-i18n="community_role3_k">Maintainer</time><div><h3 data-i18n="community_role3_title">People who keep a project moving</h3><p data-i18n="community_role3_text">Added by consensus of current maintainers. Maintainers merge changes and publish releases. Inactive maintainers become emeritus and keep their credit.</p></div></div>
+    <div class="timeline-card"><time data-i18n="community_role4_k">Steering group</time><div><h3 data-i18n="community_role4_title">Three to five people, elected yearly</h3><p data-i18n="community_role4_text">Handles cross-project decisions, shared accounts, and code-of-conduct reports. No more than half may share an employer or laboratory.</p></div></div>
+  </div>
+  <div class="split">
+    <div class="soft-panel prose">
+      <h3 data-i18n="community_dec_title">Decision rules</h3>
+      <ul>
+        <li data-i18n="community_dec_1">Everyday changes pass by lazy consensus: no objection within 72 hours.</li>
+        <li data-i18n="community_dec_2">Major changes (licenses, governance, assets, new projects) need a public RFC, at least 7 days of discussion, and two thirds of maintainers.</li>
+        <li data-i18n="community_dec_3">Discussions can happen on Discord. Decisions are recorded on GitHub.</li>
+      </ul>
+    </div>
+    <div class="soft-panel prose">
+      <h3 data-i18n="community_credit_title">How credit works</h3>
+      <ul>
+        <li data-i18n="community_credit_1">Contributor lists cover code, docs, evaluation, data review, translation, language review, design, infrastructure, and community work.</li>
+        <li data-i18n="community_credit_2">Technical reports are authored by "OpenFormosa Contributors", with a full list of names and roles.</li>
+        <li data-i18n="community_credit_3">Each release note thanks the people who contributed to that release.</li>
+        <li data-i18n="community_credit_4">You may be listed by a handle instead of your legal name.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="hero-actions"><a class="btn primary" href="https://github.com/OpenFormosa/openformosa.com/blob/main/GOVERNANCE.md" target="_blank" rel="noopener" data-i18n="community_cta_gov">Read the governance document</a><a class="btn" href="https://github.com/OpenFormosa/openformosa.com/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener" data-i18n="community_cta_coc">Code of conduct</a></div>
+</section>
+
+<section class="section section-pad" id="join">
+  <div class="section-head">
+    <h2 data-i18n="community_join_title">Ways to take part</h2>
+    <p data-i18n="community_join_desc">You do not need to train models to help. Pick the path that fits your skills.</p>
+  </div>
+  <div class="directory-grid">
+    <article class="directory-card"><span class="tag" data-i18n="community_join_eval_tag">Evaluation</span><h3 data-i18n="community_join_eval_title">Find where models fail</h3><p data-i18n="community_join_eval_text">Try the demos and report Taiwan-specific errors in text. Propose benchmark subsets and scoring rules.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_join_code_tag">Code</span><h3 data-i18n="community_join_code_title">Training and tooling</h3><p data-i18n="community_join_code_text">Improve training recipes, tokenizer tools, inference scripts, and reproducibility.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_join_lang_tag">Language</span><h3 data-i18n="community_join_lang_title">Language review</h3><p data-i18n="community_join_lang_text">Review Taigi, Hakka, and Indigenous language output, romanization, and pronunciation. No programming needed.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_join_docs_tag">Docs</span><h3 data-i18n="community_join_docs_title">Documentation and translation</h3><p data-i18n="community_join_docs_text">Clarify model cards, write quickstarts, and keep Chinese and English pages in sync.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_join_comm_tag">Community</span><h3 data-i18n="community_join_comm_title">Design and community</h3><p data-i18n="community_join_comm_text">Welcome newcomers, run meetups, write meeting notes, and improve the website.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_join_research_tag">Research</span><h3 data-i18n="community_join_research_title">Research collaboration</h3><p data-i18n="community_join_research_text">Propose experiments, co-author technical reports, or connect OpenFormosa with your own research.</p></article>
+  </div>
+  <div class="soft-panel prose">
+    <h3 data-i18n="community_steps_title">Your first three steps</h3>
+    <ol>
+      <li data-i18n="community_step_1">Join Discord and say hello in the welcome channel. Pick the topics you care about.</li>
+      <li data-i18n="community_step_2">Pick a "good first issue" on GitHub, or report one model error in the error-case channel.</li>
+      <li data-i18n="community_step_3">Open a pull request with a Signed-off-by line. A reviewer will help you finish it.</li>
+    </ol>
+    <p data-i18n="community_privacy_note">Please do not post other people's voices, documents, identity data, or private records on Discord or GitHub. Describe errors in text instead.</p>
+  </div>
+  <div class="hero-actions"><a class="btn primary" href="https://discord.gg/N4YnrjjcW7" target="_blank" rel="me noopener" data-i18n="community_cta_discord">Join Discord</a><a class="btn" href="https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AOpenFormosa+label%3A%22good+first+issue%22" target="_blank" rel="noopener" data-i18n="community_cta_issues">Good first issues</a><a class="btn" href="https://github.com/OpenFormosa/openformosa.com/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" data-i18n="community_cta_contrib">Contributing guide</a></div>
+</section>
+
+<section class="section section-pad" id="support">
+  <div class="section-head">
+    <h2 data-i18n="community_support_title">Supporting OpenFormosa</h2>
+    <p data-i18n="community_support_desc">At this stage we accept support that does not involve donations from the public.</p>
+  </div>
+  <div class="split">
+    <div class="soft-panel prose">
+      <h3 data-i18n="community_support_now_title">What helps now</h3>
+      <ul>
+        <li data-i18n="community_support_now_1">Your time and contributions.</li>
+        <li data-i18n="community_support_now_2">Compute or cloud credits, provided to organization accounts under a written agreement, never to a personal account.</li>
+        <li data-i18n="community_support_now_3">Openly licensed data, or help clarifying the license of existing data.</li>
+        <li data-i18n="community_support_now_4">Research, education, and public-sector collaboration.</li>
+      </ul>
+    </div>
+    <div class="soft-panel prose">
+      <h3 data-i18n="community_support_later_title">What comes later</h3>
+      <ul>
+        <li data-i18n="community_support_later_1">Before accepting money, we will work through a registered nonprofit host or our own registered body.</li>
+        <li data-i18n="community_support_later_2">All sponsors and supporters are listed publicly, with what they provided.</li>
+        <li data-i18n="community_support_later_3">Sponsorship never buys decision rights, exclusive licenses, or changes to evaluation results.</li>
+      </ul>
+      <p><a href="{{ '/sponsorship/' | relative_url }}" data-i18n="community_support_policy_link">Read the sponsorship policy</a> · <a href="mailto:sponsors@openformosa.com">sponsors@openformosa.com</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-pad" id="thanks">
+  <div class="section-head">
+    <h2 data-i18n="community_thanks_title">Thank you</h2>
+    <p data-i18n="community_thanks_desc">OpenFormosa's results belong to its contributors. These supporters made the work possible.</p>
+  </div>
+  <div class="directory-grid">
+    <article class="directory-card"><span class="tag" data-i18n="community_thanks_compute_tag">Compute</span><h3>Taipei-1</h3><p data-i18n="community_thanks_compute_text">Thank you to Taipei-1 for the compute used to train and evaluate OpenFormosa models.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_thanks_research_tag">Research</span><h3 data-i18n="community_thanks_lab_name">NTU Speech Lab</h3><p data-i18n="community_thanks_lab_text">Thank you to the Speech Lab at National Taiwan University for research support and discussion.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_thanks_research_tag">Research</span><h3>NTU SPML Lab</h3><p data-i18n="community_thanks_spml_text">Thank you to the NTU SPML Lab for research support and discussion.</p></article>
+    <article class="directory-card"><span class="tag" data-i18n="community_thanks_people_tag">Everyone</span><h3 data-i18n="community_thanks_people_title">All contributors</h3><p data-i18n="community_thanks_people_text">Every person who wrote code, reported an error, reviewed language output, or answered a newcomer's question.</p></article>
+  </div>
+</section>
+
+<section class="section section-pad" id="contact">
+  <div class="manifesto">
+    <div class="weave-rule" aria-hidden="true"></div>
+    <p class="quote" data-i18n="community_contact_lead">Questions, collaboration, or a conduct report?</p>
+    <p class="quote en"><span data-i18n="community_contact_body">General questions and collaboration:</span> <a href="mailto:hello@openformosa.com">hello@openformosa.com</a><span data-i18n="community_contact_body2">. Conduct reports:</span> <a href="mailto:conduct@openformosa.com">conduct@openformosa.com</a><span data-i18n="community_contact_body3">, read only by the steering group. Discord and GitHub are the fastest way to reach the community.</span></p>
+    <p class="sig" data-i18n="community_contact_sig">Make Taiwan's languages part of everyday model work, together.</p>
+  </div>
+</section>

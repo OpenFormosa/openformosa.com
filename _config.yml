@@ -21,9 +21,12 @@ exclude:
   - README.md
   - CODE_OF_CONDUCT.md
   - CONTRIBUTING.md
+  - GOVERNANCE.md
+  - TRADEMARK.md
   - Gemfile
   - Gemfile.lock
   - LICENSE
+  - NOTICE
   - PUBLICATION_CHECKLIST.md
   - SECURITY.md
   - _config.production.example.yml

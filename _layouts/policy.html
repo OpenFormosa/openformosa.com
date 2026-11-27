@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<article class="post-shell">
+  <header class="post-hero section-pad">
+    <p class="eyebrow" data-i18n="policy_eyebrow">Policy</p>
+    <h1><span class="post-lang-zh">{{ page.zh_heading }}</span><span class="post-lang-en">{{ page.title }}</span></h1>
+    <p class="lede"><span class="post-lang-zh">{{ page.zh_lede }}</span><span class="post-lang-en">{{ page.lede }}</span></p>
+    <div class="post-meta">
+      <span data-i18n="policy_updated">Last updated</span><time datetime="{{ page.updated }}">{{ page.updated }}</time>
+      <span>·</span><span data-i18n="policy_status_draft">Draft</span>
+    </div>
+  </header>
+  <div class="post-body section-pad prose">
+    {{ content }}
+  </div>
+</article>

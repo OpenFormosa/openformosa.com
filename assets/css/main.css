@@ -2565,6 +2565,21 @@ html.js .reveal.is-in {
   line-height: 1.65;
 }
 
+/* Footer policy links */
+.footer-policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.2rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: .9rem;
+}
+
+.footer-policies a {
+  color: var(--muted);
+}
+
 /* ---- Projects directory (/projects/) ----
    Bilingual blocks: .l-zh shows by default, .l-en when html[data-lang="en"].
    Route switch: [data-route] on .pj hides the other route's blocks once JS runs. */
