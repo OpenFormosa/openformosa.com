@@ -1,0 +1,544 @@
+# OpenFormosa project directory.
+# One source of truth for /projects/ and the project list in llms.txt / llms-full.txt.
+# Every number must come from the project's own repository or release report,
+# with its test condition stated next to it. Values may contain inline HTML.
+
+categories:
+  - id: models
+    zh:
+      title: "AI 模型"
+      desc: "會讀、會說的模型本體。Barbet 是共同底座，其他模型站在它上面。"
+    en:
+      title: "AI models"
+      desc: "The models themselves. Barbet is the shared base, and the other models build on it."
+  - id: tokenizer
+    zh:
+      title: "斷詞與評測"
+      desc: "模型讀字之前，要先把句子切成小片段。這一組工具負責切字，也負責檢查切得好不好。"
+    en:
+      title: "Tokenizer and benchmarks"
+      desc: "Before a model reads text, it splits sentences into small pieces. These tools do the splitting and check how well it is done."
+  - id: skills
+    zh:
+      title: "技能與推論"
+      desc: "讓模型照著步驟把事情做好的工作手冊，以及執行它們的工具。"
+    en:
+      title: "Skills and inference"
+      desc: "Step-by-step work guides that help a model finish a task, plus the tools that run them."
+  - id: apps
+    zh:
+      title: "應用"
+      desc: "直接給人用的服務。第一個應用是學台語的網站，之後會有更多用 OpenFormosa 模型做出來的應用。"
+    en:
+      title: "Applications"
+      desc: "Services people use directly. The first one is a Taigi learning site, and more apps built on OpenFormosa models will follow."
+
+projects:
+  # ---------------------------------------------------------------- models
+  - id: barbet
+    name: "Barbet 1B Base"
+    category: models
+    status: shipped
+    accent: barbet
+    crest: base
+    role: "Base LM"
+    repo: "https://github.com/OpenFormosa/Barbet"
+    links:
+      - url: "https://huggingface.co/OpenFormosa/barbet-1b-base"
+        zh: "Hugging Face 模型"
+        en: "Hugging Face model"
+      - url: "/blog/2026/08/30/barbet-1b-native-1m/"
+        zh: "1M 訓練紀錄"
+        en: "1M training log"
+      - url: "/blog/2026/06/21/barbet-1b-base/"
+        zh: "6 月技術報告"
+        en: "June technical report"
+    try:
+      url: "https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo"
+      zh: "聽聽 Barbet 驅動的 TTS"
+      en: "Hear the TTS that Barbet powers"
+    try_dev:
+      zh: "用 Transformers 載入"
+      en: "Load with Transformers"
+      code: |
+        from transformers import AutoModelForCausalLM
+        model = AutoModelForCausalLM.from_pretrained(
+            "OpenFormosa/barbet-1b-base", trust_remote_code=True)
+    zh:
+      tagline: "一個讀過大量台灣文字的小型語言模型，是其他 OpenFormosa 模型的共同底座。"
+      analogy: "把它想成一位記性很好的新同事。它讀過很多文字，很會「接著往下寫」，但還沒學過怎麼聊天。所以它不是聊天機器人，而是讓其他工具站上去的地基。"
+      public:
+        - "一次能讀 1,048,576 個 token 的長文。Token 是模型切分文字的單位。"
+        - "大小約 11 億參數，學校、實驗室與團隊都有機會自己部署與調整。"
+        - "BlueMagpie-TTS 裡負責「理解文字」的部分，就是 Barbet。"
+      try_note: "Barbet 是基礎模型，不能直接對話。想感受它的成果，最快的方式是聽 BlueMagpie-TTS。"
+      research:
+        - "約 1.119B 參數的 decoder-only causal LM。28 層，混合 global attention、8K sliding-window attention 與 Mamba 層，GQA（16 query heads、2 KV heads），詞嵌入與 LM head 共用權重，使用 PangolinTokenizer。"
+        - "Hugging Face 上的正式權重是 <code>iter7008</code>。它從 64K 逐步接續預訓練到 exact 1M sequences，原生 context 1,048,576，<code>rope_scaling</code> 為 null。這不是只靠 RoPE 外推。"
+        - "長文評測：7 類遠距任務中有 6 類顯示，保留遠處的正確資料會提高正確答案的機率。多筆資料合併計算仍未通過。這是 base model 的機率評測，不代表生成作答的正確率。"
+        - "6 月的 256K 版本在 TAIDE-14（140 筆，response_only）上為 0.7488 bits/byte。BPB 衡量文字建模，不衡量對話品質。"
+        - "Repo 另保留原始 256K 與 1M RoPE 外推的 legacy presets，供舊版研究重現。"
+        - "限制：實際跑 1M 需要足夠 GPU 記憶體與 context parallelism。只有 CPU 時，Mamba 走 PyTorch 後備路徑。授權為 Apache 2.0。"
+      join: "可以回報載入或轉換問題、補充評測、改善文件。"
+    en:
+      tagline: "A compact language model that has read a lot of Taiwan text. It is the shared base for the other OpenFormosa models."
+      analogy: "Think of it as a new colleague with an excellent memory. It has read a lot and is good at continuing text, but it has not been taught to chat. It is not a chatbot. It is the foundation other tools stand on."
+      public:
+        - "It can read 1,048,576 tokens of text at once. A token is the unit a model splits text into."
+        - "With about 1.1 billion parameters, it is small enough for schools, labs, and teams to deploy and adapt."
+        - "The part of BlueMagpie-TTS that understands text is Barbet."
+      try_note: "Barbet is a base model and cannot chat. The quickest way to see what it enables is to listen to BlueMagpie-TTS."
+      research:
+        - "About 1.119B-parameter decoder-only causal LM. 28 layers mixing global attention, 8K sliding-window attention, and Mamba layers, GQA (16 query heads, 2 KV heads), tied embeddings, PangolinTokenizer vocabulary."
+        - "The released Hugging Face weights are <code>iter7008</code>, continued-pretrained from 64K up to exact 1M sequences. Native context is 1,048,576 and <code>rope_scaling</code> is null. This is not RoPE extrapolation alone."
+        - "Long-context evaluation: in 6 of 7 long-range task families, keeping the correct distant evidence raises the probability of the correct answer. Aggregating several records still fails. These are base-model likelihood tests, not generation accuracy."
+        - "The June 256K release scored 0.7488 bits/byte on TAIDE-14 (140 samples, response_only). BPB measures text modeling, not chat quality."
+        - "The repo keeps the original 256K and 1M RoPE-extrapolation legacy presets for reproducing earlier research."
+        - "Limits: running 1M needs enough GPU memory and context parallelism. On CPU, Mamba falls back to a PyTorch path. Apache 2.0."
+      join: "Report loading or conversion issues, add evaluations, or improve the docs."
+
+  - id: bluemagpie
+    name: "BlueMagpie-TTS"
+    category: models
+    status: shipped
+    accent: bluemagpie
+    crest: tts
+    role: "TTS"
+    repo: "https://github.com/OpenFormosa/BlueMagpie-TTS"
+    links:
+      - url: "https://huggingface.co/OpenFormosa/BlueMagpie-TTS"
+        zh: "Hugging Face 模型"
+        en: "Hugging Face model"
+      - url: "https://colab.research.google.com/github/OpenFormosa/BlueMagpie-TTS/blob/main/notebooks/BlueMagpie_TTS_Colab.ipynb"
+        zh: "Colab 筆記本"
+        en: "Colab notebook"
+      - url: "/blog/2026/06/23/bluemagpie-tts/"
+        zh: "技術紀錄"
+        en: "Technical log"
+    try:
+      url: "https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo"
+      zh: "線上試聽"
+      en: "Try the live demo"
+    try_dev:
+      zh: "免安裝跑完整流程"
+      en: "Run the full pipeline, no install"
+      url: "https://colab.research.google.com/github/OpenFormosa/BlueMagpie-TTS/blob/main/notebooks/BlueMagpie_TTS_Colab.ipynb"
+      label_zh: "開啟 Colab"
+      label_en: "Open in Colab"
+    zh:
+      tagline: "把文字唸成自然的台灣口音語音。中英夾雜的句子不用改寫。"
+      analogy: "像一位熟悉台灣用語的播音員。看到「這個 feature 明天上線」，不會卡住，也不會唸成翻譯腔。"
+      public:
+        - "輸出 48 kHz 高品質語音，可以邊合成邊播放。"
+        - "給一段 3 秒以上的參考音檔，就能模仿那位說話者的音色。請只使用已取得授權的聲音。"
+        - "在同一份內部測試集上，每合成 100 個字，唸錯的字約從 11 個降到 7 個。"
+        - "適合有聲內容、客服語音、無障礙朗讀與教學。"
+      try_note: "不用安裝，打開瀏覽器就能聽。"
+      research:
+        - "保留 VoxCPM 的聲學架構，把文字語意語言模型換成 Barbet。Barbet 負責語意、韻律與節奏，聲學架構負責聲音細節。"
+        - "評測方式：合成語音用 ASR 轉寫回文字，再和原文比對。數字來自內部保留測試集，隨 checkpoint 發佈在 <code>release_metadata.json</code>。這是模型選擇用的評測，不是公開基準。"
+        - "CER／WER：語者向量條件 7.44%／8.57%，參考音檔條件（免逐字稿）8.99%／11.77%，同一測試集上的參考基準系統 11.45%／14.83%。語者向量條件的 CER 相對降低約 35%。"
+        - "長文逐段合成：語者向量 CER 7.51%，參考音檔 8.92%，語速約 4.0 字／秒。"
+        - "Apple Silicon 可用 MLX 原生推論。在 7.75GB 模型上端到端 RTF 0.77（fp32），比 torch-MPS 快約 1.45 倍，比 torch-CPU 快約 3.27 倍。另有 torch-only 的連續批次推論引擎。"
+      join: "歡迎回報唸錯的句子、改善硬體支援與效能、補充文件。請不要在 issue 上傳未經授權的錄音。"
+    en:
+      tagline: "Turns text into natural Taiwan-accented speech. Mixed Chinese and English sentences need no rewriting."
+      analogy: "Like a narrator who knows how people in Taiwan talk. A sentence such as “這個 feature 明天上線” does not trip it up."
+      public:
+        - "It outputs 48 kHz audio and can stream while it speaks."
+        - "Give it a reference clip of 3 seconds or more, and it imitates that speaker's voice. Only use voices you have permission to use."
+        - "On the same internal test set, mispronounced characters drop from about 11 to about 7 per 100 synthesized characters."
+        - "Good for audio content, voice interfaces, accessibility, and teaching."
+      try_note: "No install. Open a browser and listen."
+      research:
+        - "Keeps VoxCPM's acoustic stack and replaces the text-semantic language model with Barbet. Barbet plans meaning, prosody, and rhythm. The acoustic stack renders the sound."
+        - "Evaluation: transcribe synthesized speech back with ASR and compare with the input text. Numbers come from an internal held-out set published with the checkpoint in <code>release_metadata.json</code>. This is a model-selection evaluation, not a public benchmark."
+        - "CER / WER: speaker-centroid condition 7.44% / 8.57%, reference-audio condition (no transcript) 8.99% / 11.77%, reference baseline on the same set 11.45% / 14.83%. That is about a 35% relative CER reduction for the centroid condition."
+        - "Long-form chunked synthesis: centroid CER 7.51%, reference-audio 8.92%, about 4.0 characters per second."
+        - "Native MLX inference on Apple Silicon: end-to-end RTF 0.77 on the 7.75GB model (fp32), about 1.45x faster than torch-MPS and 3.27x faster than torch-CPU. A torch-only continuous-batching engine is also included."
+      join: "Report sentences it gets wrong, improve hardware support and speed, or improve the docs. Please do not upload unlicensed recordings to issues."
+
+  - id: blackbear
+    name: "BlackBear-ASR"
+    category: models
+    status: upcoming
+    accent: blackbear
+    crest: asr
+    role: "ASR"
+    release: "2026-11-30"
+    zh:
+      tagline: "語音辨識模型：把台灣華語、台語與中英混講的聲音，轉成文字。"
+      analogy: "BlueMagpie 負責「說」，BlackBear 負責「聽」。"
+      public:
+        - "準備中，預計是下一個釋出的模型。釋出時會附上使用說明與 demo。"
+      research:
+        - "接在 Barbet 底座上的任務分支。技術細節會在釋出時與模型卡一起公開。"
+    en:
+      tagline: "Speech recognition that turns Taiwan Mandarin, Taigi, and mixed Chinese and English speech into text."
+      analogy: "BlueMagpie speaks. BlackBear listens."
+      public:
+        - "In preparation and planned as the next release. It will ship with a usage guide and a demo."
+      research:
+        - "A task branch on the Barbet base. Technical details will be published with the model card at release."
+
+  - id: barbet_instruct
+    name: "Barbet Instruct"
+    category: models
+    status: planned
+    accent: barbet
+    crest: base
+    role: "Chat LM"
+    zh:
+      tagline: "Barbet 的對話版本：聽得懂指令，也能讀很長的文件再回答。"
+      analogy: "Barbet 1B Base 是讀過很多書的新同事，Instruct 是受過職前訓練、可以開始接工作的同事。"
+      public:
+        - "研發中，今年不會釋出。釋出時會附上能做什麼、還做不好什麼的使用報告。"
+      research:
+        - "以 Barbet 1B Base 進行指令微調，長文樣本佔訓練資料的一大部分。評測細節隨模型卡公開。"
+    en:
+      tagline: "The instruction-following version of Barbet. It takes instructions and can answer after reading long documents."
+      analogy: "Barbet 1B Base is the well-read new colleague. Instruct is the same colleague after onboarding, ready to take on work."
+      public:
+        - "In development and not releasing this year. It will ship with a usage report on what it does well and what it does not."
+      research:
+        - "Instruction-tuned from Barbet 1B Base, with long-document samples making up a large share of the data. Evaluation details will come with the model card."
+
+  - id: sikadeer
+    name: "SikaDeer-OCR"
+    category: models
+    status: upcoming
+    accent: sikadeer
+    crest: ocr
+    role: "OCR"
+    release: "2026-12-07"
+    zh:
+      tagline: "文件辨識模型：讀懂台灣常見的表單、表格，連手寫字也看得懂。"
+      analogy: "把一張紙上的字和欄位，變成電腦能用的資料。"
+      public:
+        - "準備中。釋出時會說明適合讀哪些文件，以及授權範圍。"
+      research:
+        - "接在 Barbet 底座上的任務分支，訓練大量使用合成資料。技術細節隨模型卡公開。"
+    en:
+      tagline: "A document reader for common Taiwan forms and tables, including handwriting."
+      analogy: "It turns the words and fields on a page into data a computer can use."
+      public:
+        - "In preparation. The release will explain which documents it suits and its license scope."
+      research:
+        - "A task branch on the Barbet base, trained heavily on synthetic data. Technical details will come with the model card."
+
+  - id: bluemagpie_v2
+    name: "BlueMagpie-TTS 新一代"
+    name_en: "BlueMagpie-TTS next"
+    category: models
+    status: upcoming
+    accent: bluemagpie
+    crest: tts
+    role: "TTS"
+    release: "2026-12-14"
+    zh:
+      tagline: "可以調整的台灣語音：讀音、停頓、重音都能指定，也開始會說台語詞。"
+      analogy: "上一代像會照稿唸的播音員，新一代像可以聽導演指示、一句一句調整語氣的配音員。"
+      public:
+        - "準備中。為了防止聲音被冒用，釋出前會先準備浮水印與使用條款。"
+      research:
+        - "在地化放在文字端，聲學端只負責聲音。技術細節隨模型卡公開。"
+    en:
+      tagline: "Controllable Taiwan speech: set pronunciation, pauses, and stress, with early support for Taigi words."
+      analogy: "The first version reads a script like a narrator. The next one takes direction like a voice actor, line by line."
+      public:
+        - "In preparation. Watermarking and terms of use come first, to prevent voice misuse."
+      research:
+        - "Localization lives on the text side, and the acoustic side only renders sound. Details will come with the model card."
+
+  - id: macaque
+    name: "Macaque-Agent"
+    category: skills
+    status: planned
+    accent: red
+    role: "Agent"
+    zh:
+      tagline: "讓 1B 模型自己練習做事：使用工具、多步驟完成任務。"
+      analogy: "像實習生輪調各部門，每個部門練一項本事，最後要變回一個什麼都會一點的人。"
+      public:
+        - "研究中，今年不會釋出。"
+      research:
+        - "用可自動驗證的任務做強化學習，訓練多個專家，再研究如何合併。"
+    en:
+      tagline: "Lets a 1B model practice getting things done: using tools and finishing multi-step tasks."
+      analogy: "Like an intern rotating through departments, learning one skill in each, then becoming one well-rounded person."
+      public:
+        - "In research and not releasing this year."
+      research:
+        - "Reinforcement learning on automatically verifiable tasks trains several experts, followed by research on merging them."
+
+  - id: barbet_embed
+    name: "Barbet-Embed"
+    category: skills
+    status: planned
+    accent: barbet
+    role: "Retrieval"
+    zh:
+      tagline: "在很長的文件或對話裡，幫你找到對的那一段。"
+      analogy: "像一位很會翻目錄的圖書館員，不用整本讀完，也知道答案在哪一頁。"
+      public:
+        - "還在準備資料，尚未開始訓練。"
+      research:
+        - "目標是長文件與長對話的檢索，而不是在短文上硬拚。"
+    en:
+      tagline: "Finds the right passage inside very long documents or conversations."
+      analogy: "Like a librarian who knows the index so well that they find the right page without reading the whole book."
+      public:
+        - "Data is being prepared. Training has not started."
+      research:
+        - "Aims at retrieval in long documents and long conversations, rather than competing on short text."
+
+  - id: barwing
+    name: "Barwing"
+    category: models
+    status: planned
+    accent: ochre
+    role: "Translation"
+    zh:
+      tagline: "用 1B 模型翻譯一整本書，前後用詞保持一致。"
+      analogy: "像一位會先做人名與用語對照表的譯者，翻到第三百頁也不會把角色名字翻錯。"
+      public:
+        - "開發中，模型還沒做出來。釋出方式也取決於訓練資料的授權。"
+      research:
+        - "以 Barbet 的長上下文能力處理整本書。技術細節待釋出時公開。"
+    en:
+      tagline: "Translates a whole book with a 1B model while keeping terms consistent."
+      analogy: "Like a translator who builds a glossary of names first, so a character's name is still right on page 300."
+      public:
+        - "In development. The model is not built yet, and how it can be released depends on training-data licensing."
+      research:
+        - "Uses Barbet's long context to handle an entire book. Details will be published at release."
+
+  # ------------------------------------------------------------- tokenizer
+  - id: pangolin
+    name: "PangolinTokenizer"
+    category: tokenizer
+    status: shipped
+    accent: pangolin
+    crest: tokenizer
+    role: "Tokenizer"
+    links:
+      - url: "https://huggingface.co/OpenFormosa/PangolinTokenizer"
+        zh: "Hugging Face 模型"
+        en: "Hugging Face model"
+      - url: "/blog/2026/06/20/pangolin-tokenizer/"
+        zh: "技術紀錄"
+        en: "Technical log"
+    try:
+      url: "https://huggingface.co/OpenFormosa/PangolinTokenizer"
+      zh: "到 Hugging Face 看詞表"
+      en: "See it on Hugging Face"
+    try_dev:
+      zh: "用 Transformers 切一句話"
+      en: "Tokenize a sentence with Transformers"
+      code: |
+        from transformers import AutoTokenizer
+        tok = AutoTokenizer.from_pretrained("OpenFormosa/PangolinTokenizer")
+        print(tok.tokenize("這個 feature 明天上線"))
+    zh:
+      tagline: "專門為台灣文字設計的斷詞器，用更少的片段表示同樣的內容。"
+      analogy: "像打包行李。捲得好，同一個箱子就能裝更多東西。斷詞切得越省，模型同樣的記憶空間就能放進越多台灣的文字。"
+      public:
+        - "熟悉繁體中文、注音、台羅、白話字、台語漢字、客語詞、中英夾雜與程式碼。"
+        - "和 8 個常見斷詞器比較，它表示同樣的文字用的 token 最少，而詞表只有主流多語言斷詞器的約三分之一到一半。"
+        - "Barbet 用的就是它。"
+      try_note: "它是給模型用的元件。開發者可以用一行程式載入它，看看一句話會被切成哪些片段。"
+      research:
+        - "Byte-level BPE，114,688 個 merges，另加 4 個 special tokens。用 UbiTok 訓練。"
+        - "PangolinBench 上比較 9 個 tokenizer：整體 0.485 tokens/character 為最低，第二名 0.486，差距很小。優勢主要在核心台灣華語、台灣專名與語音逐字稿格式。"
+        - "原生支援 rich transcription 標記，並避開密集的 timestamp token 區段。"
+      join: "可以提供更多台灣語料類型的評測切面，或回報切得不好的例子。"
+    en:
+      tagline: "A tokenizer built for Taiwan text that represents the same content with fewer pieces."
+      analogy: "Like packing a suitcase. Roll things well and more fits in the same box. A more efficient tokenizer lets the same model memory hold more Taiwan text."
+      public:
+        - "It handles Traditional Chinese, Bopomofo, Tailo, POJ, Taigi Han characters, Hakka terms, mixed Chinese and English, and code."
+        - "Compared with 8 common tokenizers, it uses the fewest tokens for the same text, with a vocabulary about one third to one half the size of mainstream multilingual tokenizers."
+        - "Barbet uses it."
+      try_note: "It is a component for models. Developers can load it in one line and see how a sentence gets split."
+      research:
+        - "Byte-level BPE with 114,688 merges plus 4 special tokens, trained with UbiTok."
+        - "On PangolinBench across 9 tokenizers: lowest overall 0.485 tokens/character. The runner-up is 0.486, so the margin is small. The advantage is mainly on core Taiwan Mandarin, Taiwan proper nouns, and speech-transcript formats."
+        - "Native rich-transcription tags, with dense timestamp-token ranges avoided."
+      join: "Contribute evaluation slices for more kinds of Taiwan text, or report examples it splits badly."
+
+  - id: ubi_tokenizer
+    name: "ubi_tokenizer"
+    category: tokenizer
+    status: shipped
+    accent: pangolin
+    role: "Runtime"
+    repo: "https://github.com/OpenFormosa/ubi_tokenizer"
+    try_dev:
+      zh: "從 GitHub 安裝並載入"
+      en: "Install from GitHub and load"
+      code: |
+        pip install git+https://github.com/OpenFormosa/ubi_tokenizer
+        python -c "from ubi_tokenizer import Tokenizer; \
+          t = Tokenizer.from_file('tokenizer.json'); print(t.encode('大家好').tokens)"
+    zh:
+      tagline: "讓斷詞器在任何有 Python 的地方都能跑，不需要安裝其他套件。"
+      analogy: "像一個萬用轉接頭。不管你的電腦或伺服器長什麼樣子，只要有 Python，就能用同一份斷詞器。"
+      public:
+        - "和業界常用的 Hugging Face 斷詞器讀寫同一種檔案格式。"
+        - "適合在學校電腦、精簡伺服器或不方便安裝編譯工具的環境使用。"
+      try_note: "這是給開發者的工具，沒有網頁 demo。"
+      research:
+        - "純 Python 標準函式庫實作，沒有 Rust、torch 或 transformers 依賴。"
+        - "鏡像 <code>huggingface/tokenizers</code> 的 API：<code>Tokenizer</code>、<code>Encoding</code>、<code>AddedToken</code>，以及 normalizers、pre_tokenizers、models、processors、decoders、trainers 子模組。"
+        - "讀寫相同的 <code>tokenizer.json</code>。內建 <code>BpeTrainer</code> 適合小語料與測試；大規模訓練請用 UbiTok。授權為 MIT。"
+      join: "歡迎補測試、補文件，或回報和 Hugging Face 行為不一致的地方。"
+    en:
+      tagline: "Runs a tokenizer anywhere Python runs, with no other packages to install."
+      analogy: "Like a universal travel adapter. Whatever your machine looks like, if it has Python, it can use the same tokenizer."
+      public:
+        - "It reads and writes the same file format as the widely used Hugging Face tokenizers."
+        - "Useful on school machines, slim servers, or anywhere installing build tools is hard."
+      try_note: "This is a developer tool with no web demo."
+      research:
+        - "Pure Python standard library. No Rust, torch, or transformers dependency."
+        - "Mirrors the <code>huggingface/tokenizers</code> API: <code>Tokenizer</code>, <code>Encoding</code>, <code>AddedToken</code>, plus normalizers, pre_tokenizers, models, processors, decoders, and trainers."
+        - "Same <code>tokenizer.json</code> format. The built-in <code>BpeTrainer</code> is for small corpora and tests. Use UbiTok for large-scale training. MIT license."
+      join: "Add tests or docs, or report behavior that differs from Hugging Face."
+
+  - id: pangolinbench
+    name: "PangolinBench"
+    category: tokenizer
+    status: shipped
+    accent: pangolin
+    role: "Benchmark"
+    repo: "https://github.com/OpenFormosa/PangolinBench"
+    try_dev:
+      zh: "不需要任何斷詞器的冒煙測試"
+      en: "Smoke test without any tokenizer"
+      code: |
+        git clone https://github.com/OpenFormosa/PangolinBench && cd PangolinBench
+        python -m pangolinbench.cli --byte-roundtrip-test-adapter \
+          --config configs/pangolinbench.yaml --output reports/report.json
+    zh:
+      tagline: "斷詞器的健康檢查表，專門檢查它處理台灣文字的表現。"
+      analogy: "像汽車驗車。能發動還不夠，還要看油耗、煞車和燈。斷詞器能把字還原還不夠，還要看切得省不省、台灣專有名詞會不會被切碎。"
+      public:
+        - "檢查繁體中文、注音、台語與客語羅馬字、台灣專有名詞。"
+        - "內建的測試資料是公開、可檢查的合成資料，沒有放入私人或有授權疑慮的語料。"
+      try_note: "這是給開發者的工具。用一行指令就能先跑一次。"
+      research:
+        - "指標：roundtrip 正確性、壓縮率（tokens/character、tokens/byte、characters/token）、lexicon fertility、over-segmentation、script coverage、rich transcription JSON 穩定性，並回報詞表大小。"
+        - "設計立場：byte-level 能還原所有 UTF-8，不等於對台灣文字有效率，所以正確性與效率要一起看。"
+        - "內建 fixtures 是 synthetic、deterministic、license-clean。正式評測透過 manifest 接 held-out 語料，不把語料放進 repo。"
+        - "另有訓練吞吐量 benchmark，需要 UbiTok。品質 benchmark 只用標準函式庫。"
+      join: "可以提議新的評測切面或指標，或幫忙把結果整理成公開報告。"
+    en:
+      tagline: "A health check for tokenizers, focused on how they handle Taiwan text."
+      analogy: "Like a car inspection. Starting the engine is not enough. You also check fuel use, brakes, and lights. Recovering the text is not enough for a tokenizer either. It also has to be efficient and keep Taiwan proper nouns intact."
+      public:
+        - "It checks Traditional Chinese, Bopomofo, Taigi and Hakka romanization, and Taiwan proper nouns."
+        - "Built-in test data is synthetic and inspectable. No private or license-unclear text is included."
+      try_note: "A developer tool. One command runs a first check."
+      research:
+        - "Metrics: roundtrip correctness, compression (tokens/character, tokens/byte, characters/token), lexicon fertility, over-segmentation, script coverage, rich-transcription JSON stability, plus vocabulary size."
+        - "Design stance: byte-level roundtrip on any UTF-8 does not mean efficiency on Taiwan text, so correctness and efficiency are reported together."
+        - "Built-in fixtures are synthetic, deterministic, and license-clean. Real evaluation plugs in held-out corpora through a manifest instead of committing them."
+        - "An optional training-throughput benchmark needs UbiTok. The quality benchmark is stdlib only."
+      join: "Propose new evaluation slices or metrics, or help turn results into public reports."
+
+  # ---------------------------------------------------------------- skills
+  - id: skills
+    name: "Barbet Skill Library"
+    category: skills
+    status: shipped
+    accent: barbet
+    role: "Skills"
+    repo: "https://github.com/OpenFormosa/barbet-skill-library"
+    links:
+      - url: "https://huggingface.co/datasets/OpenFormosa/barbet-long-context-sft"
+        zh: "對應的 SFT 資料集"
+        en: "Related SFT dataset"
+      - url: "https://github.com/OpenFormosa/barbet-skill-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
+        zh: "看一份技能範例"
+        en: "Read a sample skill"
+    try:
+      url: "https://github.com/OpenFormosa/barbet-skill-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
+      zh: "讀一份技能手冊"
+      en: "Read a skill guide"
+    try_dev:
+      zh: "用 barbet-infer 跑一題"
+      en: "Run one question with barbet-infer"
+      code: |
+        pip install -e '.[vllm]'
+        barbet-infer run --family mini \
+          --prompt '每箱 12 瓶，買 3 箱共有多少瓶？' --contract number \
+          --output outputs/answer.jsonl
+    zh:
+      tagline: "64 份給 AI 看的工作手冊，教模型遇到某類任務時該怎麼一步步做、怎麼自我檢查。"
+      analogy: "像新人到職時拿到的標準作業流程。手冊寫清楚什麼時候該用、步驟是什麼、出錯怎麼辦、做完怎麼驗收。"
+      public:
+        - "涵蓋一般指令、寫程式、數學、使用工具、閱讀、科學與寫作。"
+        - "不限 Barbet。任何語言模型都能讀這些手冊。"
+        - "實驗結果：一個 1B 小模型在不改權重的情況下，加上技能與工具後，主要分數從 38.02% 提升到 50.39%。同樣條件下的 9B 模型是 76.24%，小模型仍有差距。"
+      try_note: "每份技能都是一份可以直接閱讀的文件。"
+      research:
+        - "每個技能由 <code>skill.json</code> 生成 <code>SKILL.md</code>，另有機器可讀的 <code>catalog.json</code> 與含 SHA-256 的 <code>manifest.json</code>。正式使用時請固定 Git commit。"
+        - "附 <code>barbet_inference</code>：Python API、<code>barbet-infer</code> CLI、本機 vLLM 與 vLLM 相容 HTTP 後端。"
+        - "固定權重 test-time 實驗：646 題、3 個 seed、10 組設定的封存測試。受測模型是 MiniCPM5-1B，四領域主指標 38.02% → 50.39%（+12.37 pp，配對 95% CI +9.90 至 +14.97）。主評分包含輸出格式遵循；數學的事後診斷未顯示數值推理提升。"
+        - "界線：部分技能由本地 Qwen 生成，經有限測試與審查，不是 human-verified。它們也沒有證明 Barbet 已學會路由、組合技能或使用 1M 上下文。"
+        - "原創技能文字與工具採 Apache 2.0。"
+      join: "這是最容易上手的參與入口。可以用 Issues 提議新技能，或修改 <code>skill.json</code> 後送 PR。"
+    en:
+      tagline: "64 work guides written for AI. They teach a model how to approach a type of task step by step and how to check its own work."
+      analogy: "Like the standard operating procedures a new hire receives. Each guide says when to use it, the steps, what to do when something fails, and how to verify the result."
+      public:
+        - "Covers general instructions, coding, math, tool use, reading, science, and writing."
+        - "Not tied to Barbet. Any language model can read these guides."
+        - "Result: a 1B model, with its weights unchanged, went from 38.02% to 50.39% on the main score after adding skills and tools. A 9B model under the same setup scored 76.24%, so the small model still lags."
+      try_note: "Every skill is a document you can read directly."
+      research:
+        - "Each skill is generated from <code>skill.json</code> into <code>SKILL.md</code>, with a machine-readable <code>catalog.json</code> and a <code>manifest.json</code> with SHA-256 hashes. Pin a Git commit in production."
+        - "Ships <code>barbet_inference</code>: Python API, the <code>barbet-infer</code> CLI, local vLLM, and vLLM-compatible HTTP backends."
+        - "Frozen-weight test-time study: sealed test of 646 questions, 3 seeds, 10 configurations. The tested model is MiniCPM5-1B, main four-domain metric 38.02% → 50.39% (+12.37 pp, paired 95% CI +9.90 to +14.97). The score includes output-format compliance. A post-hoc math diagnosis shows no gain in numeric reasoning."
+        - "Limits: some skills were generated by a local Qwen model with limited testing and review. They are not human-verified, and they do not show that Barbet has learned routing, skill composition, or 1M-context use."
+        - "Original skill text and tooling are Apache 2.0."
+      join: "The easiest place to start. Propose a new skill in Issues, or edit a <code>skill.json</code> and open a PR."
+
+  # -------------------------------------------------------------- learning
+  - id: opentaigi
+    name: "咱來學台語 OpenTaigi"
+    category: apps
+    status: live
+    accent: red
+    role: "Learning"
+    repo: "https://github.com/OpenFormosa/OpenTaigi"
+    try:
+      url: "https://openformosa.github.io/OpenTaigi/"
+      zh: "開始學台語"
+      en: "Start learning Taigi"
+    zh:
+      tagline: "把教育部公開的台語教材，整理成手機也好用的互動學習網站。"
+      analogy: "原本是一本 217 頁的 PDF 課本。現在變成可以搜尋、可以聽、可以闖關的學習 app。"
+      public:
+        - "840 句生活台語，真人發音，可依 16 類主題搜尋。"
+        - "852 個校正後的語詞，附台羅、華語與例詞。"
+        - "初學、生活應用、進階讀寫三種程度路線，還有聽力闖關與語詞配對遊戲。"
+      try_note: "打開網站就能開始，進度存在你的裝置上。"
+      research:
+        - "資料來自教育部《咱來學臺灣閩南語》與 Taiwanese-Corpus/Lan-Lai-Oh-Taigi 公開資料。網站程式不更動原始語句、羅馬字與音檔，教材著作權依原始來源。"
+        - "原 PDF 含隱藏圖層與裁切內容。轉換腳本用 PyMuPDF 只讀取實際顯示的文字層，再輸出定位版與手機閱讀版共用的資料。"
+        - "前端為 Next.js、React 與 TypeScript，push 到 main 後由 GitHub Actions 發佈到 GitHub Pages。"
+      join: "可以回報錯字或音檔對不上的地方、改善介面，或分享給想學台語的人。"
+    en:
+      tagline: "Turns the Ministry of Education's open Taigi course into an interactive site that works well on phones."
+      analogy: "It started as a 217-page PDF textbook. Now it is a learning app you can search, listen to, and play."
+      public:
+        - "840 everyday Taigi sentences with native-speaker audio, searchable across 16 topics."
+        - "852 corrected words with Tailo, Mandarin, and example phrases."
+        - "Three level paths, from beginner to advanced reading, plus listening challenges and word-matching games."
+      try_note: "Open the site and start. Progress stays on your device."
+      research:
+        - "Data comes from the Ministry of Education course 咱來學臺灣閩南語 and the open Taiwanese-Corpus/Lan-Lai-Oh-Taigi repository. The site does not alter source sentences, romanization, or audio. Copyright follows the original sources."
+        - "The source PDF has hidden layers and cropped content. The build script uses PyMuPDF to read only the visible text layer, then emits shared data for the positioned and mobile reading views."
+        - "Built with Next.js, React, and TypeScript, deployed to GitHub Pages by GitHub Actions on every push to main."
+      join: "Report typos or audio mismatches, improve the interface, or share it with someone learning Taigi."

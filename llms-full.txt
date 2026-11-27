@@ -29,10 +29,19 @@ Official Channels:
 | Model / Component | Taiwan Endemic Species | Role | Status | Key Verified Specs & Benchmarks | Official Links |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **PangolinTokenizer** | Formosan Pangolin (台灣穿山甲) | Tokenizer | **Shipped** | Byte-level BPE trained with UbiTok; **114,688 merges** (~1/3–1/2 the vocab of mainstream multilingual tokenizers); **0.485 tokens/char** overall #1 on PangolinBench (10 subsets), native speech transcript structure tokens. | [Hugging Face](https://huggingface.co/OpenFormosa/PangolinTokenizer) · [UbiTok](https://github.com/OpenFormosa/ubi_tokenizer) · [PangolinBench](https://github.com/OpenFormosa/PangolinBench) |
-| **Barbet 1B Base** | Taiwan Barbet (台灣五色鳥) | 1B Base LLM | **Shipped** | 1B hybrid decoder-only causal LM (4-layer cycle: Global Attention → Sliding-Window Attention → Sliding-Window Attention → Mamba); **256K native context** (262,144 tokens) & **1M RoPE extrapolation** (1,048,576 tokens); tied embeddings; **0.7488 bits/byte** (#1 among open 1B models on TAIDE-14, winning 10/14 tasks). Base research model (not an instruct chatbot). | [GitHub](https://github.com/OpenFormosa/Barbet) |
+| **Barbet 1B Base** | Taiwan Barbet (台灣五色鳥) | 1B Base LLM | **Shipped** | 1B hybrid decoder-only causal LM (4-layer cycle: Global Attention → Sliding-Window Attention → Sliding-Window Attention → Mamba); **native 1,048,576-token context** in the released `iter7008` weights (continued-pretrained from 64K to exact 1M sequences; legacy 256K and 1M-RoPE presets kept for reproduction); tied embeddings; June 256K release: **0.7488 bits/byte** (#1 among open 1B models on TAIDE-14, winning 10/14 tasks). Base research model (not an instruct chatbot). | [GitHub](https://github.com/OpenFormosa/Barbet) |
 | **BlueMagpie-TTS** | Taiwan Blue Magpie (台灣藍鵲) | TTS | **Shipped** | Taiwanese-accent & Chinese–English code-switching TTS. Keeps VoxCPM's pretrained acoustic stack and swaps in Barbet as the text-semantic LM. **CER 4.81% / WER 5.36%** on a 500-sentence hard mixed-language test set evaluated round-trip via Breeze-ASR-25 (**~58.0% CER reduction**, **~63.9% WER reduction** vs. reference). Includes authorized Prof. Hung-Yi Lee default speaker vector. | [Live Demo Space](https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo) |
 | **BlackBear-ASR** | Formosan Black Bear (台灣黑熊) | ASR | **Planned** | Planned listener for Taiwan Mandarin, Taigi/Hakka accents, and code-switching built on OpenFormosa-Base. Not yet trained; no weights or demo released yet. | [Roadmap]({{ '/roadmap/' | absolute_url }}) |
 | **SikaDeer-OCR** | Formosan Sika Deer (台灣梅花鹿) | OCR | **Planned** | Planned document intelligence branch for Taiwan invoices, receipts, forms, tables, menus, addresses, and official notices. Not yet trained; no weights or demo released yet. | [Roadmap]({{ '/roadmap/' | absolute_url }}) |
+
+---
+
+## 2b. Project Directory (all OpenFormosa repositories, by category)
+Full page: {{ '/projects/' | absolute_url }}
+{% for c in site.data.projects.categories %}
+### {{ c.en.title }} / {{ c.zh.title }}
+{% for p in site.data.projects.projects %}{% if p.category == c.id %}- **{{ p.name_en | default: p.name }}** ({{ p.role }}; {% if p.status == "upcoming" %}planned release week of {{ p.release }}{% elsif p.status == "planned" %}in development, not released{% else %}{{ p.status }}{% endif %}): {{ p.en.tagline }}{% if p.repo %} Repo: {{ p.repo }}{% endif %}{% if p.try and p.status != "upcoming" and p.status != "planned" %} Try: {% if p.try.url contains "://" %}{{ p.try.url }}{% else %}{{ p.try.url | absolute_url }}{% endif %}{% endif %}
+{% endif %}{% endfor %}{% endfor %}
 
 ---
 
