@@ -20,8 +20,7 @@ updated: 2026-11-27
 
 ## 2. 網站內容授權
 
-- 網站程式碼依 [MIT License](https://github.com/OpenFormosa/openformosa.com/blob/main/LICENSE) 釋出。
-- 網站文章與文字內容，除另有標示外，依 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hant) 釋出。轉載請標示「OpenFormosa Contributors」與原文連結。
+- 網站程式碼與文字內容，除另有標示外，依 [Apache License 2.0](https://github.com/OpenFormosa/openformosa.com/blob/main/LICENSE) 釋出。轉載請標示「OpenFormosa Contributors」與原文連結。
 - OpenFormosa 名稱與茄芷袋標誌的使用，請依[品牌使用規範](https://github.com/OpenFormosa/openformosa.com/blob/main/TRADEMARK.md)。
 
 ## 3. 模型與 Demo
@@ -58,8 +57,7 @@ These terms apply to openformosa.com. Models, code, and datasets are governed by
 
 ## 2. Website content
 
-- Website code is released under the [MIT License](https://github.com/OpenFormosa/openformosa.com/blob/main/LICENSE).
-- Articles and text are released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) unless marked otherwise. Credit "OpenFormosa Contributors" and link to the original.
+- Website code and text are released under the [Apache License 2.0](https://github.com/OpenFormosa/openformosa.com/blob/main/LICENSE) unless marked otherwise. Credit "OpenFormosa Contributors" and link to the original.
 - Use of the OpenFormosa name and Gaji-bag logo follows the [brand guidelines](https://github.com/OpenFormosa/openformosa.com/blob/main/TRADEMARK.md).
 
 ## 3. Models and demos

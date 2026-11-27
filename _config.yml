@@ -26,6 +26,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - LICENSE
+  - NOTICE
   - PUBLICATION_CHECKLIST.md
   - SECURITY.md
   - _config.production.example.yml
