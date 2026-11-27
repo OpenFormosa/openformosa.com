@@ -31,11 +31,19 @@ Do not conflate shipped releases with planned roadmap items:
 - [Roadmap — Staged Milestones]({{ '/roadmap/' | absolute_url }}): Phase 0–5 roadmap from benchmarks and tokenizer to base model, ASR/TTS/OCR branches, and enterprise private deployment.
 - [Evaluation — Benchmarks & Error Analysis]({{ '/evaluation/' | absolute_url }}): Reproducible Taiwan-local evaluation workflow and no-public-data-intake policy.
 - [Training — Recipes & Release Gates]({{ '/training/' | absolute_url }}): Auditable training recipes, tokenizer-first approach, and release-evidence gates.
+- [Community — Status, Governance & How to Take Part]({{ '/community/' | absolute_url }}): Current organizational status, five working principles, roles and decision rules, contributor credit, ways to contribute, support policy, and acknowledgements.
 - [About — Vision & Jia-Zhi Bag Symbolism]({{ '/about/' | absolute_url }}): Why OpenFormosa exists and why Taiwan context requires foundation-model work.
 - [Training Data Sheet Template]({{ '/forms/training-data-sheet/' | absolute_url }}): DBOM-style summary template for already-cleared training inputs (not an upload form).
 
 ## Technical Build Logs (Bilingual zh-Hant & English)
 {% for post in site.posts %}- [{{ post.zh_title | default: post.title }} / {{ post.title }}]({{ post.url | absolute_url }}): {{ post.description }} ({{ post.date | date: "%Y-%m-%d" }})
 {% endfor %}
+## Organization & Governance (Current Status)
+- OpenFormosa is an unincorporated, community-run open-source project. It is not yet a registered association or foundation.
+- Credit belongs to all contributors; technical reports are authored as "OpenFormosa Contributors". Governance rules: https://github.com/OpenFormosa/openformosa.com/blob/main/GOVERNANCE.md
+- OpenFormosa does not accept public donations at this stage (Taiwan's Public Welfare Fundraising Act limits public fundraising to registered bodies).
+- Acknowledgements: compute from Taipei-1; research support from the NTU Speech Lab. Supporters do not own results or direct community decisions.
+- Contact: contact@openformosa.com
+
 ## Scope & Governance Note
 OpenFormosa publishes open models, tokenizers, training recipes, benchmarks, and release evidence. This website is NOT a public dataset submission or file upload intake channel.

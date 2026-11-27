@@ -21,6 +21,7 @@ exclude:
   - README.md
   - CODE_OF_CONDUCT.md
   - CONTRIBUTING.md
+  - GOVERNANCE.md
   - Gemfile
   - Gemfile.lock
   - LICENSE
