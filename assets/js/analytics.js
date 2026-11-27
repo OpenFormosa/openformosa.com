@@ -1,13 +1,15 @@
-// OpenFormosa — GA4 v2 Precision Analytics, Performance & Demand Intelligence
+// OpenFormosa — GA4 v2.1 Precision Analytics, Pain-Point & UX Friction Intelligence
 // Covers:
-// 1. Multi-Touch Session Attribution (UTM, Taiwan/AI-search referrers, landing page, session depth)
-// 2. Precision Time & Engagement (active-only reading timer, audio-aware idle detection,
-//    additive active_seconds beacon flush, read quality classification, active-only section dwell)
-// 3. Full Conversion & Content Funnel (canonicalized model interest, outbound asset classification,
-//    prose text copy, code copy, blog search & zero-result unmet demands, post micro-feedback)
-// 4. Demand Intelligence & Dynamic User Persona (quick demand tags, partial poll funnel,
-//    cross-session persona & primary model scoring, privacy-safe PII scrubbing)
-// 5. Core Web Vitals (LCP, CLS, INP, TTFB) & Rate-Limited JS Error / 404 Diagnostics
+// 1. Multi-Touch Session Attribution (shared with first-hit google-analytics.html; zero double counting)
+// 2. Precision Time, Section Reading & Drop-Off Tracking (active-only timer, audio-aware idle,
+//    fast-bounce capture, active bilingual post H2 dwell & last_section drop-off)
+// 3. Full Conversion & Content Funnel (canonicalized model interest with accurate shipped/in_progress/planned
+//    status, outbound asset classification, header/footer nav, code & prose copy, blog search + URL ?q= +
+//    zero-result tag filters, post micro-feedback including quickstart/comprehension pain points)
+// 4. Pain-Point & Demand Intelligence (pain-point selector, per-tag finalized votes, partial funnel,
+//    form abandonment capture, pain-point & FAQ card engagement, privacy-safe PII scrubbing)
+// 5. UX Friction & Reliability Diagnostics (rage clicks, dead clicks on non-interactive cards,
+//    audio/image/clipboard failures, Core Web Vitals with Good/Needs-Improvement/Poor rating, 404 & JS errors)
 //
 // Note: Interactive UI handlers (Demand Poll & Post Feedback) ALWAYS initialize even when
 // gtag is blocked by privacy extensions; only telemetry dispatch is gated on gtag/debug mode.
@@ -31,8 +33,14 @@
   const hasGtag = typeof window.gtag === "function";
   const trackingEnabled = hasGtag || isDebug;
 
+  // Keep a lightweight in-memory debug ring buffer when ?debug_ga=1 for automated & manual QA
+  if (isDebug) {
+    window.__OF_GA_EVENTS__ = window.__OF_GA_EVENTS__ || [];
+  }
+
   function emitGtag(command, action, params) {
     if (isDebug) {
+      window.__OF_GA_EVENTS__.push({ command, action, params: Object.assign({}, params), ts: Date.now() });
       console.log("[GA4 Debug]", command, action, params);
     }
     if (typeof window.gtag === "function") {
@@ -74,16 +82,69 @@
     return text.slice(0, limit);
   }
 
+  // Comma-boundary truncation so user_properties (<= 36 chars) never chop mid-tag
+  function trimTagList(tags, maxLen) {
+    if (!Array.isArray(tags) || !tags.length) return "";
+    let out = "";
+    for (let i = 0; i < tags.length; i += 1) {
+      const t = String(tags[i] || "").trim();
+      if (!t) continue;
+      const next = out ? `${out},${t}` : t;
+      if (next.length > maxLen) break;
+      out = next;
+    }
+    return out || String(tags[0] || "").slice(0, maxLen);
+  }
+
   // Canonicalize model names across zh-Hant / en / URLs so GA4 reports never fragment
   function canonicalModelName(raw) {
     if (!raw) return null;
     const s = String(raw).toLowerCase();
-    if (/barbet|五色鳥|記得住|base_1b|1b\s*base|openformosa-base/.test(s)) return "Barbet";
-    if (/bluemagpie|藍鵲|說得出|tts/.test(s)) return "BlueMagpie-TTS";
-    if (/pangolin|穿山甲|ubitok|tokenizer/.test(s)) return "PangolinTokenizer";
-    if (/blackbear|黑熊|聽得懂|asr/.test(s)) return "BlackBear-ASR";
-    if (/sikadeer|梅花鹿|讀得懂|ocr/.test(s)) return "SikaDeer-OCR";
+    // Check combined multimodal adapters FIRST so "ASR / TTS / OCR adapters" never misclassifies as TTS
+    if (/asr\s*\/\s*tts\s*\/\s*ocr|multimodal.*adapter/.test(s)) return "Multimodal-Adapters";
+    if (/barbet|五色鳥|記住台灣|記得住|base_1b|1b\s*(?:base|compact|backbone)|openformosa-base|long[_\s-]?context|128k\s*[→~-]\s*1m|core\s*·\s*backbone/.test(s)) return "Barbet";
+    if (/blue\s*magpie|藍鵲|說出台灣|說得出|\btts\b/.test(s)) return "BlueMagpie-TTS";
+    if (/pangolin|穿山甲|ubitok|tokenizer|斷詞器/.test(s)) return "PangolinTokenizer";
+    if (/black\s*bear|黑熊|聽懂台灣|聽得懂|\basr\b/.test(s)) return "BlackBear-ASR";
+    if (/sika\s*deer|梅花鹿|讀懂台灣|讀得懂|\bocr\b/.test(s)) return "SikaDeer-OCR";
     return null;
+  }
+
+  const CANONICAL_MODEL_STATUS = {
+    Barbet: "shipped",
+    "BlueMagpie-TTS": "shipped",
+    PangolinTokenizer: "shipped",
+    "BlackBear-ASR": "planned",
+    "SikaDeer-OCR": "planned",
+    "Multimodal-Adapters": "in_progress"
+  };
+
+  function resolveModelStatus(cardEl, canonModel) {
+    const statusBadge = cardEl && cardEl.querySelector ? cardEl.querySelector(".status-badge") : null;
+    if (statusBadge) {
+      if (statusBadge.classList.contains("is-planned")) return "planned";
+      if (statusBadge.classList.contains("is-progress")) return "in_progress";
+      if (statusBadge.classList.contains("is-shipped")) return "shipped";
+    }
+    if (canonModel && CANONICAL_MODEL_STATUS[canonModel]) {
+      return CANONICAL_MODEL_STATUS[canonModel];
+    }
+    return "unknown";
+  }
+
+  function resolveSectionName(el) {
+    if (!el || !el.closest) return "body";
+    const explicit = el.closest("[data-demand-poll], [data-post-feedback], [data-tts-demo], #faq, #status");
+    if (explicit) {
+      if (explicit.hasAttribute("data-demand-poll")) return "demand_poll_widget";
+      if (explicit.hasAttribute("data-post-feedback")) return "post_feedback_widget";
+      if (explicit.hasAttribute("data-tts-demo")) return "tts_listening_demo";
+      if (explicit.id === "faq") return "home_faq";
+      if (explicit.id === "status") return "status_board";
+    }
+    const section = el.closest("section, article, header, footer");
+    if (!section) return "body";
+    return sanitizeText(section.id || (section.className && String(section.className).split(" ")[0]) || section.tagName.toLowerCase(), 40);
   }
 
   function getViewportClass() {
@@ -159,6 +220,11 @@
   }
 
   function initSessionAttribution() {
+    // Reuse pre-computed context from google-analytics.html so session_page_depth is never double-incremented
+    if (window.__OF_GA_CTX__ && window.__OF_GA_CTX__.session) {
+      return window.__OF_GA_CTX__;
+    }
+
     const ref = classifyReferrer(document.referrer);
     const current = {
       utm_source: urlParams.get("utm_source") || undefined,
@@ -181,7 +247,6 @@
       if (rawSaved) {
         sessionAcq = JSON.parse(rawSaved);
       }
-      // Update session entry attribution if none stored yet, or if new explicit campaign arrived
       if (!sessionAcq || current.utm_source || (sessionAcq.entry_referrer_category === "direct" && current.referrer_category !== "internal" && current.referrer_category !== "direct")) {
         sessionAcq = {
           entry_referrer_category: current.referrer_category === "internal" ? "direct" : current.referrer_category,
@@ -195,8 +260,8 @@
       }
     } catch (e) {
       sessionAcq = {
-        entry_referrer_category: current.referrer_category,
-        entry_referrer_domain: current.referrer_domain,
+        entry_referrer_category: current.referrer_category === "internal" ? "direct" : current.referrer_category,
+        entry_referrer_domain: current.referrer_category === "internal" ? "(direct)" : current.referrer_domain,
         entry_utm_source: current.utm_source,
         entry_utm_medium: current.utm_medium,
         entry_utm_campaign: current.utm_campaign,
@@ -218,8 +283,6 @@
     const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setUserProps({
       viewport_class: viewportClass,
-      screen_resolution: window.screen ? `${window.screen.width}x${window.screen.height}` : "unknown",
-      viewport_size: `${window.innerWidth}x${window.innerHeight}`,
       preferred_theme: document.documentElement.dataset.theme || (isDark ? "dark" : "light"),
       browser_language: navigator.language || "unknown",
       ui_language: language(),
@@ -380,16 +443,27 @@
       emitGtag("set", { language: to, content_language: to });
       setUserProps({ ui_language: to });
       recordFirstAction("language_switch");
-      track("language_switch", { from_language: from, to_language: to });
+      track("language_switch", {
+        from_language: from,
+        to_language: to,
+        language_direction: `${from}->${to}`,
+        seconds_since_load: Math.max(0, Math.round((Date.now() - pageLoadTime) / 1000))
+      });
     });
   });
 
-  document.querySelectorAll("[data-theme-option]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const theme = btn.dataset.themeOption;
-      setUserProps({ preferred_theme: theme });
-      recordFirstAction("theme_switch");
-      track("theme_switch", { theme: theme });
+  let currentTheme = document.documentElement.dataset.theme || "light";
+  window.addEventListener("openformosa:theme", (event) => {
+    const nextTheme = event && event.detail && event.detail.theme;
+    if (!nextTheme || nextTheme === currentTheme) return;
+    const prevTheme = currentTheme;
+    currentTheme = nextTheme;
+    setUserProps({ preferred_theme: nextTheme });
+    recordFirstAction("theme_switch");
+    track("theme_switch", {
+      theme: nextTheme,
+      from_theme: prevTheme,
+      to_theme: nextTheme
     });
   });
 
@@ -398,9 +472,11 @@
   // ==========================================
   let activeSeconds = 0;
   let lastFlushedActiveSeconds = 0;
+  let hasFlushedDwellOnce = false;
   let isTabActive = document.visibilityState === "visible";
   let userLastInteracted = Date.now();
   let maxScroll = 0;
+  let lastSectionName = PAGE_TYPE === "post" ? "post_intro" : "hero";
 
   function onUserActivity() {
     userLastInteracted = Date.now();
@@ -470,12 +546,80 @@
     });
   }
 
+  // Active reading-section tracker for long bilingual blog posts (measures actual section reading & drop-off!)
+  let activePostSection = PAGE_TYPE === "post" ? "post_intro" : null;
+  let activePostSectionDwell = 0;
+  let cachedPostHeadings = [];
+
+  function refreshPostHeadings() {
+    if (PAGE_TYPE !== "post") return;
+    const selector = language() === "en" ? ".post-lang-en h2" : ".post-lang-zh h2";
+    const found = [...document.querySelectorAll(selector)];
+    cachedPostHeadings = found.length ? found : [...document.querySelectorAll(".post-body h2")];
+  }
+
+  function computeCurrentPostSection() {
+    if (PAGE_TYPE !== "post") return null;
+    if (!cachedPostHeadings.length) refreshPostHeadings();
+    const threshold = Math.max(120, Math.round((window.innerHeight || 720) * 0.35));
+    let current = "post_intro";
+    for (let i = 0; i < cachedPostHeadings.length; i += 1) {
+      const h2 = cachedPostHeadings[i];
+      const rect = h2.getBoundingClientRect();
+      if (rect.height === 0 && rect.width === 0) continue; // hidden language container
+      if (rect.top <= threshold) {
+        const headingText = sanitizeText(h2.textContent || "", 36);
+        current = `post_h2_${i + 1}_${headingText}`.slice(0, 60);
+      } else {
+        break;
+      }
+    }
+    return current;
+  }
+
+  function flushActivePostSection(useBeacon) {
+    if (PAGE_TYPE !== "post" || !activePostSection) return;
+    if (activePostSectionDwell >= 3) {
+      track("section_dwell", {
+        section_name: activePostSection,
+        dwell_seconds: activePostSectionDwell
+      }, { beacon: Boolean(useBeacon) });
+    }
+    activePostSectionDwell = 0;
+  }
+
+  function syncActivePostSection() {
+    if (PAGE_TYPE !== "post") return;
+    const next = computeCurrentPostSection();
+    if (!next) return;
+    lastSectionName = next;
+    if (next !== activePostSection) {
+      flushActivePostSection(false);
+      activePostSection = next;
+    }
+  }
+
+  if (PAGE_TYPE === "post") {
+    refreshPostHeadings();
+    window.addEventListener("openformosa:language", () => {
+      flushActivePostSection(false);
+      refreshPostHeadings();
+      activePostSection = computeCurrentPostSection() || "post_intro";
+      lastSectionName = activePostSection;
+    });
+  }
+
   function flushDwellSummary(useBeacon) {
     const delta = activeSeconds - lastFlushedActiveSeconds;
-    // Require >= 5s on first flush, or >= 3s on subsequent tab-return flushes
-    const minDelta = lastFlushedActiveSeconds === 0 ? 5 : 3;
-    if (delta < minDelta) return;
+    const wallSeconds = Math.round((Date.now() - pageLoadTime) / 1000);
+    // On first flush, capture even fast bounces (>= 1s active or >= 2s wall) so bounce pain points aren't blind!
+    if (!hasFlushedDwellOnce) {
+      if (delta < 1 && wallSeconds < 2) return;
+    } else if (delta < 3) {
+      return;
+    }
 
+    hasFlushedDwellOnce = true;
     lastFlushedActiveSeconds = activeSeconds;
     const estSec = estimateReadSeconds();
     const readRatioPct = estSec ? Math.min(200, Math.round((activeSeconds / estSec) * 100)) : undefined;
@@ -485,12 +629,13 @@
     track("page_dwell_summary", {
       active_seconds: delta,
       cumulative_active_seconds: activeSeconds,
-      total_wall_seconds: Math.round((Date.now() - pageLoadTime) / 1000),
+      total_wall_seconds: wallSeconds,
       max_scroll_depth: maxScroll,
       read_quality: readQuality,
       estimated_read_seconds: estSec || undefined,
       read_ratio_percent: readRatioPct,
-      interactions_count: interactionCount
+      interactions_count: interactionCount,
+      last_section: lastSectionName || undefined
     }, { beacon: Boolean(useBeacon) });
   }
 
@@ -528,6 +673,12 @@
   }
   initWebVitals();
 
+  function classifyVitalsRating(lcp, cls, inp) {
+    if ((lcp != null && lcp > 4000) || (inp != null && inp > 500) || cls > 0.25) return "poor";
+    if ((lcp != null && lcp > 2500) || (inp != null && inp > 200) || cls > 0.1) return "needs_improvement";
+    return "good";
+  }
+
   function flushWebVitals(useBeacon) {
     if (vitals.flushed) return;
     vitals.flushed = true;
@@ -548,25 +699,33 @@
       cls_x1000: Math.round(vitals.cls * 1000),
       inp_ms: vitals.inp != null ? vitals.inp : undefined,
       ttfb_ms: ttfb,
-      dom_loaded_ms: domLoaded
+      dom_loaded_ms: domLoaded,
+      vitals_rating: classifyVitalsRating(vitals.lcp, vitals.cls, vitals.inp)
     }, { beacon: Boolean(useBeacon) });
+  }
+
+  // Forward declaration for demand poll abandonment flush on exit
+  let flushDemandAbandon = null;
+
+  function flushAllOnExit() {
+    flushActivePostSection(true);
+    flushAllVisibleSections(true);
+    flushDwellSummary(true);
+    flushWebVitals(true);
+    if (typeof flushDemandAbandon === "function") flushDemandAbandon();
   }
 
   document.addEventListener("visibilitychange", () => {
     isTabActive = document.visibilityState === "visible";
     if (!isTabActive) {
-      flushAllVisibleSections(true);
-      flushDwellSummary(true);
-      flushWebVitals(true);
+      flushAllOnExit();
     } else {
       userLastInteracted = Date.now();
     }
   });
 
   window.addEventListener("pagehide", () => {
-    flushAllVisibleSections(true);
-    flushDwellSummary(true);
-    flushWebVitals(true);
+    flushAllOnExit();
   });
 
   // Reading Milestones (uses `milestone_seconds` instead of `active_seconds` to prevent GA4 metric double-summing)
@@ -591,6 +750,11 @@
     sectionStates.forEach((state) => {
       if (state.visible) state.activeDwell += 1;
     });
+
+    if (PAGE_TYPE === "post") {
+      syncActivePostSection();
+      activePostSectionDwell += 1;
+    }
 
     timeMilestones.forEach(({ sec, label }) => {
       if (activeSeconds >= sec && !passedMilestones.has(sec)) {
@@ -626,6 +790,10 @@
 
     if (scrollPercent > maxScroll) maxScroll = scrollPercent;
 
+    if (PAGE_TYPE === "post") {
+      syncActivePostSection();
+    }
+
     scrollMilestones.forEach((m) => {
       if (scrollPercent >= m && !triggeredScrolls.has(m)) {
         triggeredScrolls.add(m);
@@ -653,16 +821,23 @@
 
   if ("IntersectionObserver" in window) {
     const sectionRules = [
-      { selector: ".hero", name: "hero" },
+      { selector: ".hero, .page-hero", name: "hero" },
       { selector: ".status-board", name: "status_board" },
       { selector: ".promise-grid", name: "promise_grid" },
+      { selector: ".mission", name: "mission_statement" },
       { selector: ".problem-grid", name: "problem_gaps" },
       { selector: ".family-grid", name: "model_family" },
       { selector: ".scenario-grid", name: "target_scenarios" },
+      { selector: ".open-trust", name: "open_source_trust" },
       { selector: ".timeline", name: PAGE_KEY === "evaluation" ? "evaluation_workflow" : "roadmap_timeline" },
       { selector: ".spec-list", name: "tech_specifications" },
       { selector: ".directory-grid", name: "beliefs_or_tracks" },
+      { selector: ".symbol-grid", name: "about_symbols" },
+      { selector: ".callout", name: "core_callout" },
+      { selector: ".soft-panel", name: "detail_panel" },
       { selector: ".release-panel", name: "release_gates" },
+      { selector: ".blog-tools", name: "blog_search_tools" },
+      { selector: ".article-strip", name: "blog_article_list" },
       { selector: "[data-tts-demo]", name: "tts_listening_demo" },
       { selector: ".prose .highlighter-rouge", name: "code_implementation" },
       { selector: "#faq", name: "home_faq" },
@@ -679,6 +854,9 @@
 
         if (entry.isIntersecting) {
           state.visible = true;
+          if (PAGE_TYPE !== "post") {
+            lastSectionName = state.name;
+          }
           if (state.name === "demand_poll_widget" && !demandPollViewed) {
             demandPollViewed = true;
             track("demand_poll_view", { active_seconds_at_view: activeSeconds });
@@ -693,6 +871,7 @@
     sectionRules.forEach(({ selector, name }) => {
       const nodes = document.querySelectorAll(selector);
       nodes.forEach((el, idx) => {
+        if (sectionStates.has(el)) return;
         const label = nodes.length > 1 ? `${name}_${idx + 1}` : name;
         sectionStates.set(el, { name: label, visible: false, activeDwell: 0 });
         sectionObserver.observe(el);
@@ -710,25 +889,16 @@
           onDwell: (sec) => {
             if (sec >= 4) {
               recordIntent({ persona: "enterprise", weight: 3, engagement: 2 });
-              track("enterprise_intent", { action: "dwell_phase5_private_deployment", dwell_seconds: sec });
+              track("enterprise_intent", {
+                action: "dwell_phase5_private_deployment",
+                section_name: "roadmap_phase5_enterprise",
+                dwell_seconds: sec
+              });
             }
           }
         });
         sectionObserver.observe(phase5);
       }
-    }
-
-    // Observe blog post H2 headings (only visible language headings count!)
-    if (PAGE_TYPE === "post") {
-      document.querySelectorAll(".post-body h2").forEach((h2, idx) => {
-        const headingText = sanitizeText(h2.textContent || "", 40);
-        sectionStates.set(h2, {
-          name: `post_h2_${idx + 1}_${headingText}`.slice(0, 60),
-          visible: false,
-          activeDwell: 0
-        });
-        sectionObserver.observe(h2);
-      });
     }
   }
 
@@ -797,8 +967,7 @@
 
     if (isOutbound) {
       const parsed = categorizeOutbound(href);
-      const section = link.closest("section, article, header, footer");
-      const sectionName = section ? (section.id || (section.className && String(section.className).split(" ")[0]) || section.tagName.toLowerCase()) : "body";
+      const sectionName = resolveSectionName(link);
       const canonModel = canonicalModelName(parsed.asset) || canonicalModelName(href) || canonicalModelName(link.textContent);
 
       recordFirstAction(`outbound_${parsed.category}`);
@@ -824,7 +993,9 @@
         track("model_interest", {
           model_name: canonModel || parsed.asset,
           target_asset: parsed.asset,
+          model_status: CANONICAL_MODEL_STATUS[canonModel] || "shipped",
           interest_type: parsed.category === "huggingface_demo" ? "demo_try" : "weights_view",
+          source_section: sectionName,
           outbound_url: href
         }, { beacon: true });
       } else if (parsed.category === "github_repo") {
@@ -838,12 +1009,14 @@
         track("developer_intent", {
           target_asset: parsed.asset,
           model_name: canonModel || undefined,
+          source_section: sectionName,
           action: "view_repo"
         }, { beacon: true });
       } else if (parsed.category === "discord_community") {
         recordIntent({ engagement: 4 });
         track("community_intent", {
           channel: "discord",
+          source_section: sectionName,
           action: "join_community"
         }, { beacon: true });
       } else if (parsed.category === "research_paper") {
@@ -853,8 +1026,19 @@
   });
 
   // ==========================================
-  // 8. Internal CTAs, Navigation & Content Cards
+  // 8. Internal CTAs, Navigation, Pain-Point Cards & Content Cards
   // ==========================================
+  function resolveCtaKey(el) {
+    if (!el) return "unknown";
+    if (el.dataset && el.dataset.gaCta) return el.dataset.gaCta;
+    if (el.dataset && el.dataset.i18n) return el.dataset.i18n;
+    const childI18n =
+      (el.querySelector && (el.querySelector("em[data-i18n]") || el.querySelector("strong[data-i18n]") || el.querySelector("[data-i18n]"))) ||
+      null;
+    if (childI18n && childI18n.dataset && childI18n.dataset.i18n) return childI18n.dataset.i18n;
+    return sanitizeText(el.textContent || el.getAttribute("aria-label") || el.getAttribute("href") || "", 60);
+  }
+
   document.querySelectorAll("a.btn, a.hero-choice").forEach((link) => {
     link.addEventListener("click", () => {
       const href = link.getAttribute("href");
@@ -862,25 +1046,43 @@
         recordFirstAction("cta_click");
         recordIntent({ engagement: 2 });
         track("cta_click", {
-          cta: link.dataset.i18n || sanitizeText(link.textContent || "", 100),
-          destination_url: href
+          cta: resolveCtaKey(link),
+          destination_url: href,
+          source_section: resolveSectionName(link)
         }, { beacon: true });
       }
     });
   });
 
-  document.querySelectorAll(".site-nav a").forEach((navLink) => {
+  // Header nav, brand logo, and footer internal navigation
+  document.querySelectorAll(".site-nav a, .brand, .footer-nav-col a, .footer-brand").forEach((navLink) => {
     navLink.addEventListener("click", () => {
       const href = navLink.getAttribute("href");
-      if (href && !/^https?:/i.test(href)) {
-        recordFirstAction("nav_click");
-        track("nav_click", {
-          link_text: sanitizeText(navLink.textContent || "", 60),
-          destination_url: href
-        }, { beacon: true });
-      }
+      if (!href || /^https?:/i.test(href)) return;
+      const inFooter = Boolean(navLink.closest(".site-footer"));
+      const navLocation = inFooter ? "footer" : "header";
+      recordFirstAction("nav_click");
+      track("nav_click", {
+        nav_location: navLocation,
+        cta: resolveCtaKey(navLink),
+        link_text: sanitizeText(navLink.textContent || navLink.getAttribute("aria-label") || "", 60),
+        destination_url: href
+      }, { beacon: true });
     });
   });
+
+  // Mobile navigation menu toggle
+  const navToggleBtn = document.querySelector(".nav-toggle");
+  if (navToggleBtn) {
+    navToggleBtn.addEventListener("click", () => {
+      const expanded = navToggleBtn.getAttribute("aria-expanded") === "true";
+      recordFirstAction("mobile_nav_toggle");
+      track("nav_click", {
+        nav_location: "mobile_toggle",
+        cta: expanded ? "mobile_menu_open" : "mobile_menu_close"
+      });
+    });
+  }
 
   // Blog post card clicks
   document.querySelectorAll("[data-post-card]").forEach((card) => {
@@ -889,11 +1091,14 @@
       const canonModel = canonicalModelName(title);
       const searchEl = document.querySelector("[data-blog-search]");
       const tagEl = document.querySelector("[data-blog-tag]");
+      const itemHref = sanitizeText(card.getAttribute("href") || title, 100);
       recordFirstAction("post_click");
       recordIntent({ model: canonModel || undefined, modelWeight: 2, engagement: 2 });
       track("select_content", {
         content_type: "blog_post",
-        item_id: sanitizeText(card.getAttribute("href") || title, 100),
+        item_id: itemHref,
+        selection_type: "blog_post",
+        target_asset: itemHref,
         model_name: canonModel || undefined,
         active_search: searchEl && searchEl.value.trim() ? sanitizeText(searchEl.value, 60) : undefined,
         active_tag: tagEl && tagEl.value !== "all" ? tagEl.value : undefined
@@ -901,28 +1106,64 @@
     });
   });
 
-  // Fixed selectors: .status-item (was .status-card), .family-card, .promise, .spec-row
+  // Model family, status board, promise cards & tech specs (with accurate planned / in_progress / shipped status!)
   document.querySelectorAll(".family-card, .status-item, .promise, .spec-row").forEach((card) => {
     card.addEventListener("click", (event) => {
-      // Avoid duplicate firing when clicking an outbound link inside the card (already tracked above)
       const anchor = event.target.closest("a");
-      if (anchor && /^https?:/i.test(anchor.href) && new URL(anchor.href).hostname !== window.location.hostname) {
-        return;
+      if (anchor && /^https?:/i.test(anchor.href)) {
+        try {
+          if (new URL(anchor.href).hostname !== window.location.hostname) return;
+        } catch (e) {}
       }
       const rawText = (card.querySelector(".status-name, .latin, .role, .spec-name, h3")?.textContent || card.textContent || "").trim();
       const canonModel = canonicalModelName(rawText) || canonicalModelName(card.textContent) || sanitizeText(rawText, 60);
       const roleEl = card.querySelector(".role, .status-role, .spec-tag");
-      const statusBadge = card.querySelector(".status-badge");
-      const isPlanned = statusBadge && statusBadge.classList.contains("is-planned");
+      const modelStatus = resolveModelStatus(card, canonModel);
+      const interestType = anchor ? "internal_link_click" : "card_click";
 
       recordFirstAction("model_interest");
       recordIntent({ model: canonModel, modelWeight: 2, engagement: 2 });
       track("model_interest", {
         model_name: canonModel,
+        target_asset: canonModel,
         model_task: roleEl ? sanitizeText(roleEl.textContent, 40) : undefined,
-        model_status: isPlanned ? "planned" : "shipped",
-        action: anchor ? "internal_link_click" : "card_click"
+        model_status: modelStatus,
+        interest_type: interestType,
+        source_section: resolveSectionName(card)
       }, { beacon: Boolean(anchor) });
+    });
+  });
+
+  // Home pain-point cards (reveals WHICH of the 4 Taiwan AI failure scenarios resonates most!)
+  document.querySelectorAll(".problem-card").forEach((card, idx) => {
+    card.addEventListener("click", () => {
+      const heading = card.querySelector("h3");
+      const key = (heading && heading.dataset.i18n) || `problem_card_${idx + 1}`;
+      recordFirstAction("pain_point_card_click");
+      recordIntent({ engagement: 1 });
+      track("select_content", {
+        content_type: "pain_point_card",
+        item_id: key,
+        selection_type: "pain_point_card",
+        target_asset: key
+      });
+    });
+  });
+
+  // Home FAQ cards (reveals WHICH adoption questions or blockers visitors inspect!)
+  document.querySelectorAll(".faq-card").forEach((card, idx) => {
+    card.addEventListener("click", () => {
+      const dt = card.querySelector("dt");
+      const key = (dt && dt.dataset.i18n) || `faq_${idx + 1}`;
+      if (key === "faq_q6") recordIntent({ persona: "enterprise", weight: 2, engagement: 1 });
+      else recordIntent({ engagement: 1 });
+      recordFirstAction("faq_click");
+      track("select_content", {
+        content_type: "faq_item",
+        item_id: key,
+        selection_type: "faq_item",
+        target_asset: key
+      });
     });
   });
 
@@ -931,14 +1172,16 @@
     card.addEventListener("click", () => {
       const heading = card.querySelector("h3");
       const key = (heading && heading.dataset.i18n) || sanitizeText(heading?.textContent || "", 60);
-      if (/biz|gov/.test(key)) recordIntent({ persona: "enterprise", weight: 2, engagement: 1 });
+      if (/biz|gov|culture/.test(key)) recordIntent({ persona: "enterprise", weight: 2, engagement: 1 });
       else if (/edu/.test(key)) recordIntent({ persona: "researcher", weight: 2, engagement: 1 });
-      else if (/media|culture/.test(key)) recordIntent({ persona: "speech_creator", weight: 2, engagement: 1 });
+      else if (/media/.test(key)) recordIntent({ persona: "developer", weight: 2, engagement: 1 });
 
       recordFirstAction("scenario_click");
       track("select_content", {
         content_type: "use_case_scenario",
-        item_id: key
+        item_id: key,
+        selection_type: "use_case_scenario",
+        target_asset: key
       });
     });
   });
@@ -949,24 +1192,51 @@
     phase5.addEventListener("click", () => {
       recordFirstAction("enterprise_intent");
       recordIntent({ persona: "enterprise", weight: 4, engagement: 3 });
-      track("enterprise_intent", { action: "click_phase5_private_deployment" });
+      track("enterprise_intent", {
+        action: "click_phase5_private_deployment",
+        section_name: "roadmap_phase5_enterprise"
+      });
     });
   }
 
   document.querySelectorAll(".release-list a").forEach((link) => {
     link.addEventListener("click", () => {
+      const href = link.getAttribute("href") || "release_artifact";
       recordIntent({ persona: "researcher", weight: 2, engagement: 2 });
       track("select_content", {
         content_type: "release_artifact",
-        item_id: link.getAttribute("href")
+        item_id: href,
+        selection_type: "release_artifact",
+        target_asset: href
       }, { beacon: true });
     });
   });
 
   // ==========================================
-  // 9. Blog Search & Zero-Result Unmet Demand
+  // 9. Blog Search, URL ?q= Tracking & Zero-Result Unmet Demand
   // ==========================================
   const searchInput = document.querySelector("[data-blog-search]");
+  function reportBlogSearch(term, origin) {
+    const cleanTerm = sanitizeText(term, 100);
+    if (!cleanTerm) return;
+    const results = document.querySelectorAll("[data-post-card]:not([hidden])").length;
+    recordFirstAction("blog_search");
+    recordIntent({ model: canonicalModelName(cleanTerm) || undefined, engagement: 2 });
+    if (results === 0) {
+      track("search_no_results", {
+        search_term: cleanTerm,
+        search_origin: origin,
+        results_count: 0
+      });
+    } else {
+      track("search", {
+        search_term: cleanTerm,
+        search_origin: origin,
+        results_count: results
+      });
+    }
+  }
+
   if (searchInput) {
     let timer = null;
     searchInput.addEventListener("input", () => {
@@ -974,29 +1244,39 @@
       timer = setTimeout(() => {
         const term = searchInput.value.trim();
         if (!term) return;
-        const results = document.querySelectorAll("[data-post-card]:not([hidden])").length;
-        recordFirstAction("blog_search");
-        recordIntent({ engagement: 2 });
-        if (results === 0) {
-          track("search_no_results", { search_term: sanitizeText(term, 100) });
-        } else {
-          track("search", { search_term: sanitizeText(term, 100), results_count: results });
-        }
+        reportBlogSearch(term, "input");
       }, 600);
     });
+
+    // Track initial /blog/?q=... search query (e.g. from Google SearchAction or shared URL)
+    const initialQ = (urlParams.get("q") || "").trim();
+    if (initialQ) {
+      setTimeout(() => reportBlogSearch(initialQ, "url_query"), 0);
+    }
   }
 
   const tagSelect = document.querySelector("[data-blog-tag]");
   if (tagSelect) {
     tagSelect.addEventListener("change", () => {
+      const val = tagSelect.value;
       const results = document.querySelectorAll("[data-post-card]:not([hidden])").length;
       recordFirstAction("blog_tag_filter");
-      recordIntent({ model: canonicalModelName(tagSelect.value) || undefined, engagement: 1 });
+      recordIntent({ model: canonicalModelName(val) || undefined, engagement: 1 });
       track("select_content", {
         content_type: "blog_tag",
-        item_id: tagSelect.value,
+        item_id: val,
+        selection_type: "blog_tag",
+        target_asset: val,
         results_count: results
       });
+      // Surface zero-result tag selections (e.g. user filtering for ASR / OCR articles) as unmet demand!
+      if (val !== "all" && results === 0) {
+        track("search_no_results", {
+          search_term: `tag:${val}`,
+          search_origin: "tag_filter",
+          results_count: 0
+        });
+      }
     });
   }
 
@@ -1018,10 +1298,19 @@
       recordFirstAction("code_copy");
       recordIntent({ persona: "developer", weight: 3, model: canonModel || undefined, modelWeight: 3, engagement: 4 });
       track("code_copy", {
-        target: btn.dataset.copy,
+        target_element: btn.dataset.copy,
         model_name: canonModel || undefined,
-        snippet_preview: snippetPreview
+        snippet_preview: snippetPreview,
+        source_section: resolveSectionName(btn)
       });
+    });
+  });
+
+  window.addEventListener("openformosa:copy_failed", (event) => {
+    track("ux_friction", {
+      friction_type: "copy_failed",
+      target_element: sanitizeText((event && event.detail && event.detail.target) || "code_block", 60),
+      section_name: lastSectionName || "code_implementation"
     });
   });
 
@@ -1045,14 +1334,16 @@
       engagement: 2
     });
     track(inCode ? "code_copy" : "text_copy", {
+      target_element: inCode ? "inline_code_selection" : "prose_selection",
       snippet_preview: sanitizeText(raw, 80),
       model_name: canonModel || undefined,
+      source_section: resolveSectionName(anchorNode),
       char_count: raw.length
     });
   });
 
   // ==========================================
-  // 11. TTS Audio Demos & Media Timings
+  // 11. TTS Audio Demos, Replay & Media Error Telemetry
   // ==========================================
   function clipId(audio) {
     let src = (audio && (audio.currentSrc || audio.src)) || "";
@@ -1063,6 +1354,7 @@
 
   if (document.querySelector("[data-tts-card]")) {
     const isTtsAudio = (el) => el && el.matches && el.matches("[data-tts-audio]");
+    const clipPlayCounts = {};
 
     function demoTitle(audio) {
       const demo = audio.closest("[data-tts-demo]");
@@ -1073,14 +1365,18 @@
     document.addEventListener("play", (event) => {
       const audio = event.target;
       if (!isTtsAudio(audio)) return;
+      const cid = clipId(audio);
+      clipPlayCounts[cid] = (clipPlayCounts[cid] || 0) + 1;
       audio.dataset.gaProgress = "";
       recordFirstAction("audio_play");
       recordIntent({ persona: "speech_creator", weight: 2, model: "BlueMagpie-TTS", modelWeight: 2, engagement: 2 });
       track("audio_start", {
-        item_id: clipId(audio),
+        item_id: cid,
+        target_asset: cid,
         post_slug: PAGE_KEY,
         model_name: "BlueMagpie-TTS",
-        demo_title: demoTitle(audio)
+        demo_title: demoTitle(audio),
+        play_count: clipPlayCounts[cid]
       });
     }, true);
 
@@ -1089,11 +1385,13 @@
       if (!isTtsAudio(audio) || !audio.duration) return;
       const percent = (audio.currentTime / audio.duration) * 100;
       const sent = audio.dataset.gaProgress ? audio.dataset.gaProgress.split(",") : [];
+      const cid = clipId(audio);
       [25, 50, 75].forEach((mark) => {
         if (percent >= mark && sent.indexOf(String(mark)) === -1) {
           sent.push(String(mark));
           track("audio_progress", {
-            item_id: clipId(audio),
+            item_id: cid,
+            target_asset: cid,
             post_slug: PAGE_KEY,
             model_name: "BlueMagpie-TTS",
             percent_played: mark
@@ -1108,8 +1406,10 @@
       if (!isTtsAudio(audio) || !audio.duration || audio.ended) return;
       const listened = Math.round(audio.currentTime);
       if (listened < 1) return;
+      const cid = clipId(audio);
       track("audio_pause", {
-        item_id: clipId(audio),
+        item_id: cid,
+        target_asset: cid,
         post_slug: PAGE_KEY,
         model_name: "BlueMagpie-TTS",
         listen_seconds: listened
@@ -1119,13 +1419,26 @@
     document.addEventListener("ended", (event) => {
       const audio = event.target;
       if (!isTtsAudio(audio)) return;
+      const cid = clipId(audio);
       const dur = audio.duration ? Math.round(audio.duration) : undefined;
       recordIntent({ persona: "speech_creator", weight: 2, model: "BlueMagpie-TTS", modelWeight: 2, engagement: 2 });
       track("audio_complete", {
-        item_id: clipId(audio),
+        item_id: cid,
+        target_asset: cid,
         post_slug: PAGE_KEY,
         model_name: "BlueMagpie-TTS",
         listen_seconds: dur
+      });
+    }, true);
+
+    document.addEventListener("error", (event) => {
+      const audio = event.target;
+      if (!isTtsAudio(audio)) return;
+      track("ux_friction", {
+        friction_type: "audio_error",
+        target_element: `audio:${clipId(audio)}`,
+        section_name: "tts_listening_demo",
+        model_name: "BlueMagpie-TTS"
       });
     }, true);
 
@@ -1135,10 +1448,12 @@
         const card = btn.closest("[data-tts-card]");
         const audio = card && card.querySelector("[data-tts-audio]");
         const badge = card && card.querySelector(".tts-card__badge");
+        const cid = audio ? clipId(audio) : undefined;
         recordFirstAction("reveal_transcript");
         recordIntent({ persona: "researcher", weight: 2, model: "BlueMagpie-TTS", modelWeight: 1, engagement: 2 });
         track("reveal_transcript", {
-          item_id: audio ? clipId(audio) : undefined,
+          item_id: cid,
+          target_asset: cid,
           post_slug: PAGE_KEY,
           model_name: "BlueMagpie-TTS",
           asr_status: badge ? (badge.classList.contains("is-warn") ? "mismatch" : "match") : undefined
@@ -1163,9 +1478,14 @@
         btn.setAttribute("aria-pressed", String(active));
       });
       if (fbStatus && selectedType) {
-        const key = justSubmitted ? "post_fb_thanks" : "post_fb_recorded";
+        const isBlocker = selectedType === "need_quickstart" || selectedType === "hard_to_follow";
+        const key = justSubmitted
+          ? (isBlocker ? "post_fb_thanks_blocker" : "post_fb_thanks")
+          : "post_fb_recorded";
         const fallback = justSubmitted
-          ? "Thanks for your feedback! It helps prioritize OpenFormosa's next work."
+          ? (isBlocker
+            ? "Thanks for flagging this blocker! Feel free to add a short note in the wishlist below so we can improve our docs."
+            : "Thanks for your feedback! It helps prioritize OpenFormosa's next work.")
           : "Feedback recorded — click another option anytime to update.";
         fbStatus.dataset.i18n = key;
         fbStatus.dataset.i18nDefault = fallback;
@@ -1191,16 +1511,21 @@
         const readRatioPct = estSec ? Math.min(200, Math.round((activeSeconds / estSec) * 100)) : undefined;
 
         recordFirstAction("post_feedback");
-        if (fbType === "want_to_run") recordIntent({ persona: "developer", weight: 3, model: canonModel || undefined, modelWeight: 3, engagement: 3 });
-        else if (fbType === "want_more_detail") recordIntent({ persona: "researcher", weight: 3, model: canonModel || undefined, modelWeight: 2, engagement: 3 });
-        else recordIntent({ model: canonModel || undefined, modelWeight: 2, engagement: 2 });
+        if (fbType === "want_to_run" || fbType === "need_quickstart") {
+          recordIntent({ persona: "developer", weight: 3, model: canonModel || undefined, modelWeight: 3, engagement: 3 });
+        } else if (fbType === "want_more_detail") {
+          recordIntent({ persona: "researcher", weight: 3, model: canonModel || undefined, modelWeight: 2, engagement: 3 });
+        } else {
+          recordIntent({ model: canonModel || undefined, modelWeight: 2, engagement: 2 });
+        }
 
         track("content_feedback", {
           post_slug: PAGE_KEY,
           model_name: canonModel || undefined,
           feedback_type: fbType,
           read_ratio_percent: readRatioPct,
-          max_scroll_depth: maxScroll
+          max_scroll_depth: maxScroll,
+          last_section: lastSectionName || undefined
         });
 
         // If user signals they have a specific use case, guide them straight to the Demand Poll!
@@ -1215,24 +1540,32 @@
   }
 
   // ==========================================
-  // 13. Interactive Demand Poll v2 (Always works even without gtag!)
+  // 13. Interactive Demand & Pain-Point Poll v2.1 (Always works even without gtag!)
   // ==========================================
   const demandForm = document.querySelector("[data-demand-form]");
   if (demandForm) {
     const capSelect = demandForm.querySelector("#demand-capability");
     const roleSelect = demandForm.querySelector("#demand-role");
     const depSelect = demandForm.querySelector("#demand-deployment");
+    const painSelect = demandForm.querySelector("#demand-pain-point");
     const noteInput = demandForm.querySelector("#demand-note");
     const tagButtons = [...demandForm.querySelectorAll("[data-demand-tag]")];
     const statusMsg = demandForm.querySelector("[data-demand-status]") || document.querySelector("[data-demand-status]");
     const selectedTags = new Set();
     let pollStarted = false;
+    let pollSubmitted = false;
+    let pollAbandonSent = false;
+    let lastTouchedField = null;
 
     function markPollStart(triggerField) {
+      lastTouchedField = triggerField;
       if (pollStarted) return;
       pollStarted = true;
       recordFirstAction("demand_poll_start");
-      track("demand_poll_start", { trigger_field: triggerField });
+      track("demand_poll_start", {
+        field_name: triggerField,
+        trigger_field: triggerField
+      });
     }
 
     function setDemandStatus(i18nKey, fallbackEn) {
@@ -1260,6 +1593,7 @@
         if (parsed.capability && capSelect) capSelect.value = parsed.capability;
         if (parsed.role && roleSelect) roleSelect.value = parsed.role;
         if (parsed.deployment && depSelect) depSelect.value = parsed.deployment;
+        if (parsed.pain_point && painSelect) painSelect.value = parsed.pain_point;
         if (parsed.note && noteInput) noteInput.value = parsed.note;
         if (Array.isArray(parsed.tags)) {
           parsed.tags.forEach((t) => selectedTags.add(t));
@@ -1286,19 +1620,22 @@
       });
     });
 
-    // Partial selection funnel tracking (captures intent even before final Submit!)
+    // Partial selection funnel tracking (captures intent & pain points even before final Submit!)
     [
       { el: capSelect, name: "demand_capability" },
       { el: roleSelect, name: "demand_role" },
-      { el: depSelect, name: "demand_deployment" }
+      { el: depSelect, name: "demand_deployment" },
+      { el: painSelect, name: "demand_pain_point" }
     ].forEach(({ el, name }) => {
       if (!el) return;
       el.addEventListener("change", () => {
         markPollStart(name);
-        track("demand_field_select", {
-          field_name: name,
-          field_value: el.value
-        });
+        if (el.value) {
+          track("demand_field_select", {
+            field_name: name,
+            field_value: el.value
+          });
+        }
       });
     });
 
@@ -1306,16 +1643,47 @@
       noteInput.addEventListener("focus", () => markPollStart("demand_note"), { once: true });
     }
 
+    // Track partial form abandonment so you see BOTH form friction and unmet demand from non-submitters
+    flushDemandAbandon = function () {
+      if (!pollStarted || pollSubmitted || pollAbandonSent) return;
+      pollAbandonSent = true;
+      const cap = (capSelect?.value || "").trim();
+      const role = (roleSelect?.value || "").trim();
+      const dep = (depSelect?.value || "").trim();
+      const pain = (painSelect?.value || "").trim();
+      const noteLen = (noteInput?.value || "").trim().length;
+      const filledCount =
+        (cap ? 1 : 0) +
+        (role ? 1 : 0) +
+        (dep ? 1 : 0) +
+        (pain ? 1 : 0) +
+        (selectedTags.size > 0 ? 1 : 0) +
+        (noteLen > 0 ? 1 : 0);
+
+      track("demand_poll_abandon", {
+        field_name: lastTouchedField || "unknown",
+        demand_capability: cap || undefined,
+        demand_role: role || undefined,
+        demand_deployment: dep || undefined,
+        demand_pain_point: pain || undefined,
+        filled_fields_count: filledCount
+      }, { beacon: true });
+    };
+
     demandForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const cap = (capSelect?.value || "").trim();
       const role = (roleSelect?.value || "").trim();
       const dep = (depSelect?.value || "").trim();
+      const pain = (painSelect?.value || "").trim();
       const note = sanitizeText(noteInput?.value || "", 100);
       const tagsArray = [...selectedTags].sort();
-      const tagsStr = tagsArray.join(",");
+      const tagsStr = trimTagList(tagsArray, 100);
+      const tagsUserProp = trimTagList(tagsArray, 36);
 
       if (!cap || !role || !dep) return;
+
+      pollSubmitted = true;
 
       let isUpdate = false;
       try {
@@ -1326,6 +1694,7 @@
         capability: cap,
         role: role,
         deployment: dep,
+        pain_point: pain,
         tags: tagsArray,
         note: note,
         submitted_at: Date.now()
@@ -1355,17 +1724,29 @@
         demand_capability: cap,
         demand_role: role,
         demand_deployment: dep,
+        demand_pain_point: pain || undefined,
         demand_tags: tagsStr || undefined,
         demand_note: note || undefined,
         model_name: canonModel || undefined,
         demand_action: isUpdate ? "update" : "new"
       });
 
+      // Emit clean 1-to-1 per-tag votes so GA4 can graph exact tag rankings without parsing CSV strings!
+      tagsArray.forEach((tag) => {
+        track("demand_tag_vote", {
+          demand_tag: tag,
+          demand_capability: cap,
+          demand_role: role,
+          demand_pain_point: pain || undefined
+        });
+      });
+
       setUserProps({
         user_demand_capability: cap,
         user_demand_role: role,
         user_demand_deployment: dep,
-        user_demand_tags: tagsStr || undefined
+        user_demand_pain_point: pain || undefined,
+        user_demand_tags: tagsUserProp || undefined
       });
 
       setDemandStatus(
@@ -1378,7 +1759,97 @@
   }
 
   // ==========================================
-  // 14. 404 & Rate-Limited JS Error Diagnostics
+  // 14. UX Friction Detection (Rage Clicks, Dead Clicks & Broken Media)
+  // ==========================================
+  function describeElement(el) {
+    if (!el || el.nodeType !== 1) return "unknown";
+    const card = el.closest(".family-card, .status-item, .promise, .spec-row, .problem-card, .faq-card, .scenario-card, .directory-card, .timeline-card, .symbol-card");
+    if (card) {
+      const cardType = (card.className && String(card.className).split(" ")[0]) || "card";
+      const labelEl = card.querySelector(".status-name, .latin, .spec-name, dt, h3, strong, .key");
+      const i18nKey = labelEl && labelEl.dataset && labelEl.dataset.i18n;
+      const canon = canonicalModelName(labelEl?.textContent || card.textContent);
+      const id = canon || i18nKey || sanitizeText(labelEl?.textContent || "", 32);
+      return sanitizeText(`${cardType}:${id}`, 60);
+    }
+    const i18nEl = el.closest("[data-i18n]");
+    if (i18nEl && i18nEl.dataset.i18n) return sanitizeText(`${el.tagName.toLowerCase()}:${i18nEl.dataset.i18n}`, 60);
+    const cls = el.className && typeof el.className === "string" ? `.${el.className.trim().split(/\s+/)[0]}` : "";
+    return sanitizeText(`${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : cls}`, 60);
+  }
+
+  const recentClicks = [];
+  const reportedRageTargets = new Set();
+  const reportedDeadTargets = new Set();
+  let frictionEventCount = 0;
+
+  document.addEventListener("click", (event) => {
+    if (frictionEventCount >= 12) return;
+    const target = event.target && event.target.nodeType === 1 ? event.target : null;
+    if (!target) return;
+
+    const now = Date.now();
+    const x = event.clientX || 0;
+    const y = event.clientY || 0;
+    const desc = describeElement(target);
+
+    // 14a. Rage Click Detection (>= 3 rapid clicks within 1200ms in a 40px radius on the same target)
+    recentClicks.push({ ts: now, x, y, desc });
+    while (recentClicks.length && now - recentClicks[0].ts > 1200) {
+      recentClicks.shift();
+    }
+    const nearby = recentClicks.filter((c) => Math.abs(c.x - x) <= 40 && Math.abs(c.y - y) <= 40 && c.desc === desc);
+    if (nearby.length >= 3 && !reportedRageTargets.has(desc)) {
+      reportedRageTargets.add(desc);
+      frictionEventCount += 1;
+      const canonModel = canonicalModelName(desc);
+      track("ux_friction", {
+        friction_type: "rage_click",
+        target_element: desc,
+        section_name: resolveSectionName(target),
+        model_name: canonModel || undefined,
+        model_status: canonModel ? resolveModelStatus(target.closest(".family-card, .status-item, .promise, .spec-row"), canonModel) : undefined
+      });
+      return;
+    }
+
+    // 14b. Dead Click Detection (clicking a visually card-like / badge-like non-interactive element expecting navigation)
+    const interactive = target.closest("a, button, input, select, textarea, summary, label, audio, video, [role='button']");
+    if (interactive) return;
+    const sel = window.getSelection ? window.getSelection().toString().trim() : "";
+    if (sel.length > 0) return;
+
+    const deadCandidate = target.closest(".family-card, .promise, .spec-row, .problem-card, .faq-card, .scenario-card, .directory-card, .timeline-card, .symbol-card, .status-badge");
+    if (!deadCandidate || reportedDeadTargets.has(desc)) return;
+    reportedDeadTargets.add(desc);
+    frictionEventCount += 1;
+
+    const canonModel = canonicalModelName(deadCandidate.textContent || "");
+    track("ux_friction", {
+      friction_type: "dead_click",
+      target_element: desc,
+      section_name: resolveSectionName(deadCandidate),
+      model_name: canonModel || undefined,
+      model_status: canonModel ? resolveModelStatus(deadCandidate, canonModel) : undefined
+    });
+  });
+
+  // Broken image load errors (rate-limited)
+  let imageErrorCount = 0;
+  document.addEventListener("error", (event) => {
+    const target = event.target;
+    if (!target || target.tagName !== "IMG" || imageErrorCount >= 3) return;
+    imageErrorCount += 1;
+    const src = (target.currentSrc || target.getAttribute("src") || "").split("/").pop() || "img";
+    track("ux_friction", {
+      friction_type: "image_error",
+      target_element: sanitizeText(`img:${src}`, 60),
+      section_name: resolveSectionName(target)
+    });
+  }, true);
+
+  // ==========================================
+  // 15. 404 & Rate-Limited JS Error Diagnostics
   // ==========================================
   if (PAGE_KEY === "not_found" || PAGE_TYPE === "not_found" || document.title.includes("404") || document.title.includes("Not found")) {
     track("page_not_found", {

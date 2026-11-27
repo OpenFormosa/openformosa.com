@@ -3,7 +3,7 @@
     <div class="demand-poll-header">
       <p class="eyebrow" data-i18n="demand_poll_eyebrow">Community Wishlist · 需求調查</p>
       <h3 id="demand-poll-title" data-i18n="demand_poll_title">Tell us: What Taiwan AI capabilities do you need most?</h3>
-      <p class="lede" data-i18n="demand_poll_desc">OpenFormosa is planning the next model branches and evaluation suites. Take 10 seconds to share your primary needs and use case to help shape open AI priorities.</p>
+      <p class="lede" data-i18n="demand_poll_desc">OpenFormosa is planning the next model branches and evaluation suites. Take 10 seconds to share your primary needs, pain points, and use case to help shape open AI priorities.</p>
     </div>
 
     <form class="demand-poll-form" id="demand-poll-form" data-demand-form>
@@ -13,7 +13,7 @@
           <select id="demand-capability" name="capability" required>
             <option value="" disabled selected data-i18n="demand_opt_cap_prompt">-- Select most wanted capability --</option>
             <option value="asr_blackbear" data-i18n="demand_opt_asr">ASR Speech Recognition (Taiwan Mandarin, Taigi/Hakka accents, code-switching)</option>
-            <option value="tts_bluemagpie" data-i18n="demand_opt_tts">TTS Speech Synthesis (Authentic Taiwan accent, Tailo/Bopomofo, prosody control)</option>
+            <option value="tts_bluemagpie" data-i18n="demand_opt_tts">TTS Speech Synthesis (Authentic Taiwan accent, Tâi-lô/Bopomofo, prosody control)</option>
             <option value="ocr_sikadeer" data-i18n="demand_opt_ocr">OCR Document Intelligence (Taiwan receipts, forms, tables, public records)</option>
             <option value="base_1b_barbet" data-i18n="demand_opt_base">1B Compact Base Model (Deployable, fine-tunable on laptops &amp; edge devices)</option>
             <option value="long_context" data-i18n="demand_opt_long_context">Long Context &amp; Official Docs (128K~1M context, law/regulation retrieval &amp; QA)</option>
@@ -43,14 +43,28 @@
           </select>
         </div>
 
+        <div class="demand-field">
+          <label for="demand-pain-point" data-i18n="demand_label_pain_point">4. Biggest Pain Point or Blocker (Optional)</label>
+          <select id="demand-pain-point" name="pain_point">
+            <option value="" selected data-i18n="demand_opt_pain_prompt">-- Select your biggest pain point --</option>
+            <option value="tw_accuracy" data-i18n="demand_opt_pain_tw_accuracy">Generic models miss Taiwan terms, accents, or proper nouns</option>
+            <option value="code_switching" data-i18n="demand_opt_pain_code_switching">Chinese, English, and Taigi code-switching fails often</option>
+            <option value="cost_hardware" data-i18n="demand_opt_pain_cost_hardware">Large models are too costly or too heavy for local hardware</option>
+            <option value="privacy_onprem" data-i18n="demand_opt_pain_privacy_onprem">Sensitive data cannot go to overseas cloud APIs</option>
+            <option value="missing_model" data-i18n="demand_opt_pain_missing_model">Needed branch is not shipped yet (ASR, OCR, or Instruct)</option>
+            <option value="integration_docs" data-i18n="demand_opt_pain_integration_docs">Missing quickstart, quantized weights (GGUF/MLX), or API docs</option>
+            <option value="eval_trust" data-i18n="demand_opt_pain_eval_trust">Lack of trustworthy Taiwan benchmarks to evaluate adoption</option>
+          </select>
+        </div>
+
         <div class="demand-field demand-field-full">
-          <span class="demand-field-label" data-i18n="demand_label_tags">4. Languages &amp; Domain Needs (Optional, multi-select)</span>
+          <span class="demand-field-label" data-i18n="demand_label_tags">5. Languages &amp; Domain Needs (Optional, multi-select)</span>
           <div class="demand-tag-group" role="group" aria-label="Languages and domains">
             <button type="button" class="demand-tag-chip" data-demand-tag="taigi" aria-pressed="false" data-i18n="demand_tag_taigi">Taigi (Taiwanese)</button>
             <button type="button" class="demand-tag-chip" data-demand-tag="hakka" aria-pressed="false" data-i18n="demand_tag_hakka">Hakka</button>
             <button type="button" class="demand-tag-chip" data-demand-tag="tw_mandarin" aria-pressed="false" data-i18n="demand_tag_tw_mandarin">Taiwan Mandarin / Code-switching</button>
             <button type="button" class="demand-tag-chip" data-demand-tag="indigenous" aria-pressed="false" data-i18n="demand_tag_indigenous">Indigenous Languages</button>
-            <button type="button" class="demand-tag-chip" data-demand-tag="bopomofo_tailo" aria-pressed="false" data-i18n="demand_tag_bopomofo_tailo">Bopomofo / Tailo</button>
+            <button type="button" class="demand-tag-chip" data-demand-tag="bopomofo_tailo" aria-pressed="false" data-i18n="demand_tag_bopomofo_tailo">Bopomofo / Tâi-lô</button>
             <button type="button" class="demand-tag-chip" data-demand-tag="medical" aria-pressed="false" data-i18n="demand_tag_medical">Medical / Clinical</button>
             <button type="button" class="demand-tag-chip" data-demand-tag="legal_gov" aria-pressed="false" data-i18n="demand_tag_legal_gov">Legal / Public Docs</button>
             <button type="button" class="demand-tag-chip" data-demand-tag="customer_meeting" aria-pressed="false" data-i18n="demand_tag_customer_meeting">Call Center / Meetings</button>
@@ -60,8 +74,8 @@
         </div>
 
         <div class="demand-field demand-field-full">
-          <label for="demand-note" data-i18n="demand_label_note">5. Specific Notes or Requests (Optional, do not enter confidential personal data)</label>
-          <input type="text" id="demand-note" name="note" maxlength="100" placeholder="e.g. Need medical terminology support / Taigi POJ / Uniform invoice parsing..." data-i18n-placeholder="demand_placeholder_note">
+          <label for="demand-note" data-i18n="demand_label_note">6. Specific Pain Point or Request (Optional, do not enter personal data)</label>
+          <input type="text" id="demand-note" name="note" maxlength="100" placeholder="e.g. Need medical terms / Taigi POJ / Uniform invoice parsing / GGUF tutorial..." data-i18n-placeholder="demand_placeholder_note">
         </div>
       </div>
 

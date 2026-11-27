@@ -84,7 +84,7 @@ jobs:
           bundle exec jekyll build --config _config.yml,_config.production.yml
 
       - name: Validate public build
-        run: node scripts/validate-public-build.mjs _site --require-absolute --expected-base="$OPENFORMOSA_SITE_BASE"
+        run: node scripts/validate-public-build.mjs _site --require-absolute --require-ga --expected-base="$OPENFORMOSA_SITE_BASE"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

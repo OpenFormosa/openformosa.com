@@ -140,6 +140,7 @@ document.querySelectorAll("[data-copy]").forEach((btn) => {
     try {
       await navigator.clipboard.writeText(target.textContent.trim());
     } catch (error) {
+      window.dispatchEvent(new CustomEvent("openformosa:copy_failed", { detail: { target: btn.dataset.copy } }));
       return; // clipboard unavailable (e.g. insecure context) — leave label as-is
     }
     btn.textContent = window.OpenFormosaI18n?.text("action_copied", "Copied") || "Copied";

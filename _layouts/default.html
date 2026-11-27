@@ -89,8 +89,8 @@
     <link rel="alternate" type="text/plain" title="LLMs.txt (AI &amp; LLM summary)" href="{{ '/llms.txt' | absolute_url }}">
     <link rel="alternate" type="text/plain" title="LLMs Full Context" href="{{ '/llms-full.txt' | absolute_url }}">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ '/sitemap.xml' | absolute_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/main.css?v=brand32' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/i18n.css?v=brand32' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css?v=brand33' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/i18n.css?v=brand33' | relative_url }}">
     {% include seo-jsonld.html page_key=page_key page_type=page_type page_url=page_url page_image=page_image seo_title=seo_title seo_description=seo_description %}
   </head>
   <body class="{{ page.body_class | default: '' }}" data-page-key="{{ page_key }}" data-page-type="{{ page_type }}" data-en-title="{{ en_page_title | strip | escape }}" data-en-description="{{ en_page_description | strip | escape }}">
@@ -102,10 +102,10 @@
     {% if page.math %}
     {% include mathjax.html %}
     {% endif %}
-    <script src="{{ '/assets/js/i18n.js?v=brand32' | relative_url }}"></script>
-    <script src="{{ '/assets/js/main.js?v=brand32' | relative_url }}"></script>
+    <script src="{{ '/assets/js/i18n.js?v=brand33' | relative_url }}"></script>
+    <script src="{{ '/assets/js/main.js?v=brand33' | relative_url }}"></script>
     {%- if site.google_analytics and site.google_analytics != "" -%}
-    <script src="{{ '/assets/js/analytics.js?v=brand32' | relative_url }}"></script>
+    <script src="{{ '/assets/js/analytics.js?v=brand33' | relative_url }}"></script>
     {%- endif -%}
   </body>
 </html>

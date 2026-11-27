@@ -5,11 +5,13 @@ import path from "node:path";
 const args = process.argv.slice(2);
 const siteDir = path.resolve(args.find((arg) => !arg.startsWith("--")) || "_site");
 const requireAbsolute = args.includes("--require-absolute");
+const requireGa = args.includes("--require-ga");
 const expectedBase = args.find((arg) => arg.startsWith("--expected-base="))?.split("=")[1] || "";
 const errors = [];
 let expectedBasePath = "";
 const requiredFiles = [
   "index.html",
+  "404.html",
   "sitemap.xml",
   "robots.txt",
   "feed.xml",
@@ -17,6 +19,7 @@ const requiredFiles = [
   "llms-full.txt",
   "assets/css/main.css",
   "assets/js/i18n.js",
+  "assets/js/analytics.js",
   "assets/img/openformosa-og.png"
 ];
 
@@ -123,10 +126,23 @@ if (errors.length === 0) {
       }
     }
 
+    if (!/<body[^>]*data-page-key="[^"]+"[^>]*data-page-type="[^"]+"/.test(html)) {
+      fail(`${rel} is missing data-page-key / data-page-type on <body>`);
+    }
+    if (!html.includes("assets/js/analytics.js")) {
+      fail(`${rel} is missing assets/js/analytics.js`);
+    }
+    if (!html.includes("data-demand-form")) {
+      fail(`${rel} is missing the demand & pain-point poll widget`);
+    }
+
     if (requireAbsolute) {
       assertAbsolute(canonical, `${rel} canonical`);
       assertAbsolute(ogUrl, `${rel} og:url`);
       assertAbsolute(ogImage, `${rel} og:image`);
+    }
+    if (requireGa && !html.includes("googletagmanager.com/gtag/js?id=")) {
+      fail(`${rel} is missing production Google Analytics 4 gtag.js snippet`);
     }
 
     const urls = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
@@ -157,7 +173,7 @@ if (errors.length === 0) {
   if (!robots.includes("Sitemap:")) fail("robots.txt is missing Sitemap line");
   if (!llms.includes("# OpenFormosa")) fail("llms.txt is missing canonical # OpenFormosa heading");
   if (!llmsFull.includes("# OpenFormosa")) fail("llms-full.txt is missing canonical # OpenFormosa heading");
-  if (sitemap.includes("/404/") || sitemap.includes("/SECURITY/")) fail("sitemap.xml includes non-public routes");
+  if (sitemap.includes("/404/") || sitemap.includes("/404.html") || sitemap.includes("/SECURITY/")) fail("sitemap.xml includes non-public routes");
 
   if (requireAbsolute) {
     for (const loc of sitemapLocs) assertAbsolute(loc, "sitemap loc");
