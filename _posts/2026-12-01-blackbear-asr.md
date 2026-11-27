@@ -82,7 +82,7 @@ published: false
 <text x="660.0" y="492" text-anchor="middle" fill="var(--muted)" font-size="11">70</text>
 <text x="0" y="60" fill="var(--paper-ink)" font-size="13" font-weight="700">臺灣國語（自建，1,000 句）</text>
 <text x="140" y="85" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="74" width="38.5" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="74" width="38.5" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="194.5" y="85" fill="var(--paper-ink)" font-size="12" font-weight="700">5.28</text>
 <text x="140" y="111" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="100" width="35.6" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -104,7 +104,7 @@ published: false
 <text x="210.9" y="241" fill="var(--paper-ink)" font-size="12" font-weight="400">7.53</text>
 <text x="0" y="278" fill="var(--paper-ink)" font-size="13" font-weight="700">臺語寫成中文（自建，1,000 句）</text>
 <text x="140" y="303" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="292" width="113.8" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="292" width="113.8" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="269.8" y="303" fill="var(--paper-ink)" font-size="12" font-weight="700">15.62</text>
 <text x="140" y="329" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="318" width="445.8" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -165,7 +165,7 @@ published: false
 <text x="660.0" y="336" text-anchor="middle" fill="var(--muted)" font-size="11">16</text>
 <text x="0" y="60" fill="var(--paper-ink)" font-size="13" font-weight="700">安靜</text>
 <text x="140" y="85" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="74" width="165.8" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="74" width="165.8" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="321.8" y="85" fill="var(--paper-ink)" font-size="12" font-weight="700">5.2</text>
 <text x="140" y="111" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="100" width="156.5" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -178,7 +178,7 @@ published: false
 <text x="390.6" y="163" fill="var(--paper-ink)" font-size="12" font-weight="400">7.36</text>
 <text x="0" y="200" fill="var(--paper-ink)" font-size="13" font-weight="700">噪音和人聲一樣大（0 dB）</text>
 <text x="140" y="225" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="214" width="456.1" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="214" width="456.1" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="612.1" y="225" fill="var(--paper-ink)" font-size="12" font-weight="700">14.31</text>
 <text x="140" y="251" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="240" width="234.6" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -279,7 +279,7 @@ The encoder turns every 0.64 s of audio into a short summary and never looks ahe
 <text x="660.0" y="492" text-anchor="middle" fill="var(--muted)" font-size="11">70</text>
 <text x="0" y="60" fill="var(--paper-ink)" font-size="13" font-weight="700">Taiwanese Mandarin (in-house, 1,000)</text>
 <text x="140" y="85" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="74" width="38.5" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="74" width="38.5" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="194.5" y="85" fill="var(--paper-ink)" font-size="12" font-weight="700">5.28</text>
 <text x="140" y="111" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="100" width="35.6" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -301,7 +301,7 @@ The encoder turns every 0.64 s of audio into a short summary and never looks ahe
 <text x="210.9" y="241" fill="var(--paper-ink)" font-size="12" font-weight="400">7.53</text>
 <text x="0" y="278" fill="var(--paper-ink)" font-size="13" font-weight="700">Taiwanese → Mandarin captions (in-house, 1,000)</text>
 <text x="140" y="303" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="292" width="113.8" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="292" width="113.8" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="269.8" y="303" fill="var(--paper-ink)" font-size="12" font-weight="700">15.62</text>
 <text x="140" y="329" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="318" width="445.8" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -352,7 +352,7 @@ The encoder turns every 0.64 s of audio into a short summary and never looks ahe
 <text x="660.0" y="336" text-anchor="middle" fill="var(--muted)" font-size="11">16</text>
 <text x="0" y="60" fill="var(--paper-ink)" font-size="13" font-weight="700">Clean</text>
 <text x="140" y="85" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="74" width="165.8" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="74" width="165.8" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="321.8" y="85" fill="var(--paper-ink)" font-size="12" font-weight="700">5.2</text>
 <text x="140" y="111" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="100" width="156.5" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>
@@ -365,7 +365,7 @@ The encoder turns every 0.64 s of audio into a short summary and never looks ahe
 <text x="390.6" y="163" fill="var(--paper-ink)" font-size="12" font-weight="400">7.36</text>
 <text x="0" y="200" fill="var(--paper-ink)" font-size="13" font-weight="700">Noise as loud as speech (0 dB)</text>
 <text x="140" y="225" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="700">BlackBear-ASR</text>
-<rect class="asr-bar" x="150" y="214" width="456.1" height="14" rx="2" fill="var(--green)" opacity="1"/>
+<rect class="asr-bar" x="150" y="214" width="456.1" height="14" rx="2" fill="var(--red)" opacity="1"/>
 <text x="612.1" y="225" fill="var(--paper-ink)" font-size="12" font-weight="700">14.31</text>
 <text x="140" y="251" text-anchor="end" fill="var(--paper-ink)" font-size="12" font-weight="400">Qwen3-ASR-1.7B</text>
 <rect class="asr-bar" x="150" y="240" width="234.6" height="14" rx="2" fill="var(--muted)" opacity="0.55"/>

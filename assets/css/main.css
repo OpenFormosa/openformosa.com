@@ -2782,7 +2782,7 @@ html.js .pj[data-route="research"] .pj-card.is-compact .pj-route-research { disp
 }
 
 .asr-stream__ticks span.is-done { background: var(--table-heading-bg); }
-.asr-stream__ticks span.is-now { background: var(--green); border-color: var(--green); }
+.asr-stream__ticks span.is-now { background: var(--red); border-color: var(--red); }
 
 .asr-stream__legend {
   display: flex;
