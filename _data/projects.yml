@@ -98,7 +98,7 @@ projects:
       join: "Report loading or conversion issues, add evaluations, or improve the docs."
 
   - id: bluemagpie
-    name: "BlueMagpie-TTS"
+    name: "BlueMagpie-TTS V1"
     category: models
     status: shipped
     accent: bluemagpie
@@ -170,14 +170,14 @@ projects:
       tagline: "語音辨識模型：把台灣華語、台語與中英混講的聲音，轉成文字。"
       analogy: "BlueMagpie 負責「說」，BlackBear 負責「聽」。"
       public:
-        - "準備中，預計是下一個釋出的模型。釋出時會附上使用說明與 demo。"
+        - "模型已訓練完成，正在檢查資料與模型，是下一個釋出的模型。釋出時會附上白話的使用報告、使用說明與 demo。"
       research:
         - "接在 Barbet 底座上的任務分支。技術細節會在釋出時與模型卡一起公開。"
     en:
       tagline: "Speech recognition that turns Taiwan Mandarin, Taigi, and mixed Chinese and English speech into text."
       analogy: "BlueMagpie speaks. BlackBear listens."
       public:
-        - "In preparation and planned as the next release. It will ship with a usage guide and a demo."
+        - "The model is trained, and data and model checks are under way. It is the next release and will ship with a plain-language usage report, a guide, and a demo."
       research:
         - "A task branch on the Barbet base. Technical details will be published with the model card at release."
 
@@ -227,8 +227,7 @@ projects:
         - "A task branch on the Barbet base, trained heavily on synthetic data. Technical details will come with the model card."
 
   - id: bluemagpie_v2
-    name: "BlueMagpie-TTS 新一代"
-    name_en: "BlueMagpie-TTS next"
+    name: "BlueMagpie-TTS V2"
     category: models
     status: upcoming
     accent: bluemagpie
@@ -237,14 +236,14 @@ projects:
     release: "2026-12-14"
     zh:
       tagline: "可以調整的台灣語音：讀音、停頓、重音都能指定，也開始會說台語詞。"
-      analogy: "上一代像會照稿唸的播音員，新一代像可以聽導演指示、一句一句調整語氣的配音員。"
+      analogy: "V1 像會照稿唸的播音員，V2 像可以聽導演指示、一句一句調整語氣的配音員。"
       public:
         - "準備中。為了防止聲音被冒用，釋出前會先準備浮水印與使用條款。"
       research:
         - "在地化放在文字端，聲學端只負責聲音。技術細節隨模型卡公開。"
     en:
       tagline: "Controllable Taiwan speech: set pronunciation, pauses, and stress, with early support for Taigi words."
-      analogy: "The first version reads a script like a narrator. The next one takes direction like a voice actor, line by line."
+      analogy: "V1 reads a script like a narrator. V2 takes direction like a voice actor, line by line."
       public:
         - "In preparation. Watermarking and terms of use come first, to prevent voice misuse."
       research:

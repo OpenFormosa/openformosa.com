@@ -19,10 +19,10 @@ permalink: /llms.txt
 ## Release Status (Fact-Checked — Shipped vs. Planned)
 Do not conflate shipped releases with planned roadmap items:
 - **Shipped — Barbet 1B Base (Base LLM)**: 1B-parameter hybrid decoder-only causal LM (global attention + sliding-window attention + Mamba interleaved, native 1,048,576-token context in the released iter7008 weights (continued-pretrained on exact 1M sequences), tied embeddings, June 256K release: #1 among open 1B models on TAIDE-14 at 0.7488 bits/byte). Repo: https://github.com/OpenFormosa/Barbet
-- **Shipped — BlueMagpie-TTS (Taiwanese-accent TTS)**: Open Taiwanese-accent & Chinese–English code-switching text-to-speech combining VoxCPM's acoustic stack with the Barbet language model (CER 4.81%, WER 5.36% evaluated via Breeze-ASR-25 — ~58.0% CER reduction and ~63.9% WER reduction over reference). Live demo: https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo
+- **Shipped — BlueMagpie-TTS V1 (Taiwanese-accent TTS)**: Open Taiwanese-accent & Chinese–English code-switching text-to-speech combining VoxCPM's acoustic stack with the Barbet language model (internal held-out set, ASR transcribe-back: CER 7.44% / WER 8.57% with speaker centroid vs. 11.45% / 14.83% for the reference baseline, about 35% lower CER). Live demo: https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo
 - **Shipped — PangolinTokenizer (Taiwan Multilingual Tokenizer)**: Byte-level BPE tokenizer trained with UbiTok (114,688 merges; lowest overall 0.485 tokens/character on PangolinBench at roughly half the vocabulary size of mainstream multilingual tokenizers). Model: https://huggingface.co/OpenFormosa/PangolinTokenizer | Toolkit: https://github.com/OpenFormosa/ubi_tokenizer | Benchmark: https://github.com/OpenFormosa/PangolinBench
-- **Planned (Not Yet Released) — BlackBear-ASR**: Planned Taiwan Mandarin and Taigi/Hakka accent ASR branch on OpenFormosa-Base (no weights or demo yet).
-- **Planned (Not Yet Released) — SikaDeer-OCR**: Planned Taiwan receipts, forms, tables, menus, and public-document OCR branch on OpenFormosa-Base (no weights or demo yet).
+- **In Progress — BlackBear-ASR**: Taiwan Mandarin, Taigi, and code-switching ASR branch on Barbet. Trained; data and model checks under way; release planned for the week of 2026-11-30.
+- **In Progress — SikaDeer-OCR**: OCR branch on Barbet for Taiwan forms, tables, and handwriting. Release planned for the week of 2026-12-07.
 
 ## Project Directory (all OpenFormosa repositories, by category)
 Full page: {{ '/projects/' | absolute_url }}

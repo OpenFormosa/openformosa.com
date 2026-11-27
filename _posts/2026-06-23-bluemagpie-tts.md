@@ -3,10 +3,10 @@ layout: post
 title: "BlueMagpie-TTS: Taiwanese-accent, Chinese–English code-switching speech synthesis"
 zh_title: "BlueMagpie-TTS：臺灣口音、中英混合的開源語音合成模型（附線上試聽）"
 i18n_key: bluemagpie
-description: "An open Taiwanese-accent text-to-speech model that handles Chinese–English code-switching — keep VoxCPM's acoustic stack, swap in the Barbet language model, and cut character error rate by about 58% on a hard test set."
-zh_description: "BlueMagpie-TTS 是 OpenFormosa 開源的台灣口音與中英夾雜文字轉語音（TTS）模型，結合 VoxCPM 聲學架構與 Barbet 語言模型，經 Breeze-ASR-25 評估達 CER 4.81%、WER 5.36%（錯誤率降約 58%），支援互動試聽與線上 Demo。"
+description: "An open Taiwanese-accent text-to-speech model that handles Chinese–English code-switching — keep VoxCPM's acoustic stack, swap in the Barbet language model, and cut character error rate by about 35% against the reference baseline."
+zh_description: "BlueMagpie-TTS 是 OpenFormosa 開源的台灣口音與中英夾雜文字轉語音（TTS）模型，結合 VoxCPM 聲學架構與 Barbet 語言模型，V1 在內部保留測試集上 CER 7.44%、WER 8.57%（字元錯誤率降約 35%），支援互動試聽與線上 Demo。"
 keywords: "BlueMagpie-TTS, 台灣口音 TTS, 開源中文語音合成, 中英夾雜 TTS, VoxCPM, Barbet, Breeze-ASR-25, OpenFormosa"
-zh_description: "BlueMagpie-TTS 是臺灣口音、中英混合的開源語音合成模型：保留 VoxCPM 聲學架構，換上 Barbet 文字語意模型，在難唸測試集上把字元錯誤率降低約 58%。"
+zh_description: "BlueMagpie-TTS 是臺灣口音、中英混合的開源語音合成模型：保留 VoxCPM 聲學架構，換上 Barbet 文字語意模型，字元錯誤率比參考基準降低約 35%。"
 date: 2026-06-23
 category: research
 tags: [tts, model, speech, bluemagpie]
@@ -16,7 +16,7 @@ tags: [tts, model, speech, bluemagpie]
 
 <div class="post-abstract" markdown="1">
 
-**摘要**　BlueMagpie-TTS 是一個支援臺灣口音中文與中英混合的文字轉語音（TTS）模型，由 OpenFormosa 開源。它的核心設計只有一句話：保留一套預訓練的聲學架構（取自 VoxCPM），並把原本的文字語意語言模型換成 Barbet。Barbet 負責決定「要說什麼」——文字語意、韻律規劃、節奏與重音；聲學架構負責生成聲音的細節。模型內附李宏毅老師的語者向量作為預設聲音，已取得本人授權。在測試集上，字元錯誤率（CER）為 4.81%，詞錯誤率（WER）為 5.36%，相對原本參考模型分別降低約 58.0% 與 63.9%。
+**摘要**　BlueMagpie-TTS 是一個支援臺灣口音中文與中英混合的文字轉語音（TTS）模型，由 OpenFormosa 開源。它的核心設計只有一句話：保留一套預訓練的聲學架構（取自 VoxCPM），並把原本的文字語意語言模型換成 Barbet。Barbet 負責決定「要說什麼」——文字語意、韻律規劃、節奏與重音；聲學架構負責生成聲音的細節。模型內附李宏毅老師的語者向量作為預設聲音，已取得本人授權。以 V1 正式 checkpoint 在內部保留測試集上評測，字元錯誤率（CER）為 7.44%，詞錯誤率（WER）為 8.57%，相對原本參考模型分別降低約 35.0% 與 42.2%。
 
 這篇文章會先讓你直接聽，再完整說明它是什麼、怎麼組起來、怎麼用，還有哪些地方仍然會出錯。
 
@@ -324,7 +324,7 @@ for chunk in model.generate_streaming(target_text="今天天氣真好。"):
 
 | 系統 | CER | WER |
 | --- | --- | --- |
-| BlueMagpie-TTS | 4.81% | 5.36% |
+| BlueMagpie-TTS V1 | 7.44% | 8.57% |
 | 原本參考模型 | 11.45% | 14.83% |
 
 <figure class="post-figure">
@@ -334,18 +334,20 @@ for chunk in model.generate_streaming(target_text="今天天氣真好。"):
 <g stroke="var(--line)" stroke-width="1"><line x1="210" y1="56" x2="210" y2="214"/><line x1="330" y1="56" x2="330" y2="214"/><line x1="450" y1="56" x2="450" y2="214"/><line x1="570" y1="56" x2="570" y2="214"/><line x1="690" y1="56" x2="690" y2="214"/></g>
 <g fill="var(--muted)" font-size="11" text-anchor="middle"><text x="210" y="232">0</text><text x="330" y="232">4</text><text x="450" y="232">8</text><text x="570" y="232">12</text><text x="690" y="232">16</text></g>
 <line x1="120" y1="137" x2="700" y2="137" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
-<rect x="210" y="70" width="144.3" height="26" rx="2" fill="var(--blue)"/>
+<rect x="210" y="70" width="223.2" height="26" rx="2" fill="var(--blue)"/>
 <rect x="210" y="104" width="343.5" height="26" rx="2" fill="var(--muted)"/>
-<rect x="210" y="150" width="160.8" height="26" rx="2" fill="var(--blue)"/>
+<rect x="210" y="150" width="257.1" height="26" rx="2" fill="var(--blue)"/>
 <rect x="210" y="184" width="444.9" height="26" rx="2" fill="var(--muted)"/>
 <g fill="var(--paper-ink)" font-size="12" text-anchor="end"><text x="200" y="88">BlueMagpie · CER</text><text x="200" y="122">參考模型 · CER</text><text x="200" y="168">BlueMagpie · WER</text><text x="200" y="202">參考模型 · WER</text></g>
-<g font-size="12.5" font-weight="700"><text x="362" y="88" fill="var(--blue)">4.81</text><text x="561" y="122" fill="var(--paper-ink)">11.45</text><text x="378" y="168" fill="var(--blue)">5.36</text><text x="662" y="202" fill="var(--paper-ink)">14.83</text></g>
-<g font-size="11.5" font-weight="700" fill="var(--green)"><text x="408" y="88">↓ 58.0% vs 參考模型</text><text x="424" y="168">↓ 63.9% vs 參考模型</text></g>
+<g font-size="12.5" font-weight="700"><text x="441" y="88" fill="var(--blue)">7.44</text><text x="561" y="122" fill="var(--paper-ink)">11.45</text><text x="475" y="168" fill="var(--blue)">8.57</text><text x="662" y="202" fill="var(--paper-ink)">14.83</text></g>
+<g font-size="11.5" font-weight="700" fill="var(--green)"><text x="487" y="88">↓ 35.0% vs 參考模型</text><text x="521" y="168">↓ 42.2% vs 參考模型</text></g>
 </svg>
-<figcaption><b>圖 3.</b> 以「TTS → ASR 還原」這套流程量到的錯誤率。BlueMagpie-TTS 的 CER 4.81%、WER 5.36%，相對原本參考模型（11.45% / 14.83%）分別降低約 58.0% 與 63.9%。數字越低代表合成語音越能被正確聽寫回原文。</figcaption>
+<figcaption><b>圖 3.</b> 以「TTS → ASR 還原」這套流程量到的錯誤率。BlueMagpie-TTS V1 的 CER 7.44%、WER 8.57%，相對原本參考模型（11.45% / 14.83%）分別降低約 35.0% 與 42.2%。數字越低代表合成語音越能被正確聽寫回原文。</figcaption>
 </figure>
 
-相對原本的參考模型，字元錯誤率降低約 58.0%，詞錯誤率降低約 63.9%。
+相對原本的參考模型，字元錯誤率降低約 35.0%，詞錯誤率降低約 42.2%。
+
+> 更新：本節數字已改為 V1 正式 checkpoint 隨模型發佈的評測結果（語者向量條件，見 Hugging Face 上的 `release_metadata.json`）。
 
 生成速度方面，每秒合成語音時長的中位數為 4.748 秒、最大為 5.288 秒（即時率，數值越大代表越快）。
 
@@ -386,7 +388,7 @@ BlueMagpie-TTS 的設計可以用一句話記住：保留好用的聲學架構�
 
 <div class="post-abstract" markdown="1">
 
-**Abstract**　BlueMagpie-TTS is a text-to-speech (TTS) model for Taiwanese-accent Chinese and Chinese–English code-switching, open-sourced by OpenFormosa. Its core design is a single sentence: keep a pretrained acoustic stack (taken from VoxCPM), and replace the original text-semantic language model with Barbet. Barbet decides *what to say* — text semantics, prosody planning, rhythm, and stress; the acoustic stack generates the fine-grained sound. The model ships with Prof. Hung-yi Lee's speaker vector as the default voice, used with his permission. On the test set, character error rate (CER) is 4.81% and word error rate (WER) is 5.36% — about 58.0% and 63.9% lower than the original reference model.
+**Abstract**　BlueMagpie-TTS is a text-to-speech (TTS) model for Taiwanese-accent Chinese and Chinese–English code-switching, open-sourced by OpenFormosa. Its core design is a single sentence: keep a pretrained acoustic stack (taken from VoxCPM), and replace the original text-semantic language model with Barbet. Barbet decides *what to say* — text semantics, prosody planning, rhythm, and stress; the acoustic stack generates the fine-grained sound. The model ships with Prof. Hung-yi Lee's speaker vector as the default voice, used with his permission. Evaluated with the V1 release checkpoint on an internal held-out set, character error rate (CER) is 7.44% and word error rate (WER) is 8.57%, about 35.0% and 42.2% lower than the original reference model.
 
 This article lets you listen first, then explains what it is, how it is assembled, how to use it, and where it still makes mistakes.
 
@@ -694,7 +696,7 @@ On the internal test set, BlueMagpie-TTS performs as follows. Lower is better.
 
 | System | CER | WER |
 | --- | --- | --- |
-| BlueMagpie-TTS | 4.81% | 5.36% |
+| BlueMagpie-TTS V1 | 7.44% | 8.57% |
 | Original reference model | 11.45% | 14.83% |
 
 <figure class="post-figure">
@@ -704,18 +706,20 @@ On the internal test set, BlueMagpie-TTS performs as follows. Lower is better.
 <g stroke="var(--line)" stroke-width="1"><line x1="210" y1="56" x2="210" y2="214"/><line x1="330" y1="56" x2="330" y2="214"/><line x1="450" y1="56" x2="450" y2="214"/><line x1="570" y1="56" x2="570" y2="214"/><line x1="690" y1="56" x2="690" y2="214"/></g>
 <g fill="var(--muted)" font-size="11" text-anchor="middle"><text x="210" y="232">0</text><text x="330" y="232">4</text><text x="450" y="232">8</text><text x="570" y="232">12</text><text x="690" y="232">16</text></g>
 <line x1="120" y1="137" x2="700" y2="137" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>
-<rect x="210" y="70" width="144.3" height="26" rx="2" fill="var(--blue)"/>
+<rect x="210" y="70" width="223.2" height="26" rx="2" fill="var(--blue)"/>
 <rect x="210" y="104" width="343.5" height="26" rx="2" fill="var(--muted)"/>
-<rect x="210" y="150" width="160.8" height="26" rx="2" fill="var(--blue)"/>
+<rect x="210" y="150" width="257.1" height="26" rx="2" fill="var(--blue)"/>
 <rect x="210" y="184" width="444.9" height="26" rx="2" fill="var(--muted)"/>
 <g fill="var(--paper-ink)" font-size="12" text-anchor="end"><text x="200" y="88">BlueMagpie · CER</text><text x="200" y="122">reference · CER</text><text x="200" y="168">BlueMagpie · WER</text><text x="200" y="202">reference · WER</text></g>
-<g font-size="12.5" font-weight="700"><text x="362" y="88" fill="var(--blue)">4.81</text><text x="561" y="122" fill="var(--paper-ink)">11.45</text><text x="378" y="168" fill="var(--blue)">5.36</text><text x="662" y="202" fill="var(--paper-ink)">14.83</text></g>
-<g font-size="11.5" font-weight="700" fill="var(--green)"><text x="408" y="88">↓ 58.0% vs reference</text><text x="424" y="168">↓ 63.9% vs reference</text></g>
+<g font-size="12.5" font-weight="700"><text x="441" y="88" fill="var(--blue)">7.44</text><text x="561" y="122" fill="var(--paper-ink)">11.45</text><text x="475" y="168" fill="var(--blue)">8.57</text><text x="662" y="202" fill="var(--paper-ink)">14.83</text></g>
+<g font-size="11.5" font-weight="700" fill="var(--green)"><text x="487" y="88">↓ 35.0% vs reference</text><text x="521" y="168">↓ 42.2% vs reference</text></g>
 </svg>
-<figcaption><b>Figure 3.</b> Error rates measured by the "TTS → ASR transcribe-back" loop. BlueMagpie-TTS reaches CER 4.81% and WER 5.36%, about 58.0% and 63.9% lower than the original reference model (11.45% / 14.83%). Lower means the synthesized speech is transcribed back to the original text more accurately.</figcaption>
+<figcaption><b>Figure 3.</b> Error rates measured by the "TTS → ASR transcribe-back" loop. BlueMagpie-TTS V1 reaches CER 7.44% and WER 8.57%, about 35.0% and 42.2% lower than the original reference model (11.45% / 14.83%). Lower means the synthesized speech is transcribed back to the original text more accurately.</figcaption>
 </figure>
 
-Relative to the original reference model, character error rate drops by about 58.0% and word error rate by about 63.9%.
+Relative to the original reference model, character error rate drops by about 35.0% and word error rate by about 42.2%.
+
+> Update: the numbers in this section now come from the V1 release checkpoint evaluation (speaker-centroid condition, see `release_metadata.json` on Hugging Face).
 
 On generation speed, the median real-time factor is 4.748 and the maximum 5.288 (seconds of audio produced per second of compute; higher is faster).
 

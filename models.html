@@ -35,7 +35,7 @@ keywords: OpenFormosa Models, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, Blac
     </article>
     <article class="family-card" style="--accent:var(--blackbear)">
       {% include crest.html type="asr" %}
-      <span class="card-tags"><span class="role">ASR</span><span class="status-badge is-planned" data-i18n="status_planned">Planned</span></span>
+      <span class="card-tags"><span class="role">ASR</span><span class="status-badge is-progress" data-i18n="status_progress">In progress</span></span>
       <p class="latin" data-i18n="home_family_asr_latin">Formosan Black Bear · BlackBear-ASR</p>
       <h3 data-i18n="home_family_asr_title">聽得懂台灣</h3>
       <p data-i18n="home_family_asr_text">A steady listener for Taiwan Mandarin and Taigi/Hakka accents.</p>
@@ -49,7 +49,7 @@ keywords: OpenFormosa Models, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, Blac
     </article>
     <article class="family-card" style="--accent:var(--sikadeer)">
       {% include crest.html type="ocr" %}
-      <span class="card-tags"><span class="role">OCR</span><span class="status-badge is-planned" data-i18n="status_planned">Planned</span></span>
+      <span class="card-tags"><span class="role">OCR</span><span class="status-badge is-progress" data-i18n="status_progress">In progress</span></span>
       <p class="latin" data-i18n="home_family_ocr_latin">Formosan Sika Deer · SikaDeer-OCR</p>
       <h3 data-i18n="home_family_ocr_title">讀得懂台灣</h3>
       <p data-i18n="home_family_ocr_text">A careful eye for receipts, forms, tables, menus, addresses, layout parsing, and structured extraction.</p>
@@ -81,7 +81,7 @@ keywords: OpenFormosa Models, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, Blac
         <span class="spec-tag" data-i18n="models_tech_tokenizer_tag">IP 01 · Tokenizer · Pangolin</span>
         <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p data-i18n="models_tech_tokenizer_text">Optimized for Taiwan Traditional Chinese while keeping multilingual coverage — Bopomofo, Tailo, POJ, Taigi Han characters, Hakka terms, code-switching, and code. The goal is not the largest vocab but the best token efficiency for Taiwan text, so the same 128K context holds more real content.</p>
+      <p data-i18n="models_tech_tokenizer_text">Optimized for Taiwan Traditional Chinese while keeping multilingual coverage: Bopomofo, Tailo, POJ, Taigi Han characters, Hakka terms, code-switching, and code. The goal is not the largest vocab but the best token efficiency for Taiwan text, so the same context window holds more real content.</p>
     </div>
     <div class="spec-row">
       <div class="spec-key">
@@ -89,15 +89,15 @@ keywords: OpenFormosa Models, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, Blac
         <span class="spec-tag" data-i18n="models_tech_backbone_tag">Core · Backbone</span>
         <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p data-i18n="models_tech_backbone_text">A compact decoder-only model that is deployable, fine-tunable, and private-deployable — a shared language hub for ASR, TTS, OCR, and VLM. A MiniCPM-style core with GQA, 128K context, MTP, reasoning modes, and specialist distillation.</p>
+      <p data-i18n="models_tech_backbone_text">A compact decoder-only model that is deployable, fine-tunable, and private-deployable, serving as a shared language hub for ASR, TTS, OCR, and VLM. It mixes global attention, sliding-window attention, and Mamba, with GQA, native 1M context, and MTP.</p>
     </div>
     <div class="spec-row">
       <div class="spec-key">
         <span class="spec-name" data-i18n="models_tech_context_k">Long context</span>
-        <span class="spec-tag" data-i18n="models_tech_context_tag">Context · 128K → 1M</span>
+        <span class="spec-tag" data-i18n="models_tech_context_tag">Context · Native 1M</span>
         <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p data-i18n="models_tech_context_text">128K as production-grade context for long transcripts, document summaries, multi-document RAG, and Taiwan regulation and official-letter QA. 1M as a research branch using compressed memory, sparse attention, local windows, and prefix cache for long-text retrieval and agent memory.</p>
+      <p data-i18n="models_tech_context_text">The released Barbet 1B Base was continued-pretrained from 64K up to full 1,048,576-token sequences, so it supports 1M context natively without RoPE extrapolation. It serves long transcripts, long-document summaries, multi-document RAG, and regulation and official-letter QA. Running 1M in practice needs enough GPU memory and context parallelism.</p>
     </div>
     <div class="spec-row">
       <div class="spec-key">

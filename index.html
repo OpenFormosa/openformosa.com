@@ -100,11 +100,11 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, 繁體中文語言�
     </li>
     <li class="status-item" style="--accent:var(--bluemagpie)">
       <div class="status-head">
-        <span class="status-name">BlueMagpie-TTS</span>
+        <span class="status-name">BlueMagpie-TTS V1</span>
         <span class="status-role">TTS</span>
         <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p class="status-what" data-i18n="home_status_bluemagpie">Speech synthesis for Taiwanese accents and mixed Chinese and English text. On a hard pronunciation set, it reduces character error rate by about 58% against the baseline, which means less manual correction for news voiceover, exhibition guides, and educational content. The online demo is live.</p>
+      <p class="status-what" data-i18n="home_status_bluemagpie">Speech synthesis for Taiwanese accents and mixed Chinese and English text. On an internal held-out set, character error rate drops from 11.45% for the baseline to 7.44%, about 35% lower, which means less manual correction for news voiceover, exhibition guides, and educational content. The online demo is live.</p>
       <div class="status-links">
         {% if bluemagpie %}<a href="{{ bluemagpie.url | relative_url }}" data-i18n="status_read_log">Read the log →</a>{% endif %}
         <a href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener" data-i18n="status_live_demo">Live demo</a>
@@ -114,22 +114,22 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, 繁體中文語言�
       <div class="status-head">
         <span class="status-name">BlackBear-ASR</span>
         <span class="status-role">ASR</span>
-        <span class="status-badge is-planned" data-i18n="status_planned">Planned</span>
+        <span class="status-badge is-progress" data-i18n="status_progress">In progress</span>
       </div>
-      <p class="status-what" data-i18n="home_status_blackbear">A planned ASR branch for Taiwan Mandarin, Taigi and Hakka accents, speech that mixes Chinese and English, meetings, and classroom audio. It has not been trained yet and has no weights or demo.</p>
+      <p class="status-what" data-i18n="home_status_blackbear">The ASR branch for Taiwan Mandarin, Taigi, mixed Chinese and English, meetings, and classroom audio. The model is trained, and data and model checks are under way before release, planned for the week of Nov 30.</p>
       <div class="status-links">
-        <a href="{{ '/roadmap/' | relative_url }}" data-i18n="status_see_roadmap">See the roadmap →</a>
+        <a href="{{ '/projects/' | relative_url }}#roadmap" data-i18n="status_see_roadmap">See the roadmap →</a>
       </div>
     </li>
     <li class="status-item" style="--accent:var(--sikadeer)">
       <div class="status-head">
         <span class="status-name">SikaDeer-OCR</span>
         <span class="status-role">OCR</span>
-        <span class="status-badge is-planned" data-i18n="status_planned">Planned</span>
+        <span class="status-badge is-progress" data-i18n="status_progress">In progress</span>
       </div>
-      <p class="status-what" data-i18n="home_status_sikadeer">A planned OCR branch for Taiwan receipts, forms, tables, menus, addresses, and archive documents. It has not been trained yet and has no weights or demo.</p>
+      <p class="status-what" data-i18n="home_status_sikadeer">The OCR branch for common Taiwan forms, tables, and handwriting. Release preparation is under way, planned for the week of Dec 7.</p>
       <div class="status-links">
-        <a href="{{ '/roadmap/' | relative_url }}" data-i18n="status_see_roadmap">See the roadmap →</a>
+        <a href="{{ '/projects/' | relative_url }}#roadmap" data-i18n="status_see_roadmap">See the roadmap →</a>
       </div>
     </li>
   </ol>
@@ -239,11 +239,11 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, 繁體中文語言�
     </div>
     <div class="faq-card">
       <dt data-i18n="faq_q2">Which models are shipped today and which are still planned?</dt>
-      <dd data-i18n="faq_a2">Shipped today: Barbet 1B Base (weights &amp; reports on GitHub), BlueMagpie-TTS (Taiwanese-accent code-switching TTS with a live Hugging Face demo), and PangolinTokenizer (weights, UbiTok, and PangolinBench). BlackBear-ASR and SikaDeer-OCR are planned roadmap branches with no weights yet.</dd>
+      <dd data-i18n="faq_a2">Shipped today: Barbet 1B Base (weights &amp; reports on GitHub), BlueMagpie-TTS V1 (Taiwanese-accent code-switching TTS with a live Hugging Face demo), and PangolinTokenizer (weights, UbiTok, and PangolinBench). BlackBear-ASR is trained and planned for release the week of Nov 30, followed by SikaDeer-OCR the week of Dec 7.</dd>
     </div>
     <div class="faq-card">
       <dt data-i18n="faq_q3">How does BlueMagpie-TTS perform on Taiwanese accents and Chinese–English code-switching?</dt>
-      <dd data-i18n="faq_a3">BlueMagpie-TTS keeps VoxCPM's acoustic stack and swaps in Barbet as the text-semantic LM. On a 500-sentence hard code-switching set evaluated round-trip via Breeze-ASR-25, it reaches 4.81% CER and 5.36% WER — roughly a 58% CER reduction over the reference model — with a live Hugging Face Space demo.</dd>
+      <dd data-i18n="faq_a3">BlueMagpie-TTS V1 keeps VoxCPM's acoustic stack and swaps in Barbet as the text-semantic LM. Evaluation transcribes the synthesized speech back with ASR and compares it with the input. On an internal held-out set, the speaker-centroid condition reaches 7.44% CER and 8.57% WER, against 11.45% and 14.83% for the reference baseline, about a 35% CER reduction. The online demo is live.</dd>
     </div>
     <div class="faq-card">
       <dt data-i18n="faq_q4">Why is PangolinTokenizer more efficient for Taiwan text than mainstream multilingual tokenizers?</dt>
