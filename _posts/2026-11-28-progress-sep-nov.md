@@ -53,9 +53,9 @@ barbet-infer run --family mini \
 
 完整說明見 [Barbet Harness Library](https://github.com/OpenFormosa/barbet-harness-library)。
 
-## 3. Barbet 1B：原生 1M 上下文
+## 3. Barbet 1B：原生 1M 前後文
 
-8 月底，我們釋出了原生支援 1,048,576 tokens 上下文的 Barbet 1B Base。訓練方式與檢查方法寫在〈[Barbet 怎麼練到 1M]({{ '/blog/2026/08/30/barbet-1b-native-1m/' | relative_url }})〉。網站上所有 Barbet 的介紹，現在都統一寫原生 1M。
+8 月底，我們釋出了原生支援 1,048,576 tokens 前後文的 Barbet 1B Base。訓練方式與檢查方法寫在〈[Barbet 怎麼練到 1M]({{ '/blog/2026/08/30/barbet-1b-native-1m/' | relative_url }})〉。網站上所有 Barbet 的介紹，現在都統一寫原生 1M。
 
 ## 4. OpenFormosa 轉為社群專案
 

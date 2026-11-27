@@ -74,7 +74,7 @@ projects:
       try_note: "Barbet 是基礎模型，不能直接對話。想感受它的成果，最快的方式是聽 BlueMagpie-TTS。"
       research:
         - "約 1.119B 參數的 decoder-only causal LM。28 層，混合 global attention、8K sliding-window attention 與 Mamba 層，GQA（16 query heads、2 KV heads），詞嵌入與 LM head 共用權重，使用 PangolinTokenizer。"
-        - "Hugging Face 上的正式權重是 <code>iter7008</code>。它從 64K 逐步接續預訓練到 exact 1M sequences，原生 context 1,048,576，<code>rope_scaling</code> 為 null。這不是只靠 RoPE 外推。"
+        - "Hugging Face 上的正式權重是 <code>iter7008</code>。它從 64K 逐步接續預先訓練到 exact 1M sequences，原生 context 1,048,576，<code>rope_scaling</code> 為 null。這不是只靠 RoPE 外推。"
         - "長文評測：7 類遠距任務中有 6 類顯示，保留遠處的正確資料會提高正確答案的機率。多筆資料合併計算仍未通過。這是 base model 的機率評測，不代表生成作答的正確率。"
         - "6 月的 256K 版本在 TAIDE-14（140 筆，response_only）上為 0.7488 bits/byte。BPB 衡量文字建模，不衡量對話品質。"
         - "Repo 另保留原始 256K 與 1M RoPE 外推的 legacy presets，供舊版研究重現。"
@@ -303,7 +303,7 @@ projects:
       public:
         - "開發中，模型還沒做出來。釋出方式也取決於訓練資料的授權。"
       research:
-        - "以 Barbet 的長上下文能力處理整本書。技術細節待釋出時公開。"
+        - "以 Barbet 的長前後文能力處理整本書。技術細節待釋出時公開。"
     en:
       tagline: "Translates a whole book with a 1B model while keeping terms consistent."
       analogy: "Like a translator who builds a glossary of names first, so a character's name is still right on page 300."
@@ -484,7 +484,7 @@ projects:
         - "每個技能由 <code>skill.json</code> 生成 <code>SKILL.md</code>，另有機器可讀的 <code>catalog.json</code> 與含 SHA-256 的 <code>manifest.json</code>。正式使用時請固定 Git commit。"
         - "附 <code>barbet_inference</code>：Python API、<code>barbet-infer</code> CLI、本機 vLLM 與 vLLM 相容 HTTP 後端。"
         - "固定權重 test-time 實驗：646 題、3 個 seed、10 組設定的封存測試。受測模型是 MiniCPM5-1B，四領域主指標 38.02% → 50.39%（+12.37 pp，配對 95% CI +9.90 至 +14.97）。主評分包含輸出格式遵循；數學的事後診斷未顯示數值推理提升。"
-        - "界線：部分技能由本地 Qwen 生成，經有限測試與審查，不是 human-verified。它們也沒有證明 Barbet 已學會路由、組合技能或使用 1M 上下文。"
+        - "界線：部分技能由本地 Qwen 生成，經有限測試與審查，不是 human-verified。它們也沒有證明 Barbet 已學會路由、組合技能或使用 1M 前後文。"
         - "原創技能文字與工具採 Apache 2.0。"
       join: "這是最容易上手的參與入口。可以用 Issues 提議新技能，或修改 <code>skill.json</code> 後送 PR。"
     en:

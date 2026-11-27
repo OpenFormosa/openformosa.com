@@ -213,18 +213,18 @@
         },
         {
           "@type": "Question",
-          "name": "PangolinTokenizer 為什麼比主流多語斷詞器更適合繁體中文與台灣文本？",
+          "name": "PangolinTokenizer 為什麼比主流多語斷詞器更適合繁體中文與台灣文字？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "PangolinTokenizer 僅使用 114,688 個 BPE 合併項（約為主流多語 tokenizer 的三分之一至一半詞彙量），卻在涵蓋 10 項台灣語境子集的 PangolinBench 上以 0.485 tokens/character 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣上下文視窗容納更多台灣真實內容。"
+            "text": "PangolinTokenizer 僅使用 114,688 個 BPE 合併項（約為主流多語 tokenizer 的三分之一至一半詞彙量），卻在涵蓋 10 項台灣語境子集的 PangolinBench 上以 0.485 tokens/character 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣前後文視窗容納更多台灣真實內容。"
           }
         },
         {
           "@type": "Question",
-          "name": "Barbet 1B Base 的架構與長上下文能力是什麼？",
+          "name": "Barbet 1B Base 的架構與長前後文能力是什麼？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）搭配嵌入層權重綁定，具備 256K（262,144 tokens）原生上下文與 1M（1,048,576 tokens）RoPE 外推研究設定，在 TAIDE-14 評測上以 0.7488 bits/byte 位居同級公開 1B 模型第一。"
+            "text": "Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）搭配嵌入層權重綁定，具備 256K（262,144 tokens）原生前後文與 1M（1,048,576 tokens）RoPE 外推研究設定，在 TAIDE-14 評測上以 0.7488 bits/byte 位居同級公開 1B 模型第一。"
           }
         },
         {

@@ -8,7 +8,7 @@ permalink: /sponsorship/
 lede: What kinds of support OpenFormosa accepts, what sponsors receive, and what they never receive.
 zh_lede: OpenFormosa 接受哪些支持、支持者會得到什麼，以及永遠不會得到什麼。
 description: OpenFormosa sponsorship and acknowledgement policy covering compute, in-kind support, disclosure, independence of evaluation, and conflicts of interest.
-zh_description: OpenFormosa 贊助與致謝政策：算力與實物支持的接受條件、公開揭露方式、評測獨立性與利益衝突處理。
+zh_description: OpenFormosa 贊助與致謝政策：運算資源與實物支持的接受條件、公開揭露方式、評測獨立性與利益衝突處理。
 updated: 2026-11-27
 ---
 

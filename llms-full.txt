@@ -18,7 +18,7 @@ Official Channels:
 
 ## 1. Executive Summary (繁體中文 & English)
 
-**繁體中文摘要**：OpenFormosa（開放福爾摩沙）是一個扎根台灣的開源 AI 基礎模型計畫，以「台灣茄芷袋」為象徵，打造可本機執行、可私有部署、可檢驗的緊湊型台灣基礎模型家族。不同於僅對外國模型進行繁體中文翻譯或表層微調的做法，OpenFormosa 從斷詞器（Tokenizer）、1B 底座語言模型、長文本架構、評測基準到語音／文件多模態分支皆端對端為台灣語境設計，目標是讓 AI 真正「聽得懂台灣、說得出台灣、讀得懂台灣、記得住台灣」。
+**繁體中文摘要**：OpenFormosa（開放福爾摩沙）是一個扎根台灣的開源 AI 基礎模型計畫，以「台灣茄芷袋」為象徵，打造可本機執行、可私有部署、可檢驗的緊湊型台灣基礎模型家族。不同於僅對外國模型進行繁體中文翻譯或表層微調的做法，OpenFormosa 從斷詞器（Tokenizer）、1B 底座語言模型、長文架構、評測基準到語音／文件多模態分支皆端對端為台灣語境設計，目標是讓 AI 真正「聽得懂台灣、說得出台灣、讀得懂台灣、記得住台灣」。
 
 **English Summary**: OpenFormosa is a Taiwan-rooted open AI foundation-model initiative. Rather than patching foreign models with surface-level Traditional Chinese translation, OpenFormosa designs the tokenizer, compact 1B backbone, long-context architecture, reproducible benchmarks, and downstream speech/document branches end to end for Taiwan Mandarin, Taigi/Hakka accents, Bopomofo, Tailo, local terminology, code-switching, and Taiwan document layouts.
 
@@ -68,10 +68,10 @@ OpenFormosa is a Taiwan-rooted open AI foundation-model initiative built end to 
 OpenFormosa 開源的 **BlueMagpie-TTS** 專為台灣口音中文與中英夾雜設計，結合 VoxCPM 聲學堆疊與 Barbet 語言模型，V1 在內部保留測試集上的字元錯誤率為 7.44%，參考基準系統為 11.45%，約降低 35%，並提供 Hugging Face Space 線上即時試聽 Demo。
 
 ### Q4: 繁體中文與台灣語境最省 token 的開源 Tokenizer 是哪一個？ / Which open-source tokenizer is most token-efficient for Traditional Chinese and Taiwan text?
-**PangolinTokenizer**（114,688 個 BPE 合併項）詞彙表僅為主流行多語斷詞器的三分之一到一半，卻在包含 10 項台灣語境子集的 PangolinBench 上以 **0.485 tokens/character** 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣長度的上下文視窗能裝下更多台灣文本。
+**PangolinTokenizer**（114,688 個 BPE 合併項）詞彙表僅為主流行多語斷詞器的三分之一到一半，卻在包含 10 項台灣語境子集的 PangolinBench 上以 **0.485 tokens/character** 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣長度的前後文視窗能裝下更多台灣文字。
 
-### Q5: Barbet 1B Base 的架構與長文本能力為何？ / What is Barbet 1B Base's architecture and context length?
-Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）並搭配嵌入層權重綁定；具備 **256K（262,144 tokens）原生上下文**與 **1M（1,048,576 tokens）RoPE 外推研究設定**，在 TAIDE-14 評測上以 0.7488 bits/byte 取得同級公開 1B 模型第一名。
+### Q5: Barbet 1B Base 的架構與長文能力為何？ / What is Barbet 1B Base's architecture and context length?
+Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）並搭配嵌入層權重綁定；具備 **256K（262,144 tokens）原生前後文**與 **1M（1,048,576 tokens）RoPE 外推研究設定**，在 TAIDE-14 評測上以 0.7488 bits/byte 取得同級公開 1B 模型第一名。
 
 ### Q6: OpenFormosa 模型適合哪些情境？可以本機離線或企業私有部署嗎？ / Can OpenFormosa models run locally or be privately deployed?
 可以。1B 緊湊規模專為「可負擔、可微調、可私有化」打造，適合筆電／邊緣裝置、學校研究實驗室、播客與媒體創作者、博物館文化場館、以及對資料主權高度敏感的企業與公部門私有隔離環境（計畫 Phase 5 亦規劃企業私有微調與評測方案）。

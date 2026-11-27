@@ -308,7 +308,7 @@ Copyright：
 - benchmark 可保留英文，必要時搭配「評測」。
 - model card 可保留英文。
 - Demo 可保留英文。
-- Tokenizer 可視上下文翻成「斷詞器」；模型名稱 `PangolinTokenizer` 保留英文。
+- Tokenizer 可視前後文翻成「斷詞器」；模型名稱 `PangolinTokenizer` 保留英文。
 - 茄芷袋英文使用 `Gaji bag (Taiwan Striped Bag)`，不要使用 `jia-zhi bag`。
 - 台羅英文使用 `Tâi-lô`，不要使用 `Tailo`。
 - 台語英文使用 `Taigi`。
