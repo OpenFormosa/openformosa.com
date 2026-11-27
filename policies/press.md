@@ -26,7 +26,7 @@ updated: 2026-11-27
 | --- | --- | --- |
 | PangolinTokenizer | 已釋出 | 114,688 個 BPE 合併項；PangolinBench 整體 0.485 tokens/字元 |
 | Barbet 1B Base | 已釋出 | 1B 參數混合架構；TAIDE-14 上 0.7488 bits/byte，公開 1B 模型中第一 |
-| BlueMagpie-TTS | 已釋出 | 台灣口音與中英夾雜語音合成；CER 4.81%、WER 5.36%（500 句測試集，Breeze-ASR-25 往返評估） |
+| BlueMagpie-TTS | 已釋出 | V1，台灣口音與中英夾雜語音合成；內部測試集 CER 7.44%，相對參考基準 11.45% 降低約 35% |
 | BlackBear-ASR | 規劃中 | 尚未釋出權重或 Demo |
 | SikaDeer-OCR | 規劃中 | 尚未釋出權重或 Demo |
 
@@ -67,7 +67,7 @@ updated: 2026-11-27
 | --- | --- | --- |
 | PangolinTokenizer | Shipped | 114,688 BPE merges; 0.485 tokens/character overall on PangolinBench |
 | Barbet 1B Base | Shipped | 1B hybrid architecture; 0.7488 bits/byte on TAIDE-14, first among open 1B models |
-| BlueMagpie-TTS | Shipped | Taiwanese-accent, Chinese–English code-switching TTS; CER 4.81%, WER 5.36% (500-sentence set, Breeze-ASR-25 round trip) |
+| BlueMagpie-TTS | Shipped | V1, Taiwanese-accent, Chinese–English code-switching TTS; CER 7.44% on an internal test set, about 35% lower than the 11.45% reference baseline |
 | BlackBear-ASR | Planned | No weights or demo yet |
 | SikaDeer-OCR | Planned | No weights or demo yet |
 
