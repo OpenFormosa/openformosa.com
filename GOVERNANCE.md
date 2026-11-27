@@ -17,7 +17,7 @@ OpenFormosa is a community project built by its contributors. This document exis
 
 ## 3. 原則 / Principles
 
-1. **預設開放。** 權重、程式碼、評測、訓練紀錄與決策預設公開。
+1. **預設開放。** 權重、程式碼、評測方法與決策預設公開。
 2. **使命比組織長久。** 已釋出成果採用不可撤回的開放授權。
 3. **Credit 屬於貢獻者。** 所有類型的貢獻都會被記錄與感謝。
 4. **沒有人不可取代。** 每個關鍵資產至少兩位管理者。

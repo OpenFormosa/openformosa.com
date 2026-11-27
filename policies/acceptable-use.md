@@ -30,7 +30,7 @@ updated: 2026-11-27
 - **只能使用你有權使用的聲音。** 使用他人聲音或語者向量前，須取得本人的明確授權。
 - **不可冒充。** 不可用合成語音冒充他人進行通話、詐騙、身分驗證或發表言論。
 - **標示合成。** 對外發布合成語音時，應標示為 AI 合成。
-- BlueMagpie-TTS 內附的預設語者向量已取得本人授權，僅限該模型說明中所列的用途。
+- BlueMagpie-TTS V1 內附的預設語者向量已取得本人授權，僅限非商業用途。V2 起不內附預設語者向量。
 
 ## 3. 語音辨識（ASR）
 
@@ -66,7 +66,7 @@ Open licenses let anyone use, modify, and redistribute OpenFormosa models. This 
 - **Use only voices you have the right to use.** Get explicit consent before using another person's voice or speaker embedding.
 - **Do not impersonate.** Never use synthetic speech to pose as someone in calls, scams, identity checks, or public statements.
 - **Label synthetic audio** as AI-generated when you publish it.
-- The default speaker embedding shipped with BlueMagpie-TTS is used with the speaker's permission, only for the purposes stated in the model card.
+- The default speaker embedding shipped with BlueMagpie-TTS V1 is used with the speaker's permission for non-commercial purposes only. From V2 onward, no default speaker embedding is included.
 
 ## 3. Speech recognition (ASR)
 

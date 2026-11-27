@@ -18,7 +18,7 @@ updated: 2026-11-27
 
 **一句話：** OpenFormosa（開放福爾摩沙）是由社群共同打造的台灣語言開源 AI 模型家族。
 
-**一段話：** OpenFormosa（開放福爾摩沙）是一個開源社群專案，為台灣的語言情境打造小而可部署的 AI 模型，涵蓋斷詞器、1B 基底語言模型、語音合成、語音辨識與文件辨識。所有模型、評測與訓練紀錄都公開，任何人都可以檢查、使用與改進。OpenFormosa 以台灣茄芷袋為象徵，成果屬於所有貢獻者。
+**一段話：** OpenFormosa（開放福爾摩沙）是一個開源社群專案，為台灣的語言情境打造小而可部署的 AI 模型，涵蓋斷詞器、1B 基底語言模型、語音合成、語音辨識與文件辨識。模型權重、程式碼與評測方法都公開，任何人都可以檢查、使用與改進。OpenFormosa 以台灣茄芷袋為象徵，成果屬於所有貢獻者。
 
 ## 事實查核
 
@@ -59,7 +59,7 @@ updated: 2026-11-27
 
 **One line:** OpenFormosa is a community-built family of open AI models for Taiwan's languages.
 
-**One paragraph:** OpenFormosa is an open-source community project building small, deployable AI models for Taiwan's language contexts, from tokenizers and a 1B base language model to speech synthesis, speech recognition, and document understanding. Models, evaluations, and training notes are public, so anyone can inspect, use, and improve them. Symbolized by the Taiwan Gaji bag, OpenFormosa's results belong to all of its contributors.
+**One paragraph:** OpenFormosa is an open-source community project building small, deployable AI models for Taiwan's language contexts, from tokenizers and a 1B base language model to speech synthesis, speech recognition, and document understanding. Model weights, code, and evaluation methods are public, so anyone can inspect, use, and improve them. Symbolized by the Taiwan Gaji bag, OpenFormosa's results belong to all of its contributors.
 
 ## Fact sheet
 

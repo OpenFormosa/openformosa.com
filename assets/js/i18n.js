@@ -751,7 +751,7 @@ const OpenFormosaZh = {
   community_principles_title: "五個工作原則",
   community_principles_desc: "這些原則用來處理困難的選擇。不確定時，我們選擇讓成果保持開放、保持共享的那一個。",
   community_p1_k: "預設開放",
-  community_p1_text: "權重、程式碼、評測集、訓練紀錄與決策預設公開。只有隱私或授權限制時例外。",
+  community_p1_text: "權重、程式碼、評測方法與決策預設公開。",
   community_p2_k: "使命比組織長久",
   community_p2_text: "已釋出的成果採用不可撤回的開放授權。未來組織形式改變，也無法關上已經打開的東西。",
   community_p3_k: "Credit 屬於貢獻者",
