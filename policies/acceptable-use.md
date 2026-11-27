@@ -9,12 +9,16 @@ lede: The boundaries for using OpenFormosa models and demos, with extra rules fo
 zh_lede: 使用 OpenFormosa 模型與 Demo 的界線，並針對語音合成、語音辨識與文件模型訂出額外規則。
 description: Acceptable use policy for OpenFormosa models and demos, including consent rules for voice cloning, speech recognition, and OCR of personal documents.
 zh_description: OpenFormosa 模型與 Demo 的可接受使用政策，包含語音複製的授權要求、語音辨識與個人文件 OCR 的使用界線。
-updated: 2026-11-27
+updated: 2026-11-28
 ---
 
 <div class="post-lang-zh" markdown="1">
 
 開源授權讓每個人都能使用、修改與散布 OpenFormosa 的模型。本政策說明社群期待的使用界線。官方 Demo 與 OpenFormosa 管理的服務必須遵守本政策；自行部署者，也請把本政策視為最低要求，並遵守當地法律。
+
+## 0. 取得官方權重
+
+官方模型權重在 Hugging Face 以存取申請方式提供。申請時，你需要填寫簡短的申請表，並同意本政策與[隱私權政策]({{ '/privacy/' | relative_url }})。申請表的用途是確認你了解使用界線，並讓我們在發現安全問題時能通知你。
 
 ## 1. 所有模型都不可用於
 
@@ -51,6 +55,10 @@ updated: 2026-11-27
 <div class="post-lang-en" markdown="1">
 
 Open licenses let anyone use, modify, and redistribute OpenFormosa models. This policy states the boundaries the community expects. It binds official demos and services run by OpenFormosa. If you self-host, treat it as the minimum standard and follow your local laws.
+
+## 0. Getting the official weights
+
+Official weights are distributed on Hugging Face through an access request. You fill in a short form and agree to this policy and the [Privacy Policy]({{ '/privacy/' | relative_url }}). The form confirms that you understand the boundaries and lets us notify you about security issues.
 
 ## 1. No model may be used to
 

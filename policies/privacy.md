@@ -9,7 +9,7 @@ lede: What personal data this website and the OpenFormosa community handle, why,
 zh_lede: 說明本網站與 OpenFormosa 社群會處理哪些個人資料、為什麼處理，以及你可以如何行使權利。
 description: OpenFormosa privacy policy covering website analytics, the demand survey, community channels, and your rights under Taiwan's Personal Data Protection Act.
 zh_description: OpenFormosa 隱私權政策：網站分析、需求調查、社群頻道的個人資料處理方式，以及你依《個人資料保護法》享有的權利。
-updated: 2026-11-27
+updated: 2026-11-28
 ---
 
 <div class="post-lang-zh" markdown="1">
@@ -28,9 +28,12 @@ OpenFormosa 是一個非法人的開源社群專案（下稱「我們」）。�
 | 需求調查表 | 你選擇的選項，以及最多 100 字的備註。送出前會自動移除 email、電話、身分證字號與長串數字 | 決定模型與評測的優先順序 | 同上 |
 | 你的瀏覽器 | `localStorage` 與 `sessionStorage` 中以 `openformosa_` 開頭的偏好與互動紀錄（語言、主題、調查答案） | 記住你的設定，避免重複詢問 | 存在你的裝置上，可隨時清除 |
 | 寫信給我們 | 你的 email 地址與信件內容 | 回覆你的問題 | 處理完成後最長 2 年 |
+| 申請下載模型權重 | Hugging Face 帳號名稱與 email（由 Hugging Face 提供）、姓名或稱呼、所屬單位（選填）、國家或地區、預期用途類別、同意事項的勾選紀錄 | 管理模型存取、處理濫用回報、寄送安全與重大更新通知、統計使用情形 | 最後一次存取後 2 年，或你請求刪除時 |
 | 參與貢獻 | 你在 GitHub commit 中提供的名字或暱稱與 email（DCO 簽署） | 記錄貢獻來源與授權 | 隨開源紀錄永久公開 |
 
-個資法的特定目的類別：資（通）訊服務（135）、資（通）訊與資料庫管理（136）、調查、統計與研究分析（157）。
+個資法的特定目的類別：契約、類似契約或其他法律關係事務（069）、資（通）訊服務（135）、資（通）訊與資料庫管理（136）、調查、統計與研究分析（157）。
+
+**模型存取申請：** 申請表只收上表列出的欄位，不收身分證字號、生日、電話或住址。我們不會把申請資料用於行銷，也不會提供給第三方。申請資料由 Hugging Face 代為儲存，存取權限只開放給 OpenFormosa 指導小組。不填寫申請表就無法從官方頁面下載權重，但不影響瀏覽網站或閱讀文件。
 
 **我們不會：** 出售個人資料；要求你提供身分證字號、生日或住址；在網站或公開管道蒐集語音、文件或其他訓練資料。
 
@@ -80,7 +83,10 @@ OpenFormosa is an unincorporated open-source community project ("we"). Contact: 
 | Demand survey | Your selected options and an optional note of up to 100 characters. Emails, phone numbers, ID numbers, and long digit strings are removed before sending | Prioritize models and evaluations | Same as above |
 | Your browser | `localStorage` and `sessionStorage` entries prefixed `openformosa_` (language, theme, survey answers, interaction state) | Remember your settings | Stored on your device; you can clear them at any time |
 | Email to us | Your address and message | Reply to you | Up to 2 years after the matter is closed |
+| Requesting model weights | Hugging Face username and email (provided by Hugging Face), name, affiliation (optional), country or region, intended use category, and the record of your agreements | Manage model access, handle misuse reports, send security and major update notices, measure usage | 2 years after your last access, or until you ask us to delete it |
 | Contributions | The name or handle and email in your commit sign-off (DCO) | Record provenance and licensing | Public as part of the open-source history |
+
+**Model access requests** collect only the fields above, never national ID numbers, birthdays, phone numbers, or home addresses. They are not used for marketing or shared with third parties. Hugging Face stores the requests; only the OpenFormosa steering group can read them. Without a request you cannot download weights from the official page, but you can still browse the site and read the documentation.
 
 **We do not** sell personal data, ask for national ID numbers, birthdays, or home addresses, or collect speech, documents, or other training data through the website or public channels.
 
