@@ -389,7 +389,7 @@ projects:
       research:
         - "純 Python 標準函式庫實作，沒有 Rust、torch 或 transformers 依賴。"
         - "鏡像 <code>huggingface/tokenizers</code> 的 API：<code>Tokenizer</code>、<code>Encoding</code>、<code>AddedToken</code>，以及 normalizers、pre_tokenizers、models、processors、decoders、trainers 子模組。"
-        - "讀寫相同的 <code>tokenizer.json</code>。內建 <code>BpeTrainer</code> 適合小語料與測試；大規模訓練請用 UbiTok。授權為 MIT。"
+        - "讀寫相同的 <code>tokenizer.json</code>。內建 <code>BpeTrainer</code> 適合小語料與測試；大規模訓練請用 UbiTok。授權為 Apache 2.0。"
       join: "歡迎補測試、補文件，或回報和 Hugging Face 行為不一致的地方。"
     en:
       tagline: "Runs a tokenizer anywhere Python runs, with no other packages to install."
@@ -401,7 +401,7 @@ projects:
       research:
         - "Pure Python standard library. No Rust, torch, or transformers dependency."
         - "Mirrors the <code>huggingface/tokenizers</code> API: <code>Tokenizer</code>, <code>Encoding</code>, <code>AddedToken</code>, plus normalizers, pre_tokenizers, models, processors, decoders, and trainers."
-        - "Same <code>tokenizer.json</code> format. The built-in <code>BpeTrainer</code> is for small corpora and tests. Use UbiTok for large-scale training. MIT license."
+        - "Same <code>tokenizer.json</code> format. The built-in <code>BpeTrainer</code> is for small corpora and tests. Use UbiTok for large-scale training. Apache 2.0."
       join: "Add tests or docs, or report behavior that differs from Hugging Face."
 
   - id: pangolinbench
@@ -447,7 +447,7 @@ projects:
 
   # ---------------------------------------------------------------- skills
   - id: skills
-    name: "Barbet Skill Library"
+    name: "Barbet Harness Library"
     category: skills
     status: shipped
     accent: barbet
@@ -473,7 +473,7 @@ projects:
           --prompt '每箱 12 瓶，買 3 箱共有多少瓶？' --contract number \
           --output outputs/answer.jsonl
     zh:
-      tagline: "64 份給 AI 看的工作手冊，教模型遇到某類任務時該怎麼一步步做、怎麼自我檢查。"
+      tagline: "給 AI 用的工作框架：64 份工作手冊，加上執行它們的推論工具。教模型遇到某類任務時該怎麼一步步做、怎麼自我檢查。"
       analogy: "像新人到職時拿到的標準作業流程。手冊寫清楚什麼時候該用、步驟是什麼、出錯怎麼辦、做完怎麼驗收。"
       public:
         - "涵蓋一般指令、寫程式、數學、使用工具、閱讀、科學與寫作。"
@@ -488,7 +488,7 @@ projects:
         - "原創技能文字與工具採 Apache 2.0。"
       join: "這是最容易上手的參與入口。可以用 Issues 提議新技能，或修改 <code>skill.json</code> 後送 PR。"
     en:
-      tagline: "64 work guides written for AI. They teach a model how to approach a type of task step by step and how to check its own work."
+      tagline: "A working harness for AI: 64 work guides plus the inference tools that run them. They teach a model how to approach a type of task step by step and how to check its own work."
       analogy: "Like the standard operating procedures a new hire receives. Each guide says when to use it, the steps, what to do when something fails, and how to verify the result."
       public:
         - "Covers general instructions, coding, math, tool use, reading, science, and writing."

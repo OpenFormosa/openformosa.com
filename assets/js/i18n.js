@@ -599,6 +599,13 @@ const OpenFormosaZh = {
   post_barbet_1m_title: "Barbet 怎麼練到 1M",
   post_barbet_1m_desc: "把訓練文字拉長、補練查找與計算，再拿掉關鍵資料做對照，檢查 Barbet 是否用到了遠處的資訊。",
 
+  /* ===== Blog post: Progress report, Sep-Nov 2026 ===== */
+  tag_update: "進度",
+  title_progress_2026_q4: "2026 年 9 到 11 月進度報告 · OpenFormosa",
+  desc_progress_2026_q4: "BlueMagpie-TTS V1 在 Apple Silicon 上比即時更快、Barbet Harness Library 推出可安裝的推論工具，OpenFormosa 也正式轉為社群專案。",
+  post_progress_2026_q4_title: "2026 年 9 到 11 月進度報告",
+  post_progress_2026_q4_desc: "BlueMagpie-TTS V1 在 Apple Silicon 上比即時更快、Barbet Harness Library 推出可安裝的推論工具，OpenFormosa 也正式轉為社群專案。",
+
   /* ===== Blog post: BlueMagpie-TTS ===== */
   tag_tts: "語音合成",
   title_bluemagpie: "BlueMagpie-TTS：臺灣口音、中英混合的語音合成 · OpenFormosa",
