@@ -139,7 +139,7 @@ projects:
         - "評測方式：合成語音用 ASR 轉寫回文字，再和原文比對。數字來自內部保留測試集，隨 checkpoint 發佈在 <code>release_metadata.json</code>。這是模型選擇用的評測，不是公開基準。"
         - "CER／WER：語者向量條件 7.44%／8.57%，參考音檔條件（免逐字稿）8.99%／11.77%，同一測試集上的參考基準系統 11.45%／14.83%。語者向量條件的 CER 相對降低約 35%。"
         - "長文逐段合成：語者向量 CER 7.51%，參考音檔 8.92%，語速約 4.0 字／秒。"
-        - "Apple Silicon 可用 MLX 原生推論。在 7.75GB 模型上端到端 RTF 0.77（fp32），比 torch-MPS 快約 1.45 倍，比 torch-CPU 快約 3.27 倍。另有 torch-only 的連續批次推論引擎。"
+        - "Apple Silicon 可用 MLX 原生推論。在 7.75GB 模型上端對端 RTF 0.77（fp32），比 torch-MPS 快約 1.45 倍，比 torch-CPU 快約 3.27 倍。另有 torch-only 的連續批次推論引擎。"
       join: "歡迎回報唸錯的句子、改善硬體支援與效能、補充文件。請不要在 issue 上傳未經授權的錄音。"
     en:
       tagline: "Turns text into natural Taiwan-accented speech. Mixed Chinese and English sentences need no rewriting."
@@ -329,7 +329,7 @@ projects:
         en: "Technical log"
     try:
       url: "https://huggingface.co/OpenFormosa/PangolinTokenizer"
-      zh: "到 Hugging Face 看詞表"
+      zh: "到 Hugging Face 看詞彙表"
       en: "See it on Hugging Face"
     try_dev:
       zh: "用 Transformers 切一句話"
@@ -343,7 +343,7 @@ projects:
       analogy: "像打包行李。捲得好，同一個箱子就能裝更多東西。斷詞切得越省，模型同樣的記憶空間就能放進越多台灣的文字。"
       public:
         - "熟悉繁體中文、注音、台羅、白話字、台語漢字、客語詞、中英夾雜與程式碼。"
-        - "和 8 個常見斷詞器比較，它表示同樣的文字用的 token 最少，而詞表只有主流多語言斷詞器的約三分之一到一半。"
+        - "和 8 個常見斷詞器比較，它表示同樣的文字用的 token 最少，而詞彙表只有主流多語言斷詞器的約三分之一到一半。"
         - "Barbet 用的就是它。"
       try_note: "它是給模型用的元件。開發者可以用一行程式載入它，看看一句話會被切成哪些片段。"
       research:
@@ -426,7 +426,7 @@ projects:
         - "內建的測試資料是公開、可檢查的合成資料，沒有放入私人或有授權疑慮的語料。"
       try_note: "這是給開發者的工具。用一行指令就能先跑一次。"
       research:
-        - "指標：roundtrip 正確性、壓縮率（tokens/character、tokens/byte、characters/token）、lexicon fertility、over-segmentation、script coverage、rich transcription JSON 穩定性，並回報詞表大小。"
+        - "指標：roundtrip 正確性、壓縮率（tokens/character、tokens/byte、characters/token）、lexicon fertility、over-segmentation、script coverage、rich transcription JSON 穩定性，並回報詞彙表大小。"
         - "設計立場：byte-level 能還原所有 UTF-8，不等於對台灣文字有效率，所以正確性與效率要一起看。"
         - "內建 fixtures 是 synthetic、deterministic、license-clean。正式評測透過 manifest 接 held-out 語料，不把語料放進 repo。"
         - "另有訓練吞吐量 benchmark，需要 UbiTok。品質 benchmark 只用標準函式庫。"
@@ -452,16 +452,16 @@ projects:
     status: shipped
     accent: barbet
     role: "Skills"
-    repo: "https://github.com/OpenFormosa/barbet-skill-library"
+    repo: "https://github.com/OpenFormosa/barbet-harness-library"
     links:
       - url: "https://huggingface.co/datasets/OpenFormosa/barbet-long-context-sft"
         zh: "對應的 SFT 資料集"
         en: "Related SFT dataset"
-      - url: "https://github.com/OpenFormosa/barbet-skill-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
+      - url: "https://github.com/OpenFormosa/barbet-harness-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
         zh: "看一份技能範例"
         en: "Read a sample skill"
     try:
-      url: "https://github.com/OpenFormosa/barbet-skill-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
+      url: "https://github.com/OpenFormosa/barbet-harness-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
       zh: "讀一份技能手冊"
       en: "Read a skill guide"
     try_dev:

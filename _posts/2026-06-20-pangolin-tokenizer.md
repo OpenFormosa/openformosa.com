@@ -4,7 +4,7 @@ title: "PangolinTokenizer: a byte-level BPE tokenizer for Traditional Chinese an
 zh_title: "PangolinTokenizer：面向繁體中文與台灣語境的 Byte-level BPE Tokenizer"
 i18n_key: pangolin
 description: "A byte-level BPE tokenizer built for Taiwan — 114,688 merges, the lowest tokens/character on PangolinBench with the smallest vocabulary."
-zh_description: "OpenFormosa 開源的台灣語境 byte-level BPE 斷詞器：僅 114,688 merges（約主流多語詞表一半），在 PangolinBench 10 項測試集以 0.485 tokens/字取得最佳壓縮效率，原生支援語音逐字稿標記。"
+zh_description: "OpenFormosa 開源的台灣語境 byte-level BPE 斷詞器：僅 114,688 merges（約主流多語詞彙表一半），在 PangolinBench 10 項測試集以 0.485 tokens/字取得最佳壓縮效率，原生支援語音逐字稿標記。"
 keywords: "PangolinTokenizer, 繁體中文 Tokenizer, 台灣 BPE 斷詞器, PangolinBench, UbiTok, OpenFormosa, 台灣 NLP"
 zh_description: "面向繁體中文與台灣語境的 byte-level BPE tokenizer——以最小的詞彙表，在台灣語境達到最低 tokens/character。"
 date: 2026-06-20
@@ -74,7 +74,7 @@ PangolinTokenizer 依循四個設計原則。
 
 PangolinTokenizer 使用 256 個 byte values 作為基礎表示，再透過 BPE 合併規則學習高頻片段。這個設計使 tokenizer 不需要事先列舉所有 Unicode 字元，也能避免字元級 tokenizer 遇到未知字元時產生 `<unk>` 的問題。
 
-「無損往返」的意思是：對任意 UTF-8 文字，先編碼（encode）再解碼（decode），結果必須與原文完全一致，不會遺失任何字元。在 PangolinBench 的 30 個測試樣例中，PangolinTokenizer 涵蓋繁體中文、注音符號、台語羅馬字、客語拼音、emoji、JSON、URL，以及語音逐字稿。所有樣例的 encode/decode 結果皆完全一致，無損往返正確率為 100%。
+「無損往返」的意思是：對任意 UTF-8 文字，先編碼（encode）再解碼（decode），結果必須與原文完全一致，不會遺失任何字元。在 PangolinBench 的 30 個測試範例中，PangolinTokenizer 涵蓋繁體中文、注音符號、台語羅馬字、客語拼音、emoji、JSON、URL，以及語音逐字稿。所有範例的 encode/decode 結果皆完全一致，無損往返正確率為 100%。
 
 ### 3.2 以台灣語境訓練合併規則
 
@@ -124,11 +124,11 @@ PangolinTokenizer 內建 10 個語音逐字稿結構標記。每個結構標記�
 
 ## 4. 訓練方法
 
-PangolinTokenizer 使用 [UbiTok](https://github.com/OpenFormosa/ubi_tokenizer) 訓練。UbiTok 是一套自研的串流式 byte-level BPE 訓練套件。整體流程從 256 個 byte values 開始，再根據語料中的配對頻率學習合併規則。
+PangolinTokenizer 使用 [UbiTok](https://github.com/OpenFormosa/ubi_tokenizer) 訓練。UbiTok 是一套自行開發的串流式 byte-level BPE 訓練套件。整體流程從 256 個 byte values 開始，再根據語料中的配對頻率學習合併規則。
 
 ### 4.1 串流式架構
 
-UbiTok 不需要將完整語料載入記憶體。大型檔案會被切分為對齊行邊界的區塊。多個 worker 會平行計算片段頻率。主程序再合併統計結果，並執行合併規則學習。
+UbiTok 不需要將完整語料載入記憶體。大型檔案會被切分為對齊行邊界的區塊。多個 worker 會平行計算片段頻率。主行程再合併統計結果，並執行合併規則學習。
 
 這個設計讓 tokenizer 訓練可以擴展到大型語料，同時維持可控的記憶體使用量。
 
@@ -377,7 +377,7 @@ assert decoded == text
 
 ### 11.3 PangolinBench 目前仍是合成測試集
 
-目前 PangolinBench 使用內建的測試集，共 30 個精選測試樣例。這些樣例覆蓋主要語言現象，但仍不足以代表完整台灣文本分佈。
+目前 PangolinBench 使用內建的測試集，共 30 個精選測試範例。這些範例覆蓋主要語言現象，但仍不足以代表完整台灣文本分佈。
 
 因此，本報告的結果應解讀為 tokenizer 層級的針對性基準測試，而不是完整真實世界分佈評估。更強的結論需要加入大型未見語料，例如政府公開資料、台灣新聞語料、教育與醫療文本、語音辨識逐字稿、客服與會議資料、台語與客語語料，以及科技文件與程式碼資料。
 
