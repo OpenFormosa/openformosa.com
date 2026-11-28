@@ -21,7 +21,7 @@ seo_software:
   code_repository: https://github.com/OpenFormosa/blackbear-asr
   model_url: https://huggingface.co/OpenFormosa/blackbear-asr
   programming_language: Python
-published: false
+published: true
 ---
 
 <div class="post-lang-zh" markdown="1">
