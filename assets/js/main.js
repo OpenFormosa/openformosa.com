@@ -243,8 +243,30 @@ document.querySelectorAll("[data-copy]").forEach((btn) => {
   });
   if (!reduce && "IntersectionObserver" in window) {
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-playing"); io.unobserve(e.target); } }), { threshold: .3 });
-    document.querySelectorAll(".asr-bars").forEach((s) => io.observe(s));
+    document.querySelectorAll(".asr-chart").forEach((s) => io.observe(s));
   }
+
+  // Result tables: copy each column heading onto its cells, so the stacked phone layout keeps its labels.
+  document.querySelectorAll("table.asr-table").forEach((table) => {
+    const heads = [...table.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+    table.querySelectorAll("tbody tr").forEach((tr) => {
+      [...tr.children].forEach((td, i) => { if (heads[i]) td.dataset.label = heads[i]; });
+    });
+  });
+
+  // Embedded Hugging Face demo: show a loading state until the frame loads, and a hint if waking the Space is slow.
+  document.querySelectorAll("[data-asr-try]").forEach((fig) => {
+    const frame = fig.querySelector("iframe");
+    if (!frame) return;
+    let slowTimer = null;
+    const loaded = () => { clearTimeout(slowTimer); fig.classList.remove("is-slow"); fig.classList.add("is-loaded"); };
+    frame.addEventListener("load", loaded);
+    const startWaiting = () => { if (!fig.classList.contains("is-loaded")) slowTimer = setTimeout(() => fig.classList.add("is-slow"), 8000); };
+    if ("IntersectionObserver" in window) {
+      const io2 = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { startWaiting(); io2.disconnect(); } }), { rootMargin: "200px" });
+      io2.observe(fig);
+    } else startWaiting();
+  });
 })();
 
 /* BlackBear-ASR post: flow motion graphic, live-caption replay (real streaming events), hotword toggle */
