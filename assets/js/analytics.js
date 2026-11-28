@@ -1534,6 +1534,90 @@
     }, true);
   }
 
+  // ==========================================
+  // 11c. Interactive Demo Widgets (release posts: instruction flow, hotword
+  // toggle, streaming replay, listening cards). Reuses existing dimensions:
+  // section_name = widget, action_name = what the reader did,
+  // selected_state = option chosen, target_asset = audio clip.
+  // ==========================================
+  const DEMO_WIDGETS = [
+    ["[data-asr-flow]", "asr_instruction_flow"],
+    ["[data-asr-toggle]", "asr_hotword_toggle"],
+    ["[data-asr-replay]", "asr_streaming_replay"],
+    ["[data-asr-stream]", "asr_streaming_diagram"],
+    ["[data-tts-demo]", "listening_cards"]
+  ];
+  function demoWidgetOf(el) {
+    for (let i = 0; i < DEMO_WIDGETS.length; i += 1) {
+      const host = el && el.closest ? el.closest(DEMO_WIDGETS[i][0]) : null;
+      if (host) return { host, name: DEMO_WIDGETS[i][1] };
+    }
+    return null;
+  }
+  function demoInteraction(widget, action, extra) {
+    recordFirstAction(`demo_${action}`);
+    recordIntent({ model: DEMO_MODEL, modelWeight: 1, engagement: 2 });
+    track("demo_interaction", Object.assign({
+      section_name: widget,
+      action_name: action,
+      model_name: DEMO_MODEL,
+      post_slug: PAGE_KEY
+    }, extra || {}));
+  }
+
+  if (DEMO_WIDGETS.some((w) => document.querySelector(w[0]))) {
+    // Which demos readers actually reach: half visible, once per widget per page view.
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const w = demoWidgetOf(entry.target);
+          io.unobserve(entry.target);
+          if (!w) return;
+          track("demo_widget_view", { section_name: w.name, model_name: DEMO_MODEL, post_slug: PAGE_KEY });
+        });
+      }, { threshold: 0.5 });
+      DEMO_WIDGETS.forEach((w) => document.querySelectorAll(w[0]).forEach((el) => io.observe(el)));
+    }
+
+    document.addEventListener("click", (event) => {
+      const target = event.target && event.target.closest ? event.target.closest("button, [role='tab']") : null;
+      if (!target) return;
+      const w = demoWidgetOf(target);
+      if (!w || w.name === "listening_cards") return; // cards are tracked in section 11
+      if (target.matches("[data-v]")) {
+        demoInteraction(w.name, "toggle_option", { selected_state: target.dataset.v === "1" ? "with_hotwords" : "without_hotwords" });
+      } else if (target.matches("[data-clip][role='tab']")) {
+        demoInteraction(w.name, "select_clip", { target_asset: target.dataset.clip });
+      } else if (target.matches("[data-replay-play], [data-toggle-play]")) {
+        const tab = w.host.querySelector("[role='tab'][aria-selected='true']");
+        const audio = w.host.querySelector("audio");
+        const clip = tab ? tab.dataset.clip : (audio ? (audio.dataset.clip || clipId(audio)) : undefined);
+        demoInteraction(w.name, "play_pause", { target_asset: clip });
+      }
+    }, true);
+
+    // Audio inside widgets (the [data-tts-audio] cards are tracked in section 11)
+    ["play", "ended"].forEach((type) => {
+      document.addEventListener(type, (event) => {
+        const audio = event.target;
+        if (!audio || audio.tagName !== "AUDIO" || audio.matches("[data-tts-audio]")) return;
+        const w = demoWidgetOf(audio);
+        if (!w) return;
+        const clip = audio.dataset.clip || clipId(audio);
+        track(type === "play" ? "audio_start" : "audio_complete", {
+          item_id: clip,
+          target_asset: clip,
+          section_name: w.name,
+          post_slug: PAGE_KEY,
+          model_name: DEMO_MODEL,
+          listen_seconds: type === "ended" && audio.duration ? Math.round(audio.duration) : undefined
+        });
+      }, true);
+    });
+  }
+
+  // ==========================================
   // 12. Blog Post 1-Click Micro-Feedback (Always works even without gtag)
   // ==========================================
   const postFeedbackBox = document.querySelector("[data-post-feedback]");
