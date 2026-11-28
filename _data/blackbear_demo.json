@@ -1,0 +1,122 @@
+[
+ {
+  "id": "zh-transcribe",
+  "file": "/assets/audio/blackbear/zh-transcribe.mp3",
+  "task": "transcribe",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --language zh zh-transcribe.mp3",
+  "output": "穩定供水，一直是臺灣面臨的挑戰",
+  "cpu_seconds": 5.14,
+  "source": "Common Voice zh-TW 19, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "nan-transcribe",
+  "file": "/assets/audio/blackbear/nan-transcribe.mp3",
+  "task": "transcribe",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --language nan nan-transcribe.mp3",
+  "output": "青翠的草地讓人看了很舒服。",
+  "cpu_seconds": 4.77,
+  "source": "Common Voice nan-tw, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-hotwords",
+  "file": "/assets/audio/blackbear/zh-hotwords.mp3",
+  "task": "transcribe (no hotwords)",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --language zh zh-hotwords.mp3",
+  "output": "電子遊戲真的很煩",
+  "cpu_seconds": 4.37,
+  "source": "Common Voice zh-TW 19, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-hotwords",
+  "file": "/assets/audio/blackbear/zh-hotwords.mp3",
+  "task": "transcribe with hotwords",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --language zh --hotwords '明細' zh-hotwords.mp3",
+  "output": "電子明細真的很煩",
+  "cpu_seconds": 4.58,
+  "source": "Common Voice zh-TW 19, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-keyword",
+  "file": "/assets/audio/blackbear/zh-keyword.mp3",
+  "task": "ask",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --ask '這段音訊有沒有提到「好山好水」？' zh-keyword.mp3",
+  "output": "有",
+  "cpu_seconds": 4.2,
+  "source": "Common Voice zh-TW 19, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-emotion",
+  "file": "/assets/audio/blackbear/zh-emotion.mp3",
+  "task": "ask",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --ask '說話者的情緒是什麼？' zh-emotion.mp3",
+  "output": "中性偏正面，帶有欣賞與些許的興奮感。",
+  "cpu_seconds": 5.38,
+  "source": "Common Voice zh-TW 19, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-pitch",
+  "file": "/assets/audio/blackbear/zh-pitch.mp3",
+  "task": "ask",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --ask '說話者的音高大約多少？' zh-pitch.mp3",
+  "output": "音高偏高，基頻約 205 Hz。",
+  "cpu_seconds": 5.37,
+  "source": "Common Voice zh-TW 19, test",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-overlap",
+  "file": "/assets/audio/blackbear/zh-overlap.mp3",
+  "task": "transcribe",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --language zh zh-overlap.mp3",
+  "output": "感冒一定太陽曬，爆開！",
+  "cpu_seconds": 4.89,
+  "source": "two Common Voice zh-TW 19 test clips mixed, second speaker starts 1 s later",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "zh-overlap",
+  "file": "/assets/audio/blackbear/zh-overlap.mp3",
+  "task": "ask",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr --ask '這段音訊有幾位說話者？有沒有人同時說話？' zh-overlap.mp3",
+  "output": "兩位說話者，有重疊說話。",
+  "cpu_seconds": 5.09,
+  "source": "two Common Voice zh-TW 19 test clips mixed, second speaker starts 1 s later",
+  "license": "CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ },
+ {
+  "id": "nospeech",
+  "file": "/assets/audio/blackbear/nospeech.mp3",
+  "task": "transcribe",
+  "call": "python scripts/transcribe.py --model OpenFormosa/blackbear-asr nospeech.mp3",
+  "output": "（沒有語音）",
+  "cpu_seconds": 4.66,
+  "source": "synthetic pink noise + 60/120 Hz hum, generated",
+  "license": "generated, CC0-1.0",
+  "model": "OpenFormosa/blackbear-asr (R12)",
+  "device": "CPU, includes model load"
+ }
+]
