@@ -246,3 +246,94 @@ document.querySelectorAll("[data-copy]").forEach((btn) => {
     document.querySelectorAll(".asr-bars").forEach((s) => io.observe(s));
   }
 })();
+
+/* BlackBear-ASR post: flow motion graphic, live-caption replay (real streaming events), hotword toggle */
+(() => {
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const allAudio = () => [...document.querySelectorAll("audio")];
+  const playOnly = (audio) => { allAudio().forEach((a) => { if (a !== audio) a.pause(); }); return audio.play().catch(() => {}); };
+
+  document.querySelectorAll("[data-asr-flow]").forEach((fig) => {
+    let scenes; try { scenes = JSON.parse(fig.dataset.scenes); } catch (e) { return; }
+    const instr = fig.querySelector("[data-flow-instr]"), out = fig.querySelector("[data-flow-out]");
+    if (!instr || !out || !scenes.length || reduce) return;
+    let k = 0, timer = null, running = false;
+    const type = (text, done) => {
+      let i = 0; out.textContent = ""; out.classList.add("is-typing");
+      const chars = [...text];
+      timer = setInterval(() => {
+        i += 1; out.textContent = chars.slice(0, i).join("");
+        if (i >= chars.length) { clearInterval(timer); out.classList.remove("is-typing"); timer = setTimeout(done, 2200); }
+      }, 90);
+    };
+    const next = () => {
+      if (!running) return;
+      k = (k + 1) % scenes.length; instr.style.opacity = "0";
+      timer = setTimeout(() => { instr.textContent = scenes[k][0]; instr.style.opacity = "1"; timer = setTimeout(() => type(scenes[k][1], next), 900); }, 300);
+    };
+    const start = () => { if (running) return; running = true; type(scenes[k][1], next); };
+    const stop = () => { running = false; clearInterval(timer); clearTimeout(timer); out.classList.remove("is-typing"); out.textContent = scenes[k][1]; };
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? start() : stop())), { threshold: .4 }).observe(fig);
+    }
+  });
+
+  document.querySelectorAll("[data-asr-replay]").forEach((fig) => {
+    let data; try { data = JSON.parse(fig.querySelector("[data-replay-events]").textContent); } catch (e) { return; }
+    const c = fig.querySelector("[data-replay-c]"), p = fig.querySelector("[data-replay-p]"), line = c && c.parentElement;
+    const ticks = fig.querySelector("[data-replay-ticks]"), timeEl = fig.querySelector("[data-replay-time]");
+    const btn = fig.querySelector("[data-replay-play]"), tabs = [...fig.querySelectorAll("[data-clip][role=tab]")];
+    const audios = {}; fig.querySelectorAll("audio[data-clip]").forEach((a) => { audios[a.dataset.clip] = a; });
+    let clip = tabs.length ? tabs[0].dataset.clip : Object.keys(data)[0];
+    const show = (t, ended) => {
+      const evs = data[clip] || []; let idx = -1;
+      evs.forEach((e, i) => { if (e.t <= t + 0.02 && (e.final == null || ended)) idx = i; });
+      const ev = idx >= 0 ? evs[idx] : null;
+      const fin = ev && ev.final != null;
+      c.textContent = ev ? (fin ? ev.final : ev.committed) : "";
+      let k2 = 0; if (ev && !fin) { while (k2 < ev.committed.length && ev.partial[k2] === ev.committed[k2]) k2 += 1; }
+      p.textContent = ev && !fin ? ev.partial.slice(k2) : "";
+      line.classList.toggle("is-final", !!fin);
+      [...ticks.children].forEach((s, i) => { s.className = i < idx ? "is-done" : i === idx ? (fin ? "is-done" : "is-now") : ""; });
+      timeEl.textContent = `${t.toFixed(1)} s`;
+    };
+    const build = () => {
+      ticks.innerHTML = ""; (data[clip] || []).forEach(() => ticks.appendChild(document.createElement("span")));
+      const evs = data[clip] || []; const last = evs[evs.length - 1];
+      show(last ? last.t : 0, true);   // before playing, show the final result
+    };
+    Object.entries(audios).forEach(([name, a]) => {
+      a.addEventListener("timeupdate", () => { if (name === clip) show(a.currentTime, false); });
+      a.addEventListener("play", () => { if (name === clip) { fig.classList.add("is-playing"); show(0, false); } });
+      a.addEventListener("pause", () => fig.classList.remove("is-playing"));
+      a.addEventListener("ended", () => { fig.classList.remove("is-playing"); if (name === clip) show(a.duration || 99, true); });
+    });
+    btn.addEventListener("click", () => {
+      const a = audios[clip]; if (!a) return;
+      if (a.paused) { if (a.ended || a.currentTime > 0 && a.currentTime >= (a.duration || 0) - .05) a.currentTime = 0; playOnly(a); } else a.pause();
+    });
+    tabs.forEach((tab) => tab.addEventListener("click", () => {
+      Object.values(audios).forEach((a) => { a.pause(); a.currentTime = 0; });
+      tabs.forEach((t) => t.setAttribute("aria-selected", String(t === tab))); clip = tab.dataset.clip; build();
+    }));
+    build();
+  });
+
+  document.querySelectorAll("[data-asr-toggle]").forEach((fig) => {
+    let states; try { states = JSON.parse(fig.dataset.states); } catch (e) { return; }
+    const instr = fig.querySelector("[data-toggle-instr]"), out = fig.querySelector("[data-toggle-out]");
+    const audio = fig.querySelector("audio"), btn = fig.querySelector("[data-toggle-play]");
+    fig.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+      const v = Number(b.dataset.v);
+      fig.querySelectorAll("[data-v]").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+      instr.textContent = states[v][0]; out.innerHTML = states[v][1];
+      out.classList.remove("is-swap"); void out.offsetWidth; out.classList.add("is-swap");
+    }));
+    if (audio && btn) {
+      btn.addEventListener("click", () => { if (audio.paused) playOnly(audio); else audio.pause(); });
+      audio.addEventListener("play", () => fig.classList.add("is-playing"));
+      audio.addEventListener("pause", () => fig.classList.remove("is-playing"));
+      audio.addEventListener("ended", () => fig.classList.remove("is-playing"));
+    }
+  });
+})();
