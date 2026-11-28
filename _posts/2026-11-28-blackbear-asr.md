@@ -5,7 +5,7 @@ zh_title: "BlackBear-ASR：一個模型，聽懂國語，也聽懂臺語"
 i18n_key: blackbear_asr
 description: "BlackBear-ASR is OpenFormosa's open speech recognition model for Taiwanese Mandarin and Taiwanese. It writes live captions as you speak and follows plain-text instructions."
 zh_description: "BlackBear-ASR 是 OpenFormosa 社群的開源語音辨識模型：國語、臺語都聽得懂，可以一邊聽一邊出字，也能照文字指示調整輸出。"
-keywords: "BlackBear-ASR, 臺語語音辨識, 臺灣國語 ASR, 即時字幕, 開源語音辨識, Barbet, OpenFormosa"
+keywords: "BlackBear-ASR, 臺語語音辨識, 台語語音辨識, Taiwanese ASR, Taigi speech recognition, 臺灣國語 ASR, 即時字幕, 開源語音辨識, Barbet, OpenFormosa"
 date: 2026-11-28 18:00:00 +0800
 category: research
 tags: [asr, model, speech, blackbear]
@@ -21,6 +21,9 @@ seo_software:
   code_repository: https://github.com/OpenFormosa/blackbear-asr
   model_url: https://huggingface.co/OpenFormosa/blackbear-asr
   programming_language: Python
+  same_as:
+    - https://huggingface.co/OpenFormosa/blackbear-asr
+    - https://github.com/OpenFormosa/blackbear-asr
 published: true
 ---
 
@@ -241,6 +244,28 @@ print(asr.transcribe("audio.wav", language="nan"))
 
 [GitHub](https://github.com/OpenFormosa/blackbear-asr) 上有五篇教學：安裝、基本使用、指令控制、即時字幕與批次、用自己的錄音微調。程式碼和權重都以 Apache 2.0 授權。從 [Hugging Face](https://huggingface.co/OpenFormosa/blackbear-asr) 下載權重前，需要先填寫申請表並同意[可接受使用政策]({{ '/acceptable-use/' | relative_url }})，送出後會自動核准。
 
+## 常見問題
+
+### 有沒有開源、聽得懂臺語（台語）的語音辨識模型？
+
+有。BlackBear-ASR 是開源的語音辨識模型，同一個模型就能辨識臺灣國語和臺語。在 12 個系統的同場比較中，它的國語錯誤率 5.28、臺語 15.62，兩項都排第 3；臺語夾英文 19.16，排第 1。
+
+### 可以商用嗎？
+
+可以。程式碼和權重都以 Apache 2.0 授權。從 Hugging Face 下載權重前，要先填申請表並同意可接受使用政策，送出後自動核准。
+
+### 可以做即時字幕嗎？
+
+可以。模型每 0.64 秒更新一次字幕，確定的字平均 1.28 秒後出現，之後不再修改。即時模式的錯誤率是 6.52，講完再辨識是 3.64。
+
+### 臺語會寫成什麼字？
+
+臺語會寫成中文字幕，不是臺語漢字或臺羅拼音。需要臺語正字時，請另外轉換。
+
+### 什麼情況下不建議用？
+
+很吵的環境、朗讀式國語、整句英語或日語、客語。噪音和人聲一樣大時，錯誤率從 5.20 升到 14.31。
+
 ## 數字怎麼來的
 
 所有系統用同一批錄音、同一套計分方式，各自使用官方預設的解碼設定。比對前，雙方都統一轉成繁體、去掉標點、數字轉成中文。國語和臺語測試集是我們自己整理的，錄音沒有出現在訓練資料中。Common Voice、FormosaSpeech、ML2021 是公開資料，任何人都可以重現。模型版本是 R12，每一項只跑一次。
@@ -423,6 +448,28 @@ Read-aloud Mandarin ranks 8th (Common Voice 9.17) and 9th (FormosaSpeech 11.85).
 ## Get started
 
 Code and weights are Apache 2.0. Downloading the weights from Hugging Face requires a short access form, approved automatically. Five step-by-step tutorials are on GitHub.
+
+## FAQ
+
+### Is there an open speech recognition model for Taiwanese (Taigi)?
+
+Yes. BlackBear-ASR is one open model for both Taiwanese Mandarin and Taiwanese. Among 12 systems on the same recordings, it ranks 3rd on Mandarin (5.28) and 3rd on Taiwanese (15.62), and 1st on Taiwanese mixed with English (19.16).
+
+### Can I use it commercially?
+
+Yes. Code and weights are Apache 2.0. Downloading the weights requires a short access form and agreeing to the Acceptable Use Policy; requests are approved automatically.
+
+### Does it do live captions?
+
+Yes. Captions update every 0.64 s, and committed text appears after 1.28 s on average. Streaming error rate is 6.52, versus 3.64 offline.
+
+### What script does it use for Taiwanese?
+
+Taiwanese speech is written as Mandarin captions, not Taiwanese characters or romanization.
+
+### When should I not use it?
+
+Very noisy audio, read-aloud Mandarin, full English or Japanese sentences, and Hakka. At 0 dB noise, its error rate rises from 5.20 to 14.31.
 
 Thanks to Taipei-1, NTU Speech Lab and NTU SPML Lab for their support, and to every contributor.
 
