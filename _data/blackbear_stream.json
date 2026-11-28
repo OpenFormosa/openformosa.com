@@ -1,0 +1,120 @@
+{
+ "zh-transcribe": [
+  {
+   "t": 0.64,
+   "committed": "",
+   "partial": "",
+   "final": null
+  },
+  {
+   "t": 1.28,
+   "committed": "",
+   "partial": "",
+   "final": null
+  },
+  {
+   "t": 1.92,
+   "committed": "",
+   "partial": "穩定供水",
+   "final": null
+  },
+  {
+   "t": 2.56,
+   "committed": "穩定供水",
+   "partial": "穩定供水一直是",
+   "final": null
+  },
+  {
+   "t": 3.2,
+   "committed": "穩定供水一直是",
+   "partial": "穩定供水一直是臺灣",
+   "final": null
+  },
+  {
+   "t": 3.84,
+   "committed": "穩定供水一直是臺灣",
+   "partial": "穩定供水一直是臺灣面臨的",
+   "final": null
+  },
+  {
+   "t": 4.48,
+   "committed": "穩定供水一直是臺灣面臨的",
+   "partial": "穩定供水一直是臺灣面臨的挑戰",
+   "final": null
+  },
+  {
+   "t": 5.12,
+   "committed": "穩定供水一直是臺灣面臨的挑戰",
+   "partial": "穩定供水一直是臺灣面臨的挑戰",
+   "final": null
+  },
+  {
+   "t": 5.136,
+   "committed": "穩定供水，一直是臺灣面臨的挑戰",
+   "partial": "",
+   "final": "穩定供水，一直是臺灣面臨的挑戰"
+  }
+ ],
+ "nan-transcribe": [
+  {
+   "t": 0.64,
+   "committed": "",
+   "partial": "",
+   "final": null
+  },
+  {
+   "t": 1.28,
+   "committed": "",
+   "partial": "青翠",
+   "final": null
+  },
+  {
+   "t": 1.92,
+   "committed": "青翠",
+   "partial": "青翠的草",
+   "final": null
+  },
+  {
+   "t": 2.56,
+   "committed": "青翠的草",
+   "partial": "青翠的草埔",
+   "final": null
+  },
+  {
+   "t": 3.2,
+   "committed": "青翠的草",
+   "partial": "青翠的草坪讓人",
+   "final": null
+  },
+  {
+   "t": 3.84,
+   "committed": "青翠的草坪讓人",
+   "partial": "青翠的草坪讓人看了",
+   "final": null
+  },
+  {
+   "t": 4.48,
+   "committed": "青翠的草坪讓人看",
+   "partial": "青翠的草坪讓人看到很",
+   "final": null
+  },
+  {
+   "t": 5.12,
+   "committed": "青翠的草坪讓人看",
+   "partial": "青翠的草坪讓人看了很",
+   "final": null
+  },
+  {
+   "t": 5.76,
+   "committed": "青翠的草坪讓人看",
+   "partial": "青翠的草地讓人看了很舒服",
+   "final": null
+  },
+  {
+   "t": 6.12,
+   "committed": "青翠的草地讓人看了很舒服。",
+   "partial": "",
+   "final": "青翠的草地讓人看了很舒服。"
+  }
+ ]
+}
