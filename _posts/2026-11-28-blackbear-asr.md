@@ -30,7 +30,7 @@ published: false
 ## 先看一分鐘
 
 <figure class="post-figure asr-video">
-<video controls preload="metadata" playsinline src="{{ '/assets/video/blackbear-asr-showcase-r12.mp4' | relative_url }}"></video>
+<video controls preload="metadata" playsinline src="{{ '/assets/video/blackbear-asr-showcase.mp4' | relative_url }}"></video>
 <figcaption>一分鐘看完 BlackBear-ASR 能做的事。片中文字皆為模型實際輸出，示範句經過挑選；示範音檔來自 Common Voice（CC0）。</figcaption>
 </figure>
 
@@ -237,7 +237,7 @@ BlackBear-ASR 屬於 OpenFormosa 社群。感謝 Taipei-1、臺大語音實驗�
 ## Watch
 
 <figure class="post-figure asr-video">
-<video controls preload="metadata" playsinline src="{{ '/assets/video/blackbear-asr-showcase-r12.mp4' | relative_url }}"></video>
+<video controls preload="metadata" playsinline src="{{ '/assets/video/blackbear-asr-showcase.mp4' | relative_url }}"></video>
 <figcaption>BlackBear-ASR in one minute. All on-screen text is real model output from selected clips; demo audio is from Common Voice (CC0).</figcaption>
 </figure>
 
