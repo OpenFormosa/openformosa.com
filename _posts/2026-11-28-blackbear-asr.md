@@ -9,6 +9,18 @@ keywords: "BlackBear-ASR, 臺語語音辨識, 臺灣國語 ASR, 即時字幕, �
 date: 2026-11-28 18:00:00 +0800
 category: research
 tags: [asr, model, speech, blackbear]
+model_name: BlackBear-ASR
+og_image: /assets/img/og-blackbear-asr.png
+og_image_alt: "BlackBear-ASR：聽得懂臺灣國語和臺語的開源語音辨識模型"
+seo_video:
+  url: /assets/video/blackbear-asr-showcase.mp4
+  duration: PT1M18S
+  name: "BlackBear-ASR 一分鐘示範"
+seo_software:
+  name: BlackBear-ASR
+  code_repository: https://github.com/OpenFormosa/blackbear-asr
+  model_url: https://huggingface.co/OpenFormosa/blackbear-asr
+  programming_language: Python
 published: false
 ---
 
@@ -32,7 +44,7 @@ published: false
 ## 先看一分鐘
 
 <figure class="post-figure asr-video">
-<video controls preload="metadata" playsinline src="{{ '/assets/video/blackbear-asr-showcase.mp4' | relative_url }}"></video>
+<video controls preload="metadata" playsinline aria-label="BlackBear-ASR 一分鐘示範" src="{{ '/assets/video/blackbear-asr-showcase.mp4' | relative_url }}"></video>
 <figcaption>一分鐘看完 BlackBear-ASR 能做的事。片中文字皆為模型實際輸出，示範句經過挑選；示範音檔來自 Common Voice（CC0）。</figcaption>
 </figure>
 
@@ -252,7 +264,7 @@ BlackBear-ASR 屬於 OpenFormosa 社群。感謝 Taipei-1、臺大語音實驗�
 ## Watch
 
 <figure class="post-figure asr-video">
-<video controls preload="metadata" playsinline src="{{ '/assets/video/blackbear-asr-showcase.mp4' | relative_url }}"></video>
+<video controls preload="metadata" playsinline aria-label="BlackBear-ASR 一分鐘示範" src="{{ '/assets/video/blackbear-asr-showcase.mp4' | relative_url }}"></video>
 <figcaption>BlackBear-ASR in one minute. All on-screen text is real model output from selected clips; demo audio is from Common Voice (CC0).</figcaption>
 </figure>
 
