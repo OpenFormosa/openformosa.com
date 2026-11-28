@@ -2537,7 +2537,7 @@ html.js .reveal.is-in {
 /* ===== Home FAQ Grid (SEO & AI SEO) ===== */
 .faq-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 1.1rem;
   margin: 0;
 }
@@ -2649,7 +2649,7 @@ html:not(.js) .pj-switch { display: none; }
 
 .pj-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
   gap: .75rem;
   margin-top: 1rem;
 }
@@ -2667,6 +2667,9 @@ html:not(.js) .pj-switch { display: none; }
 }
 .pj-card.is-compact { background: transparent; border-style: dashed; border-top-style: solid; }
 .pj-card-head { display: flex; gap: .9rem; align-items: center; }
+.pj-card-head > div { min-width: 0; }
+.pj-card h3 { overflow-wrap: anywhere; }
+@media (max-width: 400px) { .pj-card h3 { font-size: 24px; } }
 .pj-card-head .crest-img, .pj-card-head .crest { width: 72px; height: 72px; flex: 0 0 auto; }
 .pj-card h3 { margin: 0 0 .4rem; font-family: var(--serif); font-size: 28px; line-height: 1.05; }
 .pj-card .card-tags { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
@@ -2806,18 +2809,44 @@ html.js .pj[data-route="research"] .pj-card.is-compact .pj-route-research { disp
 .asr-stream__legend .is-c::before { background: var(--paper-ink); }
 .asr-stream__legend .is-p::before { background: var(--muted); opacity: .6; }
 
-.asr-bars .asr-bar { transform-box: fill-box; transform-origin: left center; }
-.asr-bars.is-playing .asr-bar { animation: asr-grow .9s cubic-bezier(.2, .7, .2, 1) both; }
+/* Result bar charts: plain HTML so they reflow to any screen width. */
+.asr-chart { font-size: 14px; line-height: 1.35; }
+.asr-chart .asr-chart__title { margin: 0 0 .9rem; color: var(--paper-ink); font-size: 15px; font-weight: 700; }
+.asr-chart .asr-chart__group { margin: 1.1rem 0 .45rem; color: var(--paper-ink); font-size: 14px; font-weight: 700; }
+.asr-chart .asr-chart__title + .asr-chart__group { margin-top: 0; }
+.asr-chart__row { display: grid; grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr); align-items: center; gap: .7rem; padding: .18rem 0; }
+.asr-chart__name { overflow: hidden; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+.asr-chart__track { display: flex; align-items: center; gap: .45rem; min-width: 0; }
+.asr-chart__bar { flex: none; width: calc(var(--v) * .84); min-width: 2px; height: 14px; border-radius: 2px; background: var(--muted); opacity: .55; transform-origin: left center; }
+.asr-chart__val { flex: none; font-variant-numeric: tabular-nums; }
+.asr-chart__row.is-ours { font-weight: 700; }
+.asr-chart__row.is-ours .asr-chart__bar { background: var(--red); opacity: 1; }
+.asr-chart.is-playing .asr-chart__bar { animation: asr-grow .9s cubic-bezier(.2, .7, .2, 1) both; }
+@media (max-width: 520px) {
+  .asr-chart { font-size: 12.5px; }
+  .asr-chart__row { grid-template-columns: minmax(0, 8.8em) minmax(0, 1fr); gap: .5rem; }
+}
 
 @keyframes asr-grow { from { transform: scaleX(0); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .asr-bars.is-playing .asr-bar { animation: none; }
+  .asr-chart.is-playing .asr-chart__bar { animation: none; }
   .asr-stream__ticks span { transition: none; }
 }
 
-.post-figure:has(.asr-bars) { overflow-x: auto; }
-.post-figure .asr-bars { min-width: 560px; }
+/* Result tables: on phones each row becomes a small card instead of scrolling sideways. */
+@media (max-width: 640px) {
+  .prose table.asr-table { display: block; overflow: visible; white-space: normal; font-size: 15px; }
+  .prose table.asr-table tbody { display: block; }
+  .prose table.asr-table thead { display: none; }
+  .prose table.asr-table tr { display: block; padding: .7rem .9rem; border-bottom: 1px solid var(--line); }
+  .prose table.asr-table tbody tr:last-child { border-bottom: 0; }
+  .prose table.asr-table td { display: block; padding: 0; border: 0; overflow-wrap: anywhere; }
+  .prose table.asr-table td:first-child { margin-bottom: .2rem; font-family: var(--serif); font-weight: 700; }
+  .prose table.asr-table td + td + td { margin-top: .2rem; color: var(--muted); font-size: 14px; }
+  .prose table.asr-table td[data-label]:not(:first-child)::before { content: attr(data-label) "："; color: var(--muted); font-weight: 400; }
+  html[data-lang="en"] .prose table.asr-table td[data-label]:not(:first-child)::before { content: attr(data-label) ": "; }
+}
 
 /* ===== BlackBear-ASR post: flow motion graphic, live-caption replay, hotword toggle, embedded demo ===== */
 .asr-flow { padding: 1.2rem; border: 2px solid var(--line-strong); border-radius: 4px; background: var(--paper-light); }
@@ -2878,8 +2907,18 @@ html.js .pj[data-route="research"] .pj-card.is-compact .pj-route-research { disp
 .asr-toggle__out.is-swap { animation: asr-swap .35s ease-out; }
 @keyframes asr-swap { from { opacity: .2; transform: translateY(4px); } }
 
+.asr-try__frame { position: relative; }
 .asr-try iframe { display: block; width: 100%; height: 760px; border: 2px solid var(--line-strong); border-radius: 4px; background: var(--surface); }
 @media (max-width: 640px) { .asr-try iframe { height: 900px; } }
+.asr-try__loading { position: absolute; inset: 2px; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: .6rem; padding: 4.5rem 1.4rem 1.4rem; border-radius: 2px; background: var(--surface); color: var(--paper-ink); text-align: center; transition: opacity .3s; }
+.asr-try__loading p { max-width: 26em; margin: 0; line-height: 1.6; }
+.asr-try__msg { font-weight: 700; }
+.asr-try__slow { display: none; color: var(--muted); font-size: 15px; }
+.asr-try.is-slow .asr-try__slow { display: block; }
+.asr-try.is-loaded .asr-try__loading { opacity: 0; pointer-events: none; }
+.asr-try__spinner { width: 34px; height: 34px; border: 3px solid var(--line); border-top-color: var(--red); border-radius: 50%; animation: asr-spin .9s linear infinite; }
+@keyframes asr-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .asr-try__spinner { animation-duration: 2.4s; } }
 
 @media (prefers-reduced-motion: reduce) {
   .asr-flow__bars span, .asr-flow__chunks span, .asr-flow__notes span, .asr-flow__arrow span::after, .asr-flow__text.is-typing::after, .asr-toggle__out.is-swap { animation: none; }
