@@ -70,9 +70,11 @@
       "image": {
         "@type": "ImageObject",
         "url": {{ include.page_image | jsonify }},
-        "width": 1200,
-        "height": 630
-      },
+        "width": {{ page.og_image_width | default: 1200 }},
+        "height": {{ page.og_image_height | default: 630 }}
+      },{% if page.seo_video %}
+      "video": { "@id": {{ include.page_url | append: '#video' | jsonify }} },{% endif %}{% if page.seo_software %}
+      "about": { "@id": {{ include.page_url | append: '#software' | jsonify }} },{% endif %}
       "inLanguage": ["zh-Hant-TW", "en"],
       "author": { "@id": {{ org_id | jsonify }} },
       "publisher": { "@id": {{ org_id | jsonify }} },
@@ -81,7 +83,36 @@
       "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
       "articleSection": {{ page.category | default: 'research' | jsonify }}{% if page.tags %},
       "keywords": {{ page.tags | join: ', ' | jsonify }}{% endif %}
-    }{% elsif include.page_key == 'blog' %}{
+    }{% if page.seo_video %},
+    {%- assign v = page.seo_video -%}
+    {
+      "@type": "VideoObject",
+      "@id": {{ include.page_url | append: '#video' | jsonify }},
+      "name": {{ v.name | default: page.zh_title | default: page.title | strip | jsonify }},
+      "description": {{ v.description | default: include.seo_description | strip | jsonify }},
+      "thumbnailUrl": {{ v.thumbnail | default: page.og_image | default: '/assets/img/openformosa-og.png' | absolute_url | jsonify }},
+      "contentUrl": {{ v.url | absolute_url | jsonify }},
+      "uploadDate": {{ v.upload_date | default: page.date | date_to_xmlschema | jsonify }}{% if v.duration %},
+      "duration": {{ v.duration | jsonify }}{% endif %},
+      "inLanguage": "zh-Hant-TW",
+      "publisher": { "@id": {{ org_id | jsonify }} }
+    }{% endif %}{% if page.seo_software %},
+    {%- assign sw = page.seo_software -%}
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": {{ include.page_url | append: '#software' | jsonify }},
+      "name": {{ sw.name | jsonify }},
+      "description": {{ sw.description | default: include.seo_description | strip | jsonify }},
+      "url": {{ sw.model_url | default: sw.code_repository | jsonify }}{% if sw.code_repository %},
+      "codeRepository": {{ sw.code_repository | jsonify }}{% endif %}{% if sw.programming_language %},
+      "programmingLanguage": {{ sw.programming_language | jsonify }}{% endif %},
+      "license": {{ sw.license | default: 'https://www.apache.org/licenses/LICENSE-2.0' | jsonify }},
+      "isAccessibleForFree": true,
+      "author": { "@id": {{ org_id | jsonify }} },
+      "publisher": { "@id": {{ org_id | jsonify }} },
+      "subjectOf": { "@id": {{ include.page_url | append: '#article' | jsonify }} }{% if sw.same_as %},
+      "sameAs": {{ sw.same_as | jsonify }}{% endif %}
+    }{% endif %}{% elsif include.page_key == 'blog' %}{
       "@type": "CollectionPage",
       "@id": {{ include.page_url | append: '#webpage' | jsonify }},
       "name": {{ include.seo_title | strip | jsonify }},

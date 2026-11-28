@@ -20,8 +20,8 @@ layout: null
       {% endif %}
   <url>
     <loc>{{ page.url | absolute_url | xml_escape }}</loc>
-    <lastmod>{{ page.last_modified_at | default: site.time | date_to_xmlschema }}</lastmod>
-    <changefreq>{{ freq }}</changefreq>
+    {% if page.last_modified_at %}<lastmod>{{ page.last_modified_at | date_to_xmlschema }}</lastmod>
+    {% endif %}    <changefreq>{{ freq }}</changefreq>
     <priority>{{ priority }}</priority>
     <image:image>
       <image:loc>{{ page.og_image | default: '/assets/img/openformosa-og.png' | absolute_url | xml_escape }}</image:loc>

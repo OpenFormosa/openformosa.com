@@ -1,5 +1,5 @@
 title: OpenFormosa
-description: 台灣取向模型訓練與評測工作站，先做 OpenFormosa-Base，再接 ASR、TTS、OCR 和台灣在地 benchmark。
+description: OpenFormosa（開放福爾摩沙）是大家一起打造的台灣開源 AI：繁體中文語言模型、語音辨識、語音合成、文字辨識與台灣在地評測。
 baseurl: ""
 url: ""
 lang: zh-Hant
@@ -18,6 +18,8 @@ kramdown:
   hard_wrap: false
   syntax_highlighter: rouge
 exclude:
+  - AGENTS.md
+  - SITE_COPY_AND_DESIGN_DECISIONS.md
   - README.md
   - README.en.md
   - docs

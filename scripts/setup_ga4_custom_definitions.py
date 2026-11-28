@@ -3,7 +3,7 @@
 OpenFormosa — GA4 v2.1 Custom Definitions, Key Events & Data Retention Auto Setup Script
 
 Automatically configures Google Analytics 4 (GA4) via the Google Analytics Admin API (v1beta):
-  1. Event-scoped Custom Dimensions (45 items / 50 standard GA4 limit)
+  1. Event-scoped Custom Dimensions (46 items / 50 standard GA4 limit)
   2. User-scoped Custom Dimensions (16 items / 25 standard GA4 limit)
   3. Custom Metrics (15 items / 50 standard GA4 limit)
   4. Key Events / Conversions (7 positive-intent items / 30 standard GA4 limit)
@@ -24,7 +24,7 @@ import os
 import re
 import sys
 
-# Event-scoped Custom Dimensions (45 / 50 GA4 standard quota)
+# Event-scoped Custom Dimensions (46 / 50 GA4 standard quota)
 EVENT_CUSTOM_DIMENSIONS = [
     # --- Core Page, Language & Outbound ---
     {"parameterName": "page_key", "displayName": "頁面標識", "description": "首頁、模型頁、進度表、文章 slug 等", "scope": "EVENT"},
@@ -32,7 +32,8 @@ EVENT_CUSTOM_DIMENSIONS = [
     {"parameterName": "content_language", "displayName": "內容語系", "description": "zh-Hant 或 en", "scope": "EVENT"},
     {"parameterName": "outbound_category", "displayName": "出站類別", "description": "huggingface_model, huggingface_demo, github_repo, discord_community 等", "scope": "EVENT"},
     {"parameterName": "target_asset", "displayName": "目標資產", "description": "模型、Demo、儲存庫、音檔或卡片識別（如 Barbet, BlueMagpie-TTS-Demo）", "scope": "EVENT"},
-    {"parameterName": "model_name", "displayName": "模型名稱", "description": "正規化之家族模型名（Barbet, BlueMagpie-TTS, PangolinTokenizer 等）", "scope": "EVENT"},
+    {"parameterName": "model_name", "displayName": "模型名稱", "description": "正規化之家族模型名（Barbet, BlueMagpie-TTS, PangolinTokenizer, BlackBear-ASR 等）", "scope": "EVENT"},
+    {"parameterName": "video_percent", "displayName": "影片觀看進度", "description": "video_start / video_progress / video_complete 的百分比（0/10/25/50/75/90/100）", "scope": "EVENT"},
     {"parameterName": "model_status", "displayName": "模型釋出狀態", "description": "shipped, in_progress, planned（統計規劃中模型的未滿足需求）", "scope": "EVENT"},
     {"parameterName": "interest_type", "displayName": "模型興趣類型", "description": "demo_try, weights_view, internal_link_click, card_click", "scope": "EVENT"},
     {"parameterName": "source_section", "displayName": "轉換來源區塊", "description": "觸發外部連結、CTA 或程式碼複製的頁面區塊", "scope": "EVENT"},

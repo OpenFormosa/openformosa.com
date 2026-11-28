@@ -114,7 +114,7 @@
     Barbet: "shipped",
     "BlueMagpie-TTS": "shipped",
     PangolinTokenizer: "shipped",
-    "BlackBear-ASR": "planned",
+    "BlackBear-ASR": "shipped",
     "SikaDeer-OCR": "planned",
     "Multimodal-Adapters": "in_progress"
   };
@@ -486,7 +486,7 @@
   });
 
   function isAnyAudioPlaying() {
-    const audios = document.querySelectorAll("audio");
+    const audios = document.querySelectorAll("audio, video");
     for (let i = 0; i < audios.length; i += 1) {
       if (!audios[i].paused && !audios[i].ended) return true;
     }
@@ -1352,6 +1352,10 @@
     return file.replace(/\.[a-z0-9]+$/i, "") || "unknown";
   }
 
+  // The audio demo cards are shared by every model post (TTS, ASR, ...).
+  // Attribute events to the page's model, not always BlueMagpie-TTS.
+  const DEMO_MODEL = (body && body.dataset && body.dataset.modelName) || canonicalModelName(PAGE_KEY) || "BlueMagpie-TTS";
+
   if (document.querySelector("[data-tts-card]")) {
     const isTtsAudio = (el) => el && el.matches && el.matches("[data-tts-audio]");
     const clipPlayCounts = {};
@@ -1369,12 +1373,12 @@
       clipPlayCounts[cid] = (clipPlayCounts[cid] || 0) + 1;
       audio.dataset.gaProgress = "";
       recordFirstAction("audio_play");
-      recordIntent({ persona: "speech_creator", weight: 2, model: "BlueMagpie-TTS", modelWeight: 2, engagement: 2 });
+      recordIntent({ persona: "speech_creator", weight: 2, model: DEMO_MODEL, modelWeight: 2, engagement: 2 });
       track("audio_start", {
         item_id: cid,
         target_asset: cid,
         post_slug: PAGE_KEY,
-        model_name: "BlueMagpie-TTS",
+        model_name: DEMO_MODEL,
         demo_title: demoTitle(audio),
         play_count: clipPlayCounts[cid]
       });
@@ -1393,7 +1397,7 @@
             item_id: cid,
             target_asset: cid,
             post_slug: PAGE_KEY,
-            model_name: "BlueMagpie-TTS",
+            model_name: DEMO_MODEL,
             percent_played: mark
           });
         }
@@ -1411,7 +1415,7 @@
         item_id: cid,
         target_asset: cid,
         post_slug: PAGE_KEY,
-        model_name: "BlueMagpie-TTS",
+        model_name: DEMO_MODEL,
         listen_seconds: listened
       });
     }, true);
@@ -1421,12 +1425,12 @@
       if (!isTtsAudio(audio)) return;
       const cid = clipId(audio);
       const dur = audio.duration ? Math.round(audio.duration) : undefined;
-      recordIntent({ persona: "speech_creator", weight: 2, model: "BlueMagpie-TTS", modelWeight: 2, engagement: 2 });
+      recordIntent({ persona: "speech_creator", weight: 2, model: DEMO_MODEL, modelWeight: 2, engagement: 2 });
       track("audio_complete", {
         item_id: cid,
         target_asset: cid,
         post_slug: PAGE_KEY,
-        model_name: "BlueMagpie-TTS",
+        model_name: DEMO_MODEL,
         listen_seconds: dur
       });
     }, true);
@@ -1438,7 +1442,7 @@
         friction_type: "audio_error",
         target_element: `audio:${clipId(audio)}`,
         section_name: "tts_listening_demo",
-        model_name: "BlueMagpie-TTS"
+        model_name: DEMO_MODEL
       });
     }, true);
 
@@ -1450,15 +1454,166 @@
         const badge = card && card.querySelector(".tts-card__badge");
         const cid = audio ? clipId(audio) : undefined;
         recordFirstAction("reveal_transcript");
-        recordIntent({ persona: "researcher", weight: 2, model: "BlueMagpie-TTS", modelWeight: 1, engagement: 2 });
+        recordIntent({ persona: "researcher", weight: 2, model: DEMO_MODEL, modelWeight: 1, engagement: 2 });
         track("reveal_transcript", {
           item_id: cid,
           target_asset: cid,
           post_slug: PAGE_KEY,
-          model_name: "BlueMagpie-TTS",
+          model_name: DEMO_MODEL,
           asr_status: badge ? (badge.classList.contains("is-warn") ? "mismatch" : "match") : undefined
         });
       });
+    });
+  }
+
+  // ==========================================
+  // ==========================================
+  // 11b. HTML5 Video Telemetry (GA4 enhanced measurement only covers YouTube embeds)
+  // Uses GA4's recommended video_start / video_progress / video_complete names so
+  // the events land in the built-in video reports.
+  // ==========================================
+  if (document.querySelector("video")) {
+    const videoTitle = (video) => {
+      const fig = video.closest("figure");
+      const cap = fig && fig.querySelector("figcaption");
+      const label = video.getAttribute("aria-label") || video.getAttribute("title") || (cap && cap.textContent) || "";
+      return sanitizeText(label, 100) || clipId(video);
+    };
+    const videoParams = (video, extra) => Object.assign({
+      video_provider: "self_hosted",
+      video_title: videoTitle(video),
+      video_url: (video.currentSrc || video.src || "").split("?")[0],
+      video_duration: video.duration ? Math.round(video.duration) : undefined,
+      video_current_time: Math.round(video.currentTime || 0),
+      item_id: clipId(video),
+      post_slug: PAGE_KEY,
+      model_name: DEMO_MODEL
+    }, extra || {});
+
+    document.addEventListener("play", (event) => {
+      const video = event.target;
+      if (!video || video.tagName !== "VIDEO") return;
+      if (video.dataset.gaStarted === "1") return;
+      video.dataset.gaStarted = "1";
+      video.dataset.gaProgress = "";
+      recordFirstAction("video_play");
+      recordIntent({ persona: "speech_creator", weight: 2, model: DEMO_MODEL, modelWeight: 2, engagement: 3 });
+      track("video_start", videoParams(video, { video_percent: 0 }));
+    }, true);
+
+    document.addEventListener("timeupdate", (event) => {
+      const video = event.target;
+      if (!video || video.tagName !== "VIDEO" || !video.duration) return;
+      const percent = (video.currentTime / video.duration) * 100;
+      const sent = video.dataset.gaProgress ? video.dataset.gaProgress.split(",") : [];
+      [10, 25, 50, 75, 90].forEach((mark) => {
+        if (percent >= mark && sent.indexOf(String(mark)) === -1) {
+          sent.push(String(mark));
+          track("video_progress", videoParams(video, { video_percent: mark }));
+        }
+      });
+      video.dataset.gaProgress = sent.join(",");
+    }, true);
+
+    document.addEventListener("ended", (event) => {
+      const video = event.target;
+      if (!video || video.tagName !== "VIDEO") return;
+      recordIntent({ persona: "speech_creator", weight: 2, model: DEMO_MODEL, modelWeight: 2, engagement: 3 });
+      track("video_complete", videoParams(video, { video_percent: 100 }));
+      video.dataset.gaStarted = "";
+    }, true);
+
+    document.addEventListener("error", (event) => {
+      const video = event.target;
+      if (!video || video.tagName !== "VIDEO") return;
+      track("ux_friction", {
+        friction_type: "video_error",
+        target_element: `video:${clipId(video)}`,
+        model_name: DEMO_MODEL
+      });
+    }, true);
+  }
+
+  // ==========================================
+  // 11c. Interactive Demo Widgets (release posts: instruction flow, hotword
+  // toggle, streaming replay, listening cards). Reuses existing dimensions:
+  // section_name = widget, action_name = what the reader did,
+  // selected_state = option chosen, target_asset = audio clip.
+  // ==========================================
+  const DEMO_WIDGETS = [
+    ["[data-asr-flow]", "asr_instruction_flow"],
+    ["[data-asr-toggle]", "asr_hotword_toggle"],
+    ["[data-asr-replay]", "asr_streaming_replay"],
+    ["[data-asr-stream]", "asr_streaming_diagram"],
+    ["[data-tts-demo]", "listening_cards"]
+  ];
+  function demoWidgetOf(el) {
+    for (let i = 0; i < DEMO_WIDGETS.length; i += 1) {
+      const host = el && el.closest ? el.closest(DEMO_WIDGETS[i][0]) : null;
+      if (host) return { host, name: DEMO_WIDGETS[i][1] };
+    }
+    return null;
+  }
+  function demoInteraction(widget, action, extra) {
+    recordFirstAction(`demo_${action}`);
+    recordIntent({ model: DEMO_MODEL, modelWeight: 1, engagement: 2 });
+    track("demo_interaction", Object.assign({
+      section_name: widget,
+      action_name: action,
+      model_name: DEMO_MODEL,
+      post_slug: PAGE_KEY
+    }, extra || {}));
+  }
+
+  if (DEMO_WIDGETS.some((w) => document.querySelector(w[0]))) {
+    // Which demos readers actually reach: half visible, once per widget per page view.
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const w = demoWidgetOf(entry.target);
+          io.unobserve(entry.target);
+          if (!w) return;
+          track("demo_widget_view", { section_name: w.name, model_name: DEMO_MODEL, post_slug: PAGE_KEY });
+        });
+      }, { threshold: 0.5 });
+      DEMO_WIDGETS.forEach((w) => document.querySelectorAll(w[0]).forEach((el) => io.observe(el)));
+    }
+
+    document.addEventListener("click", (event) => {
+      const target = event.target && event.target.closest ? event.target.closest("button, [role='tab']") : null;
+      if (!target) return;
+      const w = demoWidgetOf(target);
+      if (!w || w.name === "listening_cards") return; // cards are tracked in section 11
+      if (target.matches("[data-v]")) {
+        demoInteraction(w.name, "toggle_option", { selected_state: target.dataset.v === "1" ? "with_hotwords" : "without_hotwords" });
+      } else if (target.matches("[data-clip][role='tab']")) {
+        demoInteraction(w.name, "select_clip", { target_asset: target.dataset.clip });
+      } else if (target.matches("[data-replay-play], [data-toggle-play]")) {
+        const tab = w.host.querySelector("[role='tab'][aria-selected='true']");
+        const audio = w.host.querySelector("audio");
+        const clip = tab ? tab.dataset.clip : (audio ? (audio.dataset.clip || clipId(audio)) : undefined);
+        demoInteraction(w.name, "play_pause", { target_asset: clip });
+      }
+    }, true);
+
+    // Audio inside widgets (the [data-tts-audio] cards are tracked in section 11)
+    ["play", "ended"].forEach((type) => {
+      document.addEventListener(type, (event) => {
+        const audio = event.target;
+        if (!audio || audio.tagName !== "AUDIO" || audio.matches("[data-tts-audio]")) return;
+        const w = demoWidgetOf(audio);
+        if (!w) return;
+        const clip = audio.dataset.clip || clipId(audio);
+        track(type === "play" ? "audio_start" : "audio_complete", {
+          item_id: clip,
+          target_asset: clip,
+          section_name: w.name,
+          post_slug: PAGE_KEY,
+          model_name: DEMO_MODEL,
+          listen_seconds: type === "ended" && audio.duration ? Math.round(audio.duration) : undefined
+        });
+      }, true);
     });
   }
 
