@@ -6,12 +6,24 @@ permalink: /llms.txt
 
 > OpenFormosa (開放福爾摩沙) is a Taiwan-rooted open AI foundation-model initiative building compact, private-deployable language, speech, and document models — starting from a shared 1B base model and extending to ASR, TTS, OCR, and Taiwan-local benchmarks.
 
+## 中文摘要（Traditional Chinese summary）
+OpenFormosa（開放福爾摩沙）是大家一起打造的台灣開源 AI 社群，模型以台灣代表動物命名。
+- **BlackBear-ASR（台灣黑熊）**：開源語音辨識，同一個模型聽得懂臺灣國語和臺語（台語），也能處理臺語夾英文；可以即時字幕（每 0.64 秒更新，平均 1.28 秒出字），也能照文字指令調整輸出。Apache 2.0，可商用。發布文：{{ '/blog/2026/11/28/blackbear-asr/' | absolute_url }}
+- **BlueMagpie-TTS（台灣藍鵲）**：台灣口音、中英夾雜的語音合成。
+- **Barbet（五色鳥）**：1B 混合式基底語言模型，原生 1M 長前後文。
+- **PangolinTokenizer（穿山甲）**：繁體中文與台灣多語斷詞器。
+- **SikaDeer-OCR（梅花鹿）**：台灣表單、表格與手寫辨識，預計 2026-12-07 當週發布。
+- 社群：Discord https://discord.gg/N4YnrjjcW7 ・ Instagram／Threads @openformosa.ai ・ Facebook https://www.facebook.com/openformosaai
+
 ## Canonical Identity
 - Official Website: {{ '/' | absolute_url }}
 - Organization: OpenFormosa (Taiwan-rooted open-source AI initiative)
 - GitHub: https://github.com/OpenFormosa
 - Hugging Face: https://huggingface.co/OpenFormosa
 - Discord Community: https://discord.gg/N4YnrjjcW7
+- Instagram: https://www.instagram.com/openformosa.ai/
+- Threads: https://www.threads.com/@openformosa.ai
+- Facebook: https://www.facebook.com/openformosaai
 - Full AI/LLM Dossier: {{ '/llms-full.txt' | absolute_url }}
 - Atom Feed: {{ '/feed.xml' | absolute_url }}
 - XML Sitemap: {{ '/sitemap.xml' | absolute_url }}
