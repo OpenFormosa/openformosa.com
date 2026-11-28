@@ -2886,3 +2886,10 @@ html.js .pj[data-route="research"] .pj-card.is-compact .pj-route-research { disp
   .asr-flow__notes span { opacity: 1; }
 }
 .asr-replay.is-playing .tts-card__icon, .asr-toggle.is-playing .tts-card__icon { width: 12px; height: 13px; margin-left: 0; border: 0; border-left: 4px solid currentColor; border-right: 4px solid currentColor; }
+
+/* Home: release announcement link */
+.home-news { display: flex; align-items: center; gap: .7rem; justify-self: center; width: 100%; max-width: 860px; margin: 0 0 .9rem; padding: .7rem 1rem; border: 2px solid var(--line-strong); border-left: 10px solid var(--blackbear, var(--red)); border-radius: 4px; background: var(--surface); color: var(--paper-ink); font-weight: 700; text-decoration: none; }
+.home-news:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--shadow); }
+.home-news__tag { flex: none; padding: .15rem .5rem; border-radius: 3px; background: var(--red); color: #fff; font-size: 13px; letter-spacing: .05em; }
+.home-news__text { flex: 1; min-width: 0; line-height: 1.5; }
+.home-news__go { flex: none; color: var(--red); font-size: 1.2rem; }

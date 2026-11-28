@@ -627,6 +627,8 @@ const OpenFormosaZh = {
   status_done: "已完成",
   status_read_log: "看開發紀錄 →",
   status_read_post: "看發布文 →",
+  home_news_tag: "新發布",
+  home_news_text: "BlackBear-ASR 上線：一個開源模型，聽懂國語，也聽懂臺語，還能即時出字。",
   status_live_demo_asr: "線上試用",
   status_see_roadmap: "看開發進度 →",
   status_live_demo: "線上試聽",
