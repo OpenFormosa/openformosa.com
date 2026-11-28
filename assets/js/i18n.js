@@ -613,6 +613,12 @@ const OpenFormosaZh = {
   post_bluemagpie_title: "BlueMagpie-TTS",
   post_bluemagpie_desc: "臺灣口音、中英混合的開源語音合成模型——保留 VoxCPM 聲學架構，換上 Barbet 文字語意模型，自然處理語碼轉換與在地腔調。",
 
+  /* ===== Blog post: BlackBear-ASR ===== */
+  title_blackbear_asr: "BlackBear-ASR：一個模型，聽懂國語，也聽懂臺語 · OpenFormosa",
+  desc_blackbear_asr: "BlackBear-ASR 是 OpenFormosa 社群的開源語音辨識模型：國語、臺語都聽得懂，可以一邊聽一邊出字，也能照文字指示調整輸出。",
+  post_blackbear_asr_title: "BlackBear-ASR",
+  post_blackbear_asr_desc: "一個模型，聽懂國語，也聽懂臺語。一邊聽一邊出字，也能照文字指示調整輸出。",
+
   /* ===== Project status system ===== */
   status_shipped: "已釋出",
   status_progress: "研發中",

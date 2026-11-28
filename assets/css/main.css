@@ -2743,3 +2743,78 @@ html.js .pj[data-route="research"] .pj-card.is-compact .pj-route-research { disp
 }
 .pj-home-link { margin: 1rem 0 0; font-weight: 800; }
 .pj-home-link a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ===== BlackBear-ASR post: video, streaming caption illustration, animated bars ===== */
+.asr-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--code-bg);
+}
+
+.asr-stream__line {
+  margin: 0;
+  min-height: 3.4em;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 3.6vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.asr-stream__c { color: var(--paper-ink); }
+.asr-stream__p { color: var(--muted); opacity: .7; }
+
+.asr-stream__ticks {
+  display: flex;
+  gap: 4px;
+  margin-top: 1rem;
+}
+
+.asr-stream__ticks span {
+  flex: 1;
+  height: 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  transition: background .2s;
+}
+
+.asr-stream__ticks span.is-done { background: var(--table-heading-bg); }
+.asr-stream__ticks span.is-now { background: var(--red); border-color: var(--red); }
+
+.asr-stream__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.2rem;
+  margin: .8rem 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.asr-stream__legend span::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+
+.asr-stream__legend .is-c::before { background: var(--paper-ink); }
+.asr-stream__legend .is-p::before { background: var(--muted); opacity: .6; }
+
+.asr-bars .asr-bar { transform-box: fill-box; transform-origin: left center; }
+.asr-bars.is-playing .asr-bar { animation: asr-grow .9s cubic-bezier(.2, .7, .2, 1) both; }
+
+@keyframes asr-grow { from { transform: scaleX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .asr-bars.is-playing .asr-bar { animation: none; }
+  .asr-stream__ticks span { transition: none; }
+}
+
+.post-figure:has(.asr-bars) { overflow-x: auto; }
+.post-figure .asr-bars { min-width: 560px; }
