@@ -50,9 +50,13 @@
     <meta property="og:description" content="{{ seo_description | strip | escape }}">
     <meta property="og:url" content="{{ page_url | escape }}">
     <meta property="og:image" content="{{ page_image | escape }}">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="{{ page.og_image_type | default: 'image/png' }}">
+    <meta property="og:image:width" content="{{ page.og_image_width | default: 1200 }}">
+    <meta property="og:image:height" content="{{ page.og_image_height | default: 630 }}">
+    {% if page.seo_video %}<meta property="og:video" content="{{ page.seo_video.url | absolute_url | escape }}">
+    <meta property="og:video:secure_url" content="{{ page.seo_video.url | absolute_url | escape }}">
+    <meta property="og:video:type" content="video/mp4">
+    {% endif %}
     <meta property="og:image:alt" content="{{ page_image_alt | escape }}">
     {% if page.layout == 'post' %}
     <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
@@ -93,7 +97,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/i18n.css?v=brand33' | relative_url }}">
     {% include seo-jsonld.html page_key=page_key page_type=page_type page_url=page_url page_image=page_image seo_title=seo_title seo_description=seo_description %}
   </head>
-  <body class="{{ page.body_class | default: '' }}" data-page-key="{{ page_key }}" data-page-type="{{ page_type }}" data-en-title="{{ en_page_title | strip | escape }}" data-en-description="{{ en_page_description | strip | escape }}">
+  <body class="{{ page.body_class | default: '' }}" data-page-key="{{ page_key }}" data-page-type="{{ page_type }}"{% if page.model_name %} data-model-name="{{ page.model_name | escape }}"{% endif %} data-en-title="{{ en_page_title | strip | escape }}" data-en-description="{{ en_page_description | strip | escape }}">
     {% include header.html %}
     <main id="main" tabindex="-1">
       {{ content }}

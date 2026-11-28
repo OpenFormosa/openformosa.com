@@ -24,7 +24,7 @@ OpenFormosa 是一個非法人的開源社群專案（下稱「我們」）。�
 
 | 情境 | 資料 | 目的 | 保存 |
 | --- | --- | --- | --- |
-| 瀏覽網站 | Google Analytics 4（GA4）蒐集的瀏覽紀錄、裝置與瀏覽器資訊、概略地區、來源網站、Cookie 識別碼 | 了解網站使用情形、改善內容 | 依 GA4 資料保存設定：最後一次造訪後 14 個月 |
+| 瀏覽網站 | Google Analytics 4（GA4）蒐集的瀏覽紀錄、頁面上的互動（例如播放影片或音檔、點選連結）、裝置與瀏覽器資訊、概略地區、來源網站、Cookie 識別碼 | 了解網站使用情形、改善內容 | 依 GA4 資料保存設定：最後一次造訪後 14 個月 |
 | 需求調查表 | 你選擇的選項，以及最多 100 字的備註。送出前會自動移除 email、電話、身分證字號與長串數字 | 決定模型與評測的優先順序 | 同上 |
 | 你的瀏覽器 | `localStorage` 與 `sessionStorage` 中以 `openformosa_` 開頭的偏好與互動紀錄（語言、主題、調查答案） | 記住你的設定，避免重複詢問 | 存在你的裝置上，可隨時清除 |
 | 寫信給我們 | 你的 email 地址與信件內容 | 回覆你的問題 | 處理完成後最長 2 年 |
@@ -79,7 +79,7 @@ OpenFormosa is an unincorporated open-source community project ("we"). Contact: 
 
 | Context | Data | Purpose | Retention |
 | --- | --- | --- | --- |
-| Browsing the site | Google Analytics 4 (GA4) page views, device and browser data, approximate region, referrer, cookie identifiers | Understand site use and improve content | Per GA4 retention settings: 14 months after your last visit |
+| Browsing the site | Google Analytics 4 (GA4) page views, on-page interactions (such as playing a video or audio clip, or clicking a link), device and browser data, approximate region, referrer, cookie identifiers | Understand site use and improve content | Per GA4 retention settings: 14 months after your last visit |
 | Demand survey | Your selected options and an optional note of up to 100 characters. Emails, phone numbers, ID numbers, and long digit strings are removed before sending | Prioritize models and evaluations | Same as above |
 | Your browser | `localStorage` and `sessionStorage` entries prefixed `openformosa_` (language, theme, survey answers, interaction state) | Remember your settings | Stored on your device; you can clear them at any time |
 | Email to us | Your address and message | Reply to you | Up to 2 years after the matter is closed |
