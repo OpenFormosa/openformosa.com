@@ -7,6 +7,7 @@ description: "OpenFormosa is an open family of AI foundation models for Taiwan's
 zh_description: OpenFormosa（開放福爾摩沙）是以台灣為根的開源 AI 基礎模型家族，涵蓋已釋出的 Barbet 1B 混合式基底模型（1M 長文）、BlueMagpie-TTS 台灣口音中英混合語音合成、PangolinTokenizer 繁中斷詞器、BlackBear-ASR 國語與臺語語音辨識，以及規劃中的 SikaDeer-OCR。
 keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, BlackBear-ASR, 臺語語音辨識, SikaDeer-OCR, 繁體中文 OCR, 繁體中文語言模型, Barbet 1B, BlueMagpie-TTS, PangolinTokenizer, 台灣口音 TTS, 中英夾雜語音合成, 台灣 ASR, 台灣 OCR, TAIDE-14
 ---
+{% assign blackbear_post = site.posts | where: "i18n_key", "blackbear_asr" | first %}
 <section class="hero section-pad">
   <div class="hero-main">
     <div class="hero-copy">
@@ -21,6 +22,11 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, BlackBear-ASR, 臺�
       </picture>
     </div>
   </div>
+  {% if blackbear_post %}<a class="home-news" href="{{ blackbear_post.url | relative_url }}">
+    <span class="home-news__tag" data-i18n="home_news_tag">New</span>
+    <span class="home-news__text" data-i18n="home_news_text">BlackBear-ASR is out: one open model that hears Taiwanese Mandarin and Taiwanese, with live captions.</span>
+    <span class="home-news__go" aria-hidden="true">→</span>
+  </a>{% endif %}
   <div class="hero-choices">
     <a class="hero-choice" href="https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo" target="_blank" rel="noopener">
       <strong data-i18n="home_metric_open_k">Try it</strong>

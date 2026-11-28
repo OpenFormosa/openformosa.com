@@ -161,25 +161,36 @@ projects:
   - id: blackbear
     name: "BlackBear-ASR"
     category: models
-    status: upcoming
+    status: shipped
     accent: blackbear
     crest: asr
     role: "ASR"
-    release: "2026-11-30"
+    repo: "https://github.com/OpenFormosa/blackbear-asr"
+    links:
+      - url: "https://huggingface.co/OpenFormosa/blackbear-asr"
+        zh: "Hugging Face 模型"
+        en: "Hugging Face model"
+      - url: "/blog/2026/11/28/blackbear-asr/"
+        zh: "發布文章"
+        en: "Release post"
+    try:
+      url: "https://huggingface.co/spaces/voidful/blackbear-asr-demo"
+      zh: "線上試用"
+      en: "Try the live demo"
     zh:
-      tagline: "語音辨識模型：把台灣華語、台語與中英混講的聲音，轉成文字。"
+      tagline: "語音辨識模型：把台灣華語、臺語與中英混講的聲音，轉成文字。"
       analogy: "BlueMagpie 負責「說」，BlackBear 負責「聽」。"
       public:
-        - "模型已訓練完成，正在檢查資料與模型，是下一個釋出的模型。釋出時會附上白話的使用報告、使用說明與 demo。"
+        - "已發布。可以上傳錄音轉成文字，也可以邊說邊出即時字幕，或直接對錄音內容提問。專有名詞可以事先提示。"
       research:
-        - "接在 Barbet 底座上的任務分支。技術細節會在釋出時與模型卡一起公開。"
+        - "640 毫秒為一塊的串流編碼器，接上 Barbet 1B 語言模型。權重採 Apache 2.0 授權，模型卡附使用方式與評測說明。"
     en:
       tagline: "Speech recognition that turns Taiwan Mandarin, Taigi, and mixed Chinese and English speech into text."
       analogy: "BlueMagpie speaks. BlackBear listens."
       public:
-        - "The model is trained, and data and model checks are under way. It is the next release and will ship with a plain-language usage report, a guide, and a demo."
+        - "Released. Transcribe a recording, get live captions while someone speaks, or ask questions about what was said. You can hint uncommon names and terms in advance."
       research:
-        - "A task branch on the Barbet base. Technical details will be published with the model card at release."
+        - "A streaming encoder with 640 ms chunks feeding the Barbet 1B language model. Weights are Apache 2.0; the model card covers usage and evaluation."
 
   - id: barbet_instruct
     name: "Barbet Instruct"

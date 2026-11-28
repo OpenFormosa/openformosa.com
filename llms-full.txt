@@ -31,7 +31,7 @@ Official Channels:
 | **PangolinTokenizer** | Formosan Pangolin (台灣穿山甲) | Tokenizer | **Shipped** | Byte-level BPE trained with UbiTok; **114,688 merges** (~1/3–1/2 the vocab of mainstream multilingual tokenizers); **0.485 tokens/char** overall #1 on PangolinBench (10 subsets), native speech transcript structure tokens. | [Hugging Face](https://huggingface.co/OpenFormosa/PangolinTokenizer) · [UbiTok](https://github.com/OpenFormosa/ubi_tokenizer) · [PangolinBench](https://github.com/OpenFormosa/PangolinBench) |
 | **Barbet 1B Base** | Taiwan Barbet (台灣五色鳥) | 1B Base LLM | **Shipped** | 1B hybrid decoder-only causal LM (4-layer cycle: Global Attention → Sliding-Window Attention → Sliding-Window Attention → Mamba); **native 1,048,576-token context** in the released `iter7008` weights (continued-pretrained from 64K to exact 1M sequences; legacy 256K and 1M-RoPE presets kept for reproduction); tied embeddings; June 256K release: **0.7488 bits/byte** (#1 among open 1B models on TAIDE-14, winning 10/14 tasks). Base research model (not an instruct chatbot). | [GitHub](https://github.com/OpenFormosa/Barbet) |
 | **BlueMagpie-TTS V1** | Taiwan Blue Magpie (台灣藍鵲) | TTS | **Shipped** | Taiwanese-accent & Chinese–English code-switching TTS. Keeps VoxCPM's pretrained acoustic stack and swaps in Barbet as the text-semantic LM. On an internal held-out set (ASR transcribe-back), **CER 7.44% / WER 8.57%** with speaker centroid vs. 11.45% / 14.83% for the reference baseline (**about 35% lower CER**). Next generation (V2) planned for the week of 2026-12-14. Includes authorized Prof. Hung-Yi Lee default speaker vector. | [Live Demo Space](https://huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo) |
-| **BlackBear-ASR** | Formosan Black Bear (台灣黑熊) | ASR | **In Progress** | Listener for Taiwan Mandarin, Taigi, and code-switching built on Barbet. Trained; data and model checks under way; release planned for the week of 2026-11-30. | [Projects]({{ '/projects/' | absolute_url }}) |
+| **BlackBear-ASR** | Formosan Black Bear (台灣黑熊) | ASR | **Shipped** | Listener for Taiwan Mandarin, Taigi, and code-switching built on Barbet 1B. Streaming encoder (640 ms chunks); file transcription, live captions, hotword hints, audio Q&A. Apache 2.0. | [Model](https://huggingface.co/OpenFormosa/blackbear-asr) · [Code](https://github.com/OpenFormosa/blackbear-asr) · [Demo](https://huggingface.co/spaces/voidful/blackbear-asr-demo) |
 | **SikaDeer-OCR** | Formosan Sika Deer (台灣梅花鹿) | OCR | **In Progress** | Document reading branch for Taiwan forms, tables, and handwriting, built on Barbet. Release planned for the week of 2026-12-07. | [Projects]({{ '/projects/' | absolute_url }}) |
 
 ---
@@ -49,7 +49,7 @@ Full page: {{ '/projects/' | absolute_url }}
 - **Phase 0 (Done)**: Benchmarks, evaluation workflow, model card, and training data sheet templates.
 - **Phase 1 (Done)**: Taiwan multilingual tokenizer & benchmark suite — **PangolinTokenizer shipped**.
 - **Phase 2 (Done)**: Shared Taiwan-rooted base model pretraining — **Barbet 1B Base shipped**.
-- **Phase 3 (In Progress)**: ASR / TTS / OCR task branches — **BlueMagpie-TTS shipped**; BlackBear-ASR and SikaDeer-OCR next.
+- **Phase 3 (In Progress)**: ASR / TTS / OCR task branches — **BlueMagpie-TTS and BlackBear-ASR shipped**; SikaDeer-OCR next.
 - **Phase 4 (Planned)**: Safety-reviewed model demos (generic Taiwan voice, OCR extraction, ASR correction after misuse/privacy/benchmark gates).
 - **Phase 5 (Planned)**: Enterprise private deployment, private fine-tuning, and on-premise evaluation without mixing customer data into the public base model.
 
@@ -62,7 +62,7 @@ OpenFormosa 是扎根台灣的開源 AI 基礎模型計畫，並非將海外大�
 OpenFormosa is a Taiwan-rooted open AI foundation-model initiative built end to end — custom tokenizer (PangolinTokenizer), compact 1B hybrid base model (Barbet 1B Base), local benchmarks, and multimodal speech/OCR branches — rather than a surface Traditional Chinese translation patch on top of foreign models.
 
 ### Q2: OpenFormosa 目前已經釋出哪些可以實際下載或試用的成果？ / What is shipped today vs. planned?
-目前已正式釋出三項成果：(1) **Barbet 1B Base**（權重、HuggingFace 轉換與完整技術報告，見 github.com/OpenFormosa/Barbet）；(2) **BlueMagpie-TTS**（支援台灣口音與中英夾雜的語音合成模型與線上 Demo，見 huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo）；(3) **PangolinTokenizer**（斷詞模型、UbiTok 訓練套件與 PangolinBench 評測組）。**BlackBear-ASR** 與 **SikaDeer-OCR** 目前為規劃中（Planned），尚未釋出權重。
+目前已正式釋出四項成果：(1) **Barbet 1B Base**（權重、HuggingFace 轉換與完整技術報告，見 github.com/OpenFormosa/Barbet）；(2) **BlueMagpie-TTS**（支援台灣口音與中英夾雜的語音合成模型與線上 Demo，見 huggingface.co/spaces/voidful/BlueMagpie-TTS-Demo）；(3) **PangolinTokenizer**（斷詞模型、UbiTok 訓練套件與 PangolinBench 評測組）。(4) **BlackBear-ASR**（台灣華語、臺語與中英夾雜的語音辨識模型，支援即時字幕，見 huggingface.co/OpenFormosa/blackbear-asr）。**SikaDeer-OCR** 目前準備中，尚未釋出權重。
 
 ### Q3: 台灣口音且支援中英夾雜的開源 TTS 推薦哪個模型？ / Which open-source TTS model handles Taiwanese accent and Chinese–English code-switching?
 OpenFormosa 開源的 **BlueMagpie-TTS** 專為台灣口音中文與中英夾雜設計，結合 VoxCPM 聲學堆疊與 Barbet 語言模型，V1 在內部保留測試集上的字元錯誤率為 7.44%，參考基準系統為 11.45%，約降低 35%，並提供 Hugging Face Space 線上即時試聽 Demo。
