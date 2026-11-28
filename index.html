@@ -46,6 +46,7 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, BlackBear-ASR, 臺�
   {% assign pangolin = site.posts | where: "i18n_key", "pangolin" | first %}
   {% assign barbet = site.posts | where: "i18n_key", "barbet" | first %}
   {% assign bluemagpie = site.posts | where: "i18n_key", "bluemagpie" | first %}
+  {% assign blackbear = site.posts | where: "i18n_key", "blackbear_asr" | first %}
   <div class="promise-grid status-route-grid">
     <div class="promise" style="--accent:var(--barbet)">
       <strong data-i18n="home_promise_remember">Remember Taiwan</strong>
@@ -114,11 +115,13 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, BlackBear-ASR, 臺�
       <div class="status-head">
         <span class="status-name">BlackBear-ASR</span>
         <span class="status-role">ASR</span>
-        <span class="status-badge is-progress" data-i18n="status_progress">In progress</span>
+        <span class="status-badge is-shipped" data-i18n="status_shipped">Shipped</span>
       </div>
-      <p class="status-what" data-i18n="home_status_blackbear">The ASR branch for Taiwan Mandarin, Taigi, mixed Chinese and English, meetings, and classroom audio. The model is trained, and data and model checks are under way before release, planned for the week of Nov 30.</p>
+      <p class="status-what" data-i18n="home_status_blackbear">One open speech recognizer for Taiwanese Mandarin and Taiwanese (written as Mandarin captions). It writes live captions as you speak, takes hotwords and draft transcripts, and answers questions about a recording. The weights, code and an online demo are live.</p>
       <div class="status-links">
-        <a href="{{ '/projects/' | relative_url }}#roadmap" data-i18n="status_see_roadmap">See the roadmap →</a>
+        {% if blackbear %}<a href="{{ blackbear.url | relative_url }}" data-i18n="status_read_post">Read the announcement →</a>{% endif %}
+        <a href="https://huggingface.co/spaces/voidful/blackbear-asr-demo" target="_blank" rel="noopener" data-i18n="status_live_demo_asr">Live demo</a>
+        <a href="https://github.com/OpenFormosa/blackbear-asr" target="_blank" rel="noopener">GitHub</a>
       </div>
     </li>
     <li class="status-item" style="--accent:var(--sikadeer)">
@@ -239,7 +242,7 @@ keywords: OpenFormosa, 開放福爾摩沙, 台灣開源 AI, BlackBear-ASR, 臺�
     </div>
     <div class="faq-card">
       <dt data-i18n="faq_q2">Which models are shipped today and which are still planned?</dt>
-      <dd data-i18n="faq_a2">Shipped today: Barbet 1B Base (weights &amp; reports on GitHub), BlueMagpie-TTS V1 (Taiwanese-accent code-switching TTS with a live Hugging Face demo), and PangolinTokenizer (weights, UbiTok, and PangolinBench). BlackBear-ASR is trained and planned for release the week of Nov 30, followed by SikaDeer-OCR the week of Dec 7.</dd>
+      <dd data-i18n="faq_a2">Shipped today: Barbet 1B Base (weights &amp; reports on GitHub), BlueMagpie-TTS V1 (Taiwanese-accent code-switching TTS with a live Hugging Face demo), PangolinTokenizer (weights, UbiTok, and PangolinBench), and BlackBear-ASR (speech recognition for Taiwanese Mandarin and Taiwanese, with weights, code and a live demo). SikaDeer-OCR follows the week of Dec 7.</dd>
     </div>
     <div class="faq-card">
       <dt data-i18n="faq_q3">How does BlueMagpie-TTS perform on Taiwanese accents and Chinese–English code-switching?</dt>
