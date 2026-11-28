@@ -192,7 +192,7 @@
           "name": "OpenFormosa 是什麼？與一般繁體中文微調模型有何不同？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "OpenFormosa（開放福爾摩沙）是以台灣為根的開源 AI 基礎模型家族計畫。不同於僅將海外模型做表層繁體中文翻譯或微調，OpenFormosa 從斷詞器（PangolinTokenizer）、1B 混合式基底語言模型（Barbet 1B Base）、評測基準到語音／文件分支皆端到端為台灣語境設計，涵蓋台灣華語、台語／客語口音、注音與台羅、中英夾雜、台灣制度用語與在地文件。"
+            "text": "OpenFormosa（開放福爾摩沙）是以台灣為根的開源 AI 基礎模型家族計畫。不同於僅將海外模型做表層繁體中文翻譯或微調，OpenFormosa 從斷詞器（PangolinTokenizer）、1B 混合式基底語言模型（Barbet 1B Base）、評測基準到語音／文件分支皆端對端為台灣語境設計，涵蓋台灣華語、台語／客語口音、注音與台羅、中英夾雜、台灣制度用語與在地文件。"
           }
         },
         {
@@ -213,23 +213,23 @@
         },
         {
           "@type": "Question",
-          "name": "PangolinTokenizer 為什麼比主流多語斷詞器更適合繁體中文與台灣文本？",
+          "name": "PangolinTokenizer 為什麼比主流多語斷詞器更適合繁體中文與台灣文字？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "PangolinTokenizer 僅使用 114,688 個 BPE 合併項（約為主流多語 tokenizer 的三分之一至一半詞彙量），卻在涵蓋 10 項台灣語境子集的 PangolinBench 上以 0.485 tokens/character 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣上下文視窗容納更多台灣真實內容。"
+            "text": "PangolinTokenizer 僅使用 114,688 個 BPE 合併項（約為主流多語 tokenizer 的三分之一至一半詞彙量），卻在涵蓋 10 項台灣語境子集的 PangolinBench 上以 0.485 tokens/character 取得整體最佳壓縮率，並原生支援語音逐字稿結構標記，讓同樣前後文視窗容納更多台灣真實內容。"
           }
         },
         {
           "@type": "Question",
-          "name": "Barbet 1B Base 的架構與長上下文能力是什麼？",
+          "name": "Barbet 1B Base 的架構與長前後文能力是什麼？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）搭配嵌入層權重綁定，具備 256K（262,144 tokens）原生上下文與 1M（1,048,576 tokens）RoPE 外推研究設定，在 TAIDE-14 評測上以 0.7488 bits/byte 位居同級公開 1B 模型第一。"
+            "text": "Barbet 1B Base 採用四層一循環的混合式解碼器架構（全域注意力 → 滑動視窗注意力 → 滑動視窗注意力 → Mamba 序列混合器）搭配嵌入層權重綁定，具備 256K（262,144 tokens）原生前後文與 1M（1,048,576 tokens）RoPE 外推研究設定，在 TAIDE-14 評測上以 0.7488 bits/byte 位居同級公開 1B 模型第一。"
           }
         },
         {
           "@type": "Question",
-          "name": "OpenFormosa 模型可以本機離線運行或企業私有部署嗎？",
+          "name": "OpenFormosa 模型可以本機離線執行或企業私有部署嗎？",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "可以。OpenFormosa 聚焦緊湊可部署的 1B 級別骨幹，適合筆電、研究實驗室、播客創作者、在地文化場館與重視資料主權的企業／公部門私有隔離環境；路線圖 Phase 5 亦規劃企業私有微調與評測支援，確保客戶資料不混入公開基礎模型。"

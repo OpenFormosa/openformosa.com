@@ -16,7 +16,7 @@ tags: [tts, model, speech, bluemagpie]
 
 <div class="post-abstract" markdown="1">
 
-**摘要**　BlueMagpie-TTS 是一個支援臺灣口音中文與中英混合的文字轉語音（TTS）模型，由 OpenFormosa 開源。它的核心設計只有一句話：保留一套預訓練的聲學架構（取自 VoxCPM），並把原本的文字語意語言模型換成 Barbet。Barbet 負責決定「要說什麼」——文字語意、韻律規劃、節奏與重音；聲學架構負責生成聲音的細節。模型內附李宏毅老師的語者向量作為預設聲音，已取得本人授權。以 V1 正式 checkpoint 在內部保留測試集上評測，字元錯誤率（CER）為 7.44%，詞錯誤率（WER）為 8.57%，相對原本參考模型分別降低約 35.0% 與 42.2%。
+**摘要**　BlueMagpie-TTS 是一個支援臺灣口音中文與中英混合的文字轉語音（TTS）模型，由 OpenFormosa 開源。它的核心設計只有一句話：保留一套預先訓練的聲學架構（取自 VoxCPM），並把原本的文字語意語言模型換成 Barbet。Barbet 負責決定「要說什麼」——文字語意、韻律規劃、節奏與重音；聲學架構負責生成聲音的細節。模型內附李宏毅老師的語者向量作為預設聲音，已取得本人授權。以 V1 正式 checkpoint 在內部保留測試集上評測，字元錯誤率（CER）為 7.44%，詞錯誤率（WER）為 8.57%，相對原本參考模型分別降低約 35.0% 與 42.2%。
 
 這篇文章會先讓你直接聽，再完整說明它是什麼、怎麼組起來、怎麼用，還有哪些地方仍然會出錯。
 
@@ -24,7 +24,7 @@ tags: [tts, model, speech, bluemagpie]
 
 **本文重點**
 
-- **保留聲學、替換腦袋**——整套保留 VoxCPM 的預訓練聲學架構，只把「決定說什麼」的文字語意模型換成 Barbet，兩者用橋接模組接起來。
+- **保留聲學、替換腦袋**——整套保留 VoxCPM 的預先訓練聲學架構，只把「決定說什麼」的文字語意模型換成 Barbet，兩者用橋接模組接起來。
 - **為臺灣語境而生**——同時針對臺灣口音中文與中英夾雜（code-switching）兩個常被忽略的需求，讓一個模型自然處理在地腔調與語碼轉換。
 - **可聽可驗證**——以「TTS 合成 → Breeze-ASR-25 還原 → 逐字比對」這套流程評估品質；本文的互動示範讓你親耳聽、親眼看辨識結果。
 - **誠實的邊界**——它不是免審核的產品級系統，輸出仍可能出錯；參考音訊與語者向量都必須先取得授權，才能用於合成或散布。
@@ -153,7 +153,7 @@ BlueMagpie-TTS 走的是另一條路。它把一套已經訓練好、聲音品�
 <rect x="372" y="130" width="6" height="68" fill="var(--green)"/>
 <text x="450" y="156" text-anchor="middle" fill="var(--green)" font-size="14" font-weight="700">VoxCPM 聲學模組</text>
 <text x="450" y="174" text-anchor="middle" fill="var(--muted)" font-size="10">把規劃變成實際聲音</text>
-<text x="450" y="189" text-anchor="middle" fill="var(--muted)" font-size="10">預訓練、整段保留</text>
+<text x="450" y="189" text-anchor="middle" fill="var(--muted)" font-size="10">預先訓練、整段保留</text>
 <line x1="524" y1="164" x2="542" y2="164" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#m-arch-zh)"/>
 <rect x="544" y="130" width="166" height="68" rx="4" fill="var(--surface)" stroke="var(--line-strong)" stroke-width="2"/>
 <text x="627" y="156" text-anchor="middle" fill="var(--paper-ink)" font-size="14" font-weight="700">語音波形</text>

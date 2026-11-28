@@ -74,7 +74,7 @@ projects:
       try_note: "Barbet 是基礎模型，不能直接對話。想感受它的成果，最快的方式是聽 BlueMagpie-TTS。"
       research:
         - "約 1.119B 參數的 decoder-only causal LM。28 層，混合 global attention、8K sliding-window attention 與 Mamba 層，GQA（16 query heads、2 KV heads），詞嵌入與 LM head 共用權重，使用 PangolinTokenizer。"
-        - "Hugging Face 上的正式權重是 <code>iter7008</code>。它從 64K 逐步接續預訓練到 exact 1M sequences，原生 context 1,048,576，<code>rope_scaling</code> 為 null。這不是只靠 RoPE 外推。"
+        - "Hugging Face 上的正式權重是 <code>iter7008</code>。它從 64K 逐步接續預先訓練到 exact 1M sequences，原生 context 1,048,576，<code>rope_scaling</code> 為 null。這不是只靠 RoPE 外推。"
         - "長文評測：7 類遠距任務中有 6 類顯示，保留遠處的正確資料會提高正確答案的機率。多筆資料合併計算仍未通過。這是 base model 的機率評測，不代表生成作答的正確率。"
         - "6 月的 256K 版本在 TAIDE-14（140 筆，response_only）上為 0.7488 bits/byte。BPB 衡量文字建模，不衡量對話品質。"
         - "Repo 另保留原始 256K 與 1M RoPE 外推的 legacy presets，供舊版研究重現。"
@@ -139,7 +139,7 @@ projects:
         - "評測方式：合成語音用 ASR 轉寫回文字，再和原文比對。數字來自內部保留測試集，隨 checkpoint 發佈在 <code>release_metadata.json</code>。這是模型選擇用的評測，不是公開基準。"
         - "CER／WER：語者向量條件 7.44%／8.57%，參考音檔條件（免逐字稿）8.99%／11.77%，同一測試集上的參考基準系統 11.45%／14.83%。語者向量條件的 CER 相對降低約 35%。"
         - "長文逐段合成：語者向量 CER 7.51%，參考音檔 8.92%，語速約 4.0 字／秒。"
-        - "Apple Silicon 可用 MLX 原生推論。在 7.75GB 模型上端到端 RTF 0.77（fp32），比 torch-MPS 快約 1.45 倍，比 torch-CPU 快約 3.27 倍。另有 torch-only 的連續批次推論引擎。"
+        - "Apple Silicon 可用 MLX 原生推論。在 7.75GB 模型上端對端 RTF 0.77（fp32），比 torch-MPS 快約 1.45 倍，比 torch-CPU 快約 3.27 倍。另有 torch-only 的連續批次推論引擎。"
       join: "歡迎回報唸錯的句子、改善硬體支援與效能、補充文件。請不要在 issue 上傳未經授權的錄音。"
     en:
       tagline: "Turns text into natural Taiwan-accented speech. Mixed Chinese and English sentences need no rewriting."
@@ -303,7 +303,7 @@ projects:
       public:
         - "開發中，模型還沒做出來。釋出方式也取決於訓練資料的授權。"
       research:
-        - "以 Barbet 的長上下文能力處理整本書。技術細節待釋出時公開。"
+        - "以 Barbet 的長前後文能力處理整本書。技術細節待釋出時公開。"
     en:
       tagline: "Translates a whole book with a 1B model while keeping terms consistent."
       analogy: "Like a translator who builds a glossary of names first, so a character's name is still right on page 300."
@@ -329,7 +329,7 @@ projects:
         en: "Technical log"
     try:
       url: "https://huggingface.co/OpenFormosa/PangolinTokenizer"
-      zh: "到 Hugging Face 看詞表"
+      zh: "到 Hugging Face 看詞彙表"
       en: "See it on Hugging Face"
     try_dev:
       zh: "用 Transformers 切一句話"
@@ -343,7 +343,7 @@ projects:
       analogy: "像打包行李。捲得好，同一個箱子就能裝更多東西。斷詞切得越省，模型同樣的記憶空間就能放進越多台灣的文字。"
       public:
         - "熟悉繁體中文、注音、台羅、白話字、台語漢字、客語詞、中英夾雜與程式碼。"
-        - "和 8 個常見斷詞器比較，它表示同樣的文字用的 token 最少，而詞表只有主流多語言斷詞器的約三分之一到一半。"
+        - "和 8 個常見斷詞器比較，它表示同樣的文字用的 token 最少，而詞彙表只有主流多語言斷詞器的約三分之一到一半。"
         - "Barbet 用的就是它。"
       try_note: "它是給模型用的元件。開發者可以用一行程式載入它，看看一句話會被切成哪些片段。"
       research:
@@ -389,7 +389,7 @@ projects:
       research:
         - "純 Python 標準函式庫實作，沒有 Rust、torch 或 transformers 依賴。"
         - "鏡像 <code>huggingface/tokenizers</code> 的 API：<code>Tokenizer</code>、<code>Encoding</code>、<code>AddedToken</code>，以及 normalizers、pre_tokenizers、models、processors、decoders、trainers 子模組。"
-        - "讀寫相同的 <code>tokenizer.json</code>。內建 <code>BpeTrainer</code> 適合小語料與測試；大規模訓練請用 UbiTok。授權為 MIT。"
+        - "讀寫相同的 <code>tokenizer.json</code>。內建 <code>BpeTrainer</code> 適合小語料與測試；大規模訓練請用 UbiTok。授權為 Apache 2.0。"
       join: "歡迎補測試、補文件，或回報和 Hugging Face 行為不一致的地方。"
     en:
       tagline: "Runs a tokenizer anywhere Python runs, with no other packages to install."
@@ -401,7 +401,7 @@ projects:
       research:
         - "Pure Python standard library. No Rust, torch, or transformers dependency."
         - "Mirrors the <code>huggingface/tokenizers</code> API: <code>Tokenizer</code>, <code>Encoding</code>, <code>AddedToken</code>, plus normalizers, pre_tokenizers, models, processors, decoders, and trainers."
-        - "Same <code>tokenizer.json</code> format. The built-in <code>BpeTrainer</code> is for small corpora and tests. Use UbiTok for large-scale training. MIT license."
+        - "Same <code>tokenizer.json</code> format. The built-in <code>BpeTrainer</code> is for small corpora and tests. Use UbiTok for large-scale training. Apache 2.0."
       join: "Add tests or docs, or report behavior that differs from Hugging Face."
 
   - id: pangolinbench
@@ -426,7 +426,7 @@ projects:
         - "內建的測試資料是公開、可檢查的合成資料，沒有放入私人或有授權疑慮的語料。"
       try_note: "這是給開發者的工具。用一行指令就能先跑一次。"
       research:
-        - "指標：roundtrip 正確性、壓縮率（tokens/character、tokens/byte、characters/token）、lexicon fertility、over-segmentation、script coverage、rich transcription JSON 穩定性，並回報詞表大小。"
+        - "指標：roundtrip 正確性、壓縮率（tokens/character、tokens/byte、characters/token）、lexicon fertility、over-segmentation、script coverage、rich transcription JSON 穩定性，並回報詞彙表大小。"
         - "設計立場：byte-level 能還原所有 UTF-8，不等於對台灣文字有效率，所以正確性與效率要一起看。"
         - "內建 fixtures 是 synthetic、deterministic、license-clean。正式評測透過 manifest 接 held-out 語料，不把語料放進 repo。"
         - "另有訓練吞吐量 benchmark，需要 UbiTok。品質 benchmark 只用標準函式庫。"
@@ -447,21 +447,21 @@ projects:
 
   # ---------------------------------------------------------------- skills
   - id: skills
-    name: "Barbet Skill Library"
+    name: "Barbet Harness Library"
     category: skills
     status: shipped
     accent: barbet
     role: "Skills"
-    repo: "https://github.com/OpenFormosa/barbet-skill-library"
+    repo: "https://github.com/OpenFormosa/barbet-harness-library"
     links:
       - url: "https://huggingface.co/datasets/OpenFormosa/barbet-long-context-sft"
         zh: "對應的 SFT 資料集"
         en: "Related SFT dataset"
-      - url: "https://github.com/OpenFormosa/barbet-skill-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
+      - url: "https://github.com/OpenFormosa/barbet-harness-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
         zh: "看一份技能範例"
         en: "Read a sample skill"
     try:
-      url: "https://github.com/OpenFormosa/barbet-skill-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
+      url: "https://github.com/OpenFormosa/barbet-harness-library/blob/main/skills/tool-selection-and-arguments/SKILL.md"
       zh: "讀一份技能手冊"
       en: "Read a skill guide"
     try_dev:
@@ -473,7 +473,7 @@ projects:
           --prompt '每箱 12 瓶，買 3 箱共有多少瓶？' --contract number \
           --output outputs/answer.jsonl
     zh:
-      tagline: "64 份給 AI 看的工作手冊，教模型遇到某類任務時該怎麼一步步做、怎麼自我檢查。"
+      tagline: "給 AI 用的工作框架：64 份工作手冊，加上執行它們的推論工具。教模型遇到某類任務時該怎麼一步步做、怎麼自我檢查。"
       analogy: "像新人到職時拿到的標準作業流程。手冊寫清楚什麼時候該用、步驟是什麼、出錯怎麼辦、做完怎麼驗收。"
       public:
         - "涵蓋一般指令、寫程式、數學、使用工具、閱讀、科學與寫作。"
@@ -484,11 +484,11 @@ projects:
         - "每個技能由 <code>skill.json</code> 生成 <code>SKILL.md</code>，另有機器可讀的 <code>catalog.json</code> 與含 SHA-256 的 <code>manifest.json</code>。正式使用時請固定 Git commit。"
         - "附 <code>barbet_inference</code>：Python API、<code>barbet-infer</code> CLI、本機 vLLM 與 vLLM 相容 HTTP 後端。"
         - "固定權重 test-time 實驗：646 題、3 個 seed、10 組設定的封存測試。受測模型是 MiniCPM5-1B，四領域主指標 38.02% → 50.39%（+12.37 pp，配對 95% CI +9.90 至 +14.97）。主評分包含輸出格式遵循；數學的事後診斷未顯示數值推理提升。"
-        - "界線：部分技能由本地 Qwen 生成，經有限測試與審查，不是 human-verified。它們也沒有證明 Barbet 已學會路由、組合技能或使用 1M 上下文。"
+        - "界線：部分技能由本地 Qwen 生成，經有限測試與審查，不是 human-verified。它們也沒有證明 Barbet 已學會路由、組合技能或使用 1M 前後文。"
         - "原創技能文字與工具採 Apache 2.0。"
       join: "這是最容易上手的參與入口。可以用 Issues 提議新技能，或修改 <code>skill.json</code> 後送 PR。"
     en:
-      tagline: "64 work guides written for AI. They teach a model how to approach a type of task step by step and how to check its own work."
+      tagline: "A working harness for AI: 64 work guides plus the inference tools that run them. They teach a model how to approach a type of task step by step and how to check its own work."
       analogy: "Like the standard operating procedures a new hire receives. Each guide says when to use it, the steps, what to do when something fails, and how to verify the result."
       public:
         - "Covers general instructions, coding, math, tool use, reading, science, and writing."

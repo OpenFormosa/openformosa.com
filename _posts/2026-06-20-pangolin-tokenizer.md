@@ -4,7 +4,7 @@ title: "PangolinTokenizer: a byte-level BPE tokenizer for Traditional Chinese an
 zh_title: "PangolinTokenizer：面向繁體中文與台灣語境的 Byte-level BPE Tokenizer"
 i18n_key: pangolin
 description: "A byte-level BPE tokenizer built for Taiwan — 114,688 merges, the lowest tokens/character on PangolinBench with the smallest vocabulary."
-zh_description: "OpenFormosa 開源的台灣語境 byte-level BPE 斷詞器：僅 114,688 merges（約主流多語詞表一半），在 PangolinBench 10 項測試集以 0.485 tokens/字取得最佳壓縮效率，原生支援語音逐字稿標記。"
+zh_description: "OpenFormosa 開源的台灣語境 byte-level BPE 斷詞器：僅 114,688 merges（約主流多語詞彙表一半），在 PangolinBench 10 項測試集以 0.485 tokens/字取得最佳壓縮效率，原生支援語音逐字稿標記。"
 keywords: "PangolinTokenizer, 繁體中文 Tokenizer, 台灣 BPE 斷詞器, PangolinBench, UbiTok, OpenFormosa, 台灣 NLP"
 zh_description: "面向繁體中文與台灣語境的 byte-level BPE tokenizer——以最小的詞彙表，在台灣語境達到最低 tokens/character。"
 date: 2026-06-20
@@ -16,7 +16,7 @@ tags: [tokenizer, benchmark, pangolin]
 
 <div class="post-abstract" markdown="1">
 
-**摘要**　PangolinTokenizer 是一個面向台灣語境設計的 byte-level BPE tokenizer。它的詞彙表規模為 114,688 個 BPE 合併項，約為主流多語言 tokenizer 的三分之一到一半。然而，在 PangolinBench（一組面向台灣語境的 tokenizer 評測集）上，我們比較了 9 個 tokenizer，PangolinTokenizer 在核心台灣華語文本、台灣專名，以及語音逐字稿格式上，均以最小的詞彙表達到最低的整體 tokens/character（0.485）。換言之，同樣的上下文視窗可以容納更多台灣語境的文字。
+**摘要**　PangolinTokenizer 是一個面向台灣語境設計的 byte-level BPE tokenizer。它的詞彙表規模為 114,688 個 BPE 合併項，約為主流多語言 tokenizer 的三分之一到一半。然而，在 PangolinBench（一組面向台灣語境的 tokenizer 評測集）上，我們比較了 9 個 tokenizer，PangolinTokenizer 在核心台灣華語文字、台灣專名，以及語音逐字稿格式上，均以最小的詞彙表達到最低的整體 tokens/character（0.485）。換言之，同樣的前後文視窗可以容納更多台灣語境的文字。
 
 PangolinTokenizer 的設計重點是：在有限詞彙表規模下，針對台灣語境、台灣制度詞、台灣專名、多書寫系統混用，以及語音逐字稿格式，提供一個可重現、可評估、且適合後續模型訓練的 tokenizer。
 
@@ -26,9 +26,9 @@ PangolinTokenizer 的核心貢獻不是「能處理繁體中文」。任何 byte
 
 ## 1. 引言
 
-大型語言模型的 tokenizer 通常被視為前處理工具。然而，tokenizer 決定了模型能以多少 token 表示同一段文字。當模型的上下文視窗、訓練 token 預算與推論成本都以 token 為單位計算時，tokenizer 會直接影響模型訓練與部署的效率。
+大型語言模型的 tokenizer 通常被視為前處理工具。然而，tokenizer 決定了模型能以多少 token 表示同一段文字。當模型的前後文視窗、訓練 token 預算與推論成本都以 token 為單位計算時，tokenizer 會直接影響模型訓練與部署的效率。
 
-對英文而言，空白大致提供詞邊界。中文的書寫系統不以空白標記詞邊界。因此，中文 tokenizer 的合併規則是否能捕捉常見詞彙，會直接影響 token 數。對台灣語境而言，問題又更複雜。台灣文本常同時包含繁體中文、英文、數字、注音符號、台語羅馬字、客語拼音、URL、JSON、emoji，以及語音逐字稿結構。通用多語言 tokenizer 雖然通常可以無損表示這些文字，但不一定能以低 token 成本表示它們。
+對英文而言，空白大致提供詞邊界。中文的書寫系統不以空白標記詞邊界。因此，中文 tokenizer 的合併規則是否能捕捉常見詞彙，會直接影響 token 數。對台灣語境而言，問題又更複雜。台灣文字常同時包含繁體中文、英文、數字、注音符號、台語羅馬字、客語拼音、URL、JSON、emoji，以及語音逐字稿結構。通用多語言 tokenizer 雖然通常可以無損表示這些文字，但不一定能以低 token 成本表示它們。
 
 PangolinTokenizer 的設計目標是建立一個面向台灣語境的 byte-level BPE tokenizer。它不追求在所有語言上平均最佳，而是在台灣華語、台灣專名、台灣制度詞、多書寫系統混用，以及語音逐字稿格式上提供更好的詞彙表配置。
 
@@ -44,19 +44,19 @@ PangolinTokenizer 的設計目標是建立一個面向台灣語境的 byte-level
 
 ### 2.1 中文沒有空白分詞
 
-中文書寫系統不以空白作為穩定的詞邊界。若 tokenizer 對繁體中文的合併規則不足，常見詞彙會被切成過短的片段。這會增加 token 數，降低上下文視窗中可容納的有效文字量，也會提高訓練與推論成本。
+中文書寫系統不以空白作為穩定的詞邊界。若 tokenizer 對繁體中文的合併規則不足，常見詞彙會被切成過短的片段。這會增加 token 數，降低前後文視窗中可容納的有效文字量，也會提高訓練與推論成本。
 
 例如，「戶政事務所」、「勞保年金」、「晶圓代工」這類詞彙若被切成過多 token，模型就需要用更多 token 表示同一個概念。這種切碎不只影響壓縮率，也會影響模型學習語意單位的方式。
 
 ### 2.2 台灣有大量在地制度詞與專名
 
-台灣文本中有許多高度在地化的制度詞、地名、機關名稱與產業詞。例如：健保、勞保年金、戶政事務所、里長、捷運、科學園區、晶圓代工、半導體、台北、臺南。
+台灣文字中有許多高度在地化的制度詞、地名、機關名稱與產業詞。例如：健保、勞保年金、戶政事務所、里長、捷運、科學園區、晶圓代工、半導體、台北、臺南。
 
-這些詞彙在台灣語境中非常高頻。若 tokenizer 沒有在合併規則中學到這些片段，模型就會以更高 token 成本表示相同內容。這會造成台灣文本在訓練與推論時承擔較高成本。
+這些詞彙在台灣語境中非常高頻。若 tokenizer 沒有在合併規則中學到這些片段，模型就會以更高 token 成本表示相同內容。這會造成台灣文字在訓練與推論時承擔較高成本。
 
-### 2.3 台灣文本常見多書寫系統混用
+### 2.3 台灣文字常見多書寫系統混用
 
-台灣語境不是單一書寫系統的問題。實際文本常同時包含繁體中文、英文、數字、注音符號、台語漢字、台語羅馬字（例如 Tâi-gí、tshit-á）、客語拼音（例如 Hak-kâ）、emoji、URL、email、JSON、程式碼、API 文件，以及語音逐字稿格式。
+台灣語境不是單一書寫系統的問題。實際文字常同時包含繁體中文、英文、數字、注音符號、台語漢字、台語羅馬字（例如 Tâi-gí、tshit-á）、客語拼音（例如 Hak-kâ）、emoji、URL、email、JSON、程式碼、API 文件，以及語音逐字稿格式。
 
 台語羅馬字與客語拼音不是單純英文。它們常包含帶變音符號的拉丁字母、連字號分隔的音節結構，以及不同腔調或拼寫系統。若 tokenizer 只把這些內容視為一般英文，就容易產生不穩定的切分。
 
@@ -74,7 +74,7 @@ PangolinTokenizer 依循四個設計原則。
 
 PangolinTokenizer 使用 256 個 byte values 作為基礎表示，再透過 BPE 合併規則學習高頻片段。這個設計使 tokenizer 不需要事先列舉所有 Unicode 字元，也能避免字元級 tokenizer 遇到未知字元時產生 `<unk>` 的問題。
 
-「無損往返」的意思是：對任意 UTF-8 文字，先編碼（encode）再解碼（decode），結果必須與原文完全一致，不會遺失任何字元。在 PangolinBench 的 30 個測試樣例中，PangolinTokenizer 涵蓋繁體中文、注音符號、台語羅馬字、客語拼音、emoji、JSON、URL，以及語音逐字稿。所有樣例的 encode/decode 結果皆完全一致，無損往返正確率為 100%。
+「無損往返」的意思是：對任意 UTF-8 文字，先編碼（encode）再解碼（decode），結果必須與原文完全一致，不會遺失任何字元。在 PangolinBench 的 30 個測試範例中，PangolinTokenizer 涵蓋繁體中文、注音符號、台語羅馬字、客語拼音、emoji、JSON、URL，以及語音逐字稿。所有範例的 encode/decode 結果皆完全一致，無損往返正確率為 100%。
 
 ### 3.2 以台灣語境訓練合併規則
 
@@ -84,13 +84,13 @@ PangolinTokenizer 的目標不是成為「所有語言平均最佳」的 tokeniz
 
 | 類別 | 涵蓋內容 | 設計目的 |
 |:---|:---|:---|
-| 繁體中文正式文本 | 政策、教育、醫療、金融、新聞、科技文本 | 學習正式台灣華語與制度詞 |
+| 繁體中文正式文字 | 政策、教育、醫療、金融、新聞、科技文章 | 學習正式台灣華語與制度詞 |
 | 台灣華語口語 | 訪談、客服、社群、會議逐字稿 | 學習口語標記詞，例如「欸」、「啦」、「齁」、「蠻」、「超」 |
 | 台灣專名詞 | 地名、機關、交通、產業詞 | 降低在地詞彙切碎程度 |
 | 台語與台羅 | 台語漢字、漢羅混寫、Tâi-gí | 保留台語書寫與拼音形態 |
 | 客語拼音 | 四縣、海陸、大埔、饒平、詔安等腔調 | 涵蓋多腔別拼音與符號 |
 | 注音符號 | ㄅㄆㄇ、ㄓㄨˋㄧㄣ | 支援教育、輸入法與口語標註語境 |
-| 中英混語 | API、GPU、latency、JSON schema | 支援台灣科技文本 |
+| 中英混語 | API、GPU、latency、JSON schema | 支援台灣科技文章 |
 | ASR 語音逐字稿 | speaker、timestamp、content、非語音事件 | 支援語音模型訓練格式 |
 
 ### 3.3 保留語音逐字稿結構標記
@@ -124,13 +124,13 @@ PangolinTokenizer 內建 10 個語音逐字稿結構標記。每個結構標記�
 
 ## 4. 訓練方法
 
-PangolinTokenizer 使用 [UbiTok](https://github.com/OpenFormosa/ubi_tokenizer) 訓練。UbiTok 是一套自研的串流式 byte-level BPE 訓練套件。整體流程從 256 個 byte values 開始，再根據語料中的配對頻率學習合併規則。
+PangolinTokenizer 使用 [UbiTok](https://github.com/OpenFormosa/ubi_tokenizer) 訓練。UbiTok 是一套自行開發的串流式 byte-level BPE 訓練套件。整體流程從 256 個 byte values 開始，再根據語料中的配對頻率學習合併規則。
 
 ### 4.1 串流式架構
 
-UbiTok 不需要將完整語料載入記憶體。大型檔案會被切分為對齊行邊界的區塊。多個 worker 會平行計算片段頻率。主程序再合併統計結果，並執行合併規則學習。
+UbiTok 不需要將完整語料載入記憶體。大型檔案會被切分為對齊行邊界的區塊。多個 worker 會平行計算片段頻率。主行程再合併統計結果，並執行合併規則學習。
 
-這個設計讓 tokenizer 訓練可以擴展到大型語料，同時維持可控的記憶體使用量。
+這個設計讓 tokenizer 訓練可以擴充到大型語料，同時維持可控的記憶體使用量。
 
 ### 4.2 確定性訓練
 
@@ -149,19 +149,19 @@ UbiTok 透過下列設計確保確定性：
 
 ## 5. 評估方法：PangolinBench
 
-PangolinBench 是專為台灣語境設計的 tokenizer 基準測試。它涵蓋 10 個測試子集。每個子集對應台灣文本中的不同面向。
+PangolinBench 是專為台灣語境設計的 tokenizer 基準測試。它涵蓋 10 個測試子集。每個子集對應台灣文字中的不同面向。
 
 ### 5.1 測試子集
 
 | 子集 | 說明 |
 |:---|:---|
-| `traditional_zh_formal` | 正式繁體中文，例如政策、教育、醫療、金融與科技文本 |
+| `traditional_zh_formal` | 正式繁體中文，例如政策、教育、醫療、金融與科技文章 |
 | `taiwan_mandarin_colloquial` | 台灣華語口語，例如語助詞與口語標記 |
 | `taiwan_named_entities` | 台灣專名，例如地名、機關、交通與產業詞 |
 | `taigi_han_roman_mixed` | 台語漢字與台羅混寫壓力測試 |
 | `hakka_romanized` | 客語拼音與漢字混合 |
 | `bopomofo` | 注音符號與繁體中文混合 |
-| `taiwan_code_switching` | 中英混語科技文本 |
+| `taiwan_code_switching` | 中英混語科技文章 |
 | `rich_transcription_json` | 語音辨識 JSON 逐字稿，含時間戳、說話者與內容 |
 | `rich_transcription_structured_text` | 結構化逐字稿格式 |
 | `unicode_edge_cases` | UTF-8 邊界情況，例如標點、URL、email、emoji 與變音符號 |
@@ -220,7 +220,7 @@ PangolinTokenizer 的整體 tokens/character 為 0.485，是所有受測 tokeniz
 
 這表示 PangolinTokenizer 在詞彙表使用效率上具有明顯優勢。它以較小詞彙表達到接近甚至略優於大型 tokenizer 的整體壓縮效果。
 
-### 6.3 核心台灣華語文本
+### 6.3 核心台灣華語文字
 
 在正式繁體中文、台灣華語口語與台灣專名上，PangolinTokenizer 不是所有子集的絕對最佳。TAIDE 在這三個子集上仍然有最低 tokens/character。然而，PangolinTokenizer 的詞彙表只有 TAIDE 的 36%。在這個前提下，PangolinTokenizer 仍達到非常接近大型 tokenizer 的表現，並明顯優於多個主流多語言 tokenizer。
 
@@ -338,7 +338,7 @@ $$
 
 PangolinTokenizer 的詞彙表效率為 1.795，是所有受測 tokenizer 中最高。這表示它每 100K 詞彙表空間換得的 characters/token 最多。
 
-這個結果有幾個實務意義。第一，較小詞彙表會降低嵌入矩陣與輸出投影層的參數量。第二，較低 tokens/character 會讓同樣的上下文視窗容納更多台灣語境文字。第三，當訓練 token 預算固定時，較低 token 成本會讓模型看到更多原始文字內容。第四，在推論時，較短的 token 序列也能降低 KV 快取壓力。
+這個結果有幾個實務意義。第一，較小詞彙表會降低嵌入矩陣與輸出投影層的參數量。第二，較低 tokens/character 會讓同樣的前後文視窗容納更多台灣語境文字。第三，當訓練 token 預算固定時，較低 token 成本會讓模型看到更多原始文字內容。第四，在推論時，較短的 token 序列也能降低 KV 快取壓力。
 
 需要注意的是，詞彙表大小本身不會直接降低 KV 快取。KV 快取主要受序列長度影響。PangolinTokenizer 的 KV 快取優勢來自較低 token 數，而不是詞彙表較小本身。
 
@@ -373,13 +373,13 @@ assert decoded == text
 
 在中英混語子集上，PangolinTokenizer 的 tokens/character 為 0.478，略高於 TAIDE、Gemma 3/4 與 Qwen 3.6。這表示較小詞彙表對英文技術詞、API 名稱與程式碼片段的合併規則覆蓋仍有限。
 
-後續版本可以針對台灣科技文本、開放原始碼、API 文件、硬體規格與人工智慧工程語料提高抽樣權重。
+後續版本可以針對台灣科技文章、開放原始碼、API 文件、硬體規格與人工智慧工程語料提高抽樣權重。
 
 ### 11.3 PangolinBench 目前仍是合成測試集
 
-目前 PangolinBench 使用內建的測試集，共 30 個精選測試樣例。這些樣例覆蓋主要語言現象，但仍不足以代表完整台灣文本分佈。
+目前 PangolinBench 使用內建的測試集，共 30 個精選測試範例。這些範例覆蓋主要語言現象，但仍不足以代表完整台灣文字分佈。
 
-因此，本報告的結果應解讀為 tokenizer 層級的針對性基準測試，而不是完整真實世界分佈評估。更強的結論需要加入大型未見語料，例如政府公開資料、台灣新聞語料、教育與醫療文本、語音辨識逐字稿、客服與會議資料、台語與客語語料，以及科技文件與程式碼資料。
+因此，本報告的結果應解讀為 tokenizer 層級的針對性基準測試，而不是完整真實世界分佈評估。更強的結論需要加入大型未見語料，例如政府公開資料、台灣新聞語料、教育與醫療文字、語音辨識逐字稿、客服與會議資料、台語與客語語料，以及科技文件與程式碼資料。
 
 PangolinBench 已支援透過外部設定檔掛載私有未見資料。後續評估應使用更大規模、去重、分層抽樣的未見語料。
 
@@ -409,7 +409,7 @@ PangolinTokenizer 的核心貢獻不是「能 tokenize 繁體中文」。Byte-le
 - PangolinTokenizer 通過所有品質檢查門檻。
 - PangolinTokenizer 是受測 tokenizer 中唯一原生支援完整語音逐字稿結構標記的 tokenizer。
 
-一個適合台灣語境的 tokenizer 應同時滿足三個條件。第一，它必須能無損往返任意 UTF-8。第二，它必須在台灣華語、台灣專名、制度詞與多書寫系統混用文本上具有較低 token 成本。第三，它必須支援現代語音、多模態與結構化訓練格式。
+一個適合台灣語境的 tokenizer 應同時滿足三個條件。第一，它必須能無損往返任意 UTF-8。第二，它必須在台灣華語、台灣專名、制度詞與多書寫系統混用文字上具有較低 token 成本。第三，它必須支援現代語音、多模態與結構化訓練格式。
 
 PangolinTokenizer 透過 byte-level BPE、台灣語境合併規則、通用結構特殊標記，以及 PangolinBench 評估流程，提供了這三個條件的具體實作。
 
